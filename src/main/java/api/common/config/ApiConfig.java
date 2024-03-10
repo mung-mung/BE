@@ -1,9 +1,12 @@
-package BE;
+package api.common.config;
 
 
 
-import BE.repository.UserRepository;
-import BE.service.AuthService;
+
+
+import api.auth.AuthService;
+import api.user.UserRepository;
+import api.user.UserService;
 import jakarta.persistence.EntityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,13 +14,19 @@ import org.springframework.context.annotation.Configuration;
 import javax.sql.DataSource;
 
 @Configuration
-public class BeConfig {
+public class ApiConfig {
     private final DataSource dataSource;
     private final EntityManager em;
-    public BeConfig(DataSource dataSource, EntityManager em){
+    public ApiConfig(DataSource dataSource, EntityManager em){
         this.dataSource = dataSource;
         this.em = em;
     }
+
+    @Bean
+    public UserService userService(){
+        return new UserService(userRepository());
+    }
+
     @Bean
     public AuthService authService(){
         return new AuthService(userRepository());
@@ -27,5 +36,6 @@ public class BeConfig {
     public UserRepository userRepository(){
         return new UserRepository(em);
     }
+
 }
 

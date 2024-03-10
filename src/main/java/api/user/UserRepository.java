@@ -1,6 +1,5 @@
-package BE.repository;
+package api.user;
 
-import BE.domain.User;
 import jakarta.persistence.EntityManager;
 
 import java.util.List;

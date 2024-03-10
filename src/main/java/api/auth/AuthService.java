@@ -1,11 +1,10 @@
-package BE.service;
+package api.auth;
 
-import BE.domain.User;
-import BE.repository.UserRepository;
+import api.user.User;
+import api.user.UserRepository;
 
 public class AuthService {
     private final UserRepository userRepository;
-
     public AuthService(UserRepository userRepository){
         this.userRepository = userRepository;
     }
@@ -13,7 +12,10 @@ public class AuthService {
     public String signUp(User user){
         return "temp";
     }
+
     public String signIn(User user){
         return "temp";
     }
 }
+
+
