@@ -1,6 +1,6 @@
-package BE.model.auth;
+package api.auth.dto;
 
-public class Token {
+public class Jwt {
     private String token;
 
     public String getToken() {
