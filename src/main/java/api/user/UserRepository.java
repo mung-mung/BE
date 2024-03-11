@@ -19,8 +19,12 @@ public class UserRepository {
         return Optional.ofNullable(user);
     }
     public Optional<User> findByEmail(String email) {
-        User user = em.find(User.class, email);
-        return Optional.ofNullable(user);
+        // 이메일을 사용하여 사용자를 찾기 위해 JPQL 쿼리를 사용합니다.
+        return em.createQuery("select u from User u where u.email = :email", User.class)
+                .setParameter("email", email)
+                .getResultList()
+                .stream()
+                .findFirst();
     }
 
     public List<User> findAll(){

@@ -1,12 +1,12 @@
 package api.auth;
 
-import api.auth.dto.Jwt;
+import api.auth.dto.SignUpDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+
+@RequestMapping("/api/auth")
 @Controller
 public class AuthController {
     private final AuthService authService;
@@ -14,23 +14,26 @@ public class AuthController {
     public AuthController(AuthService authService){
         this.authService = authService;
     }
-    @PostMapping("/api/auth/signUp")
+
+    @GetMapping("/test")
     @ResponseBody
-    public Jwt signUp(){
-        Jwt jwt = new Jwt();
-        jwt.setToken("test jwt");
-        return jwt;
+    public int test(){
+        return 1;
     }
 
-    @PostMapping("/api/auth/signIn")
+    @PostMapping("/signUp")
     @ResponseBody
-    public Jwt signIn(){
-        Jwt jwt = new Jwt();
-        jwt.setToken("test jwt");
-        return jwt;
+    public SignUpDto signUp(@RequestBody SignUpDto signUpDto){
+        return authService.signUp(signUpDto);
     }
 
-    @GetMapping("/api/auth/signOut")
+    @PostMapping("/signIn")
+    @ResponseBody
+    public void signIn(){
+
+    }
+
+    @GetMapping("/signOut")
     @ResponseBody
     public void signOut(){}
 }
