@@ -41,8 +41,15 @@ public class User {
 
     @Column(name = "UPDATED_AT", nullable = false)
     private LocalDateTime updatedAt;
+    public User(){}
 
-    public User() {
+    public User(String email, UserType userType, String pw, String contact, Gender gender, LocalDateTime birthday) {
+        this.email = email;
+        this.userType = userType;
+        this.pw = pw;
+        this.contact = contact;
+        this.gender = gender;
+        this.birthday = birthday;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
@@ -84,14 +91,43 @@ public class User {
         MALE, FEMALE, PREFER_NOT_TO_DISCOLSE
     }
 
-    public User(String email, UserType userType, String pw, String contact, Gender gender, LocalDateTime birthday) {
-        this.email = email;
-        this.userType = userType;
-        this.pw = pw;
-        this.contact = contact;
-        this.gender = gender;
-        this.birthday = birthday;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+    public Long getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public String getPw() {
+        return pw;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public LocalDateTime getBirthday() {
+        return birthday;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 }
