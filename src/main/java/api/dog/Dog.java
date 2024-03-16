@@ -14,12 +14,18 @@ public class Dog {
     @Column(name = "DOG_NAME", nullable = false)
     private String dogName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "OWNER_ID", referencedColumnName = "id", nullable = false)
+    @ManyToOne()
+    @JoinColumns({
+            @JoinColumn(name = "OWNER_ID", referencedColumnName = "ID"),
+            @JoinColumn(name = "OWNER_EMAIL", referencedColumnName = "EMAIL")
+    })
     private User owner;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "WALKER_ID", referencedColumnName = "id")
+    @ManyToOne()
+    @JoinColumns({
+            @JoinColumn(name = "WALKER_ID", referencedColumnName = "ID"),
+            @JoinColumn(name = "WALKER_EMAIL", referencedColumnName = "EMAIL")
+    })
     private User walker;
 
     @Column(name = "CREATED_AT", nullable = false)
