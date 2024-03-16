@@ -5,8 +5,9 @@ package api.common.config;
 
 
 import api.auth.AuthService;
-import api.user.UserRepository;
+import api.user.repository.JpaUserRepository;
 import api.user.UserService;
+import api.user.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,7 +38,7 @@ public class ApiConfig {
 
     @Bean
     public UserRepository userRepository(){
-        return new UserRepository(em);
+        return new JpaUserRepository(em);
     }
 
 }
