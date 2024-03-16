@@ -5,15 +5,16 @@ package api.common.config;
 
 
 import api.auth.AuthService;
-import api.user.repository.JpaUserRepository;
+import api.user.User;
+import api.user.UserRepository;
 import api.user.UserService;
-import api.user.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.sql.DataSource;
+
 
 @Configuration
 public class ApiConfig {
@@ -27,18 +28,13 @@ public class ApiConfig {
     }
 
     @Bean
-    public UserService userService(){
-        return new UserService(userRepository());
+    public UserService userService(UserRepository userRepository){
+        return new UserService(userRepository);
     }
 
     @Bean
-    public AuthService authService(){
-        return new AuthService(userRepository(), passwordEncoder);
-    }
-
-    @Bean
-    public UserRepository userRepository(){
-        return new JpaUserRepository(em);
+    public AuthService authService(UserRepository userRepository){
+        return new AuthService(userRepository, passwordEncoder);
     }
 
 }

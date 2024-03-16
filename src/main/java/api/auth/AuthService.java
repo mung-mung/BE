@@ -3,8 +3,7 @@ package api.auth;
 import api.auth.dto.SignInDto;
 import api.auth.dto.SignUpDto;
 import api.user.User;
-import api.user.repository.JpaUserRepository;
-import api.user.repository.UserRepository;
+import api.user.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -14,8 +13,8 @@ import java.util.regex.Pattern;
 
 @Transactional
 public class AuthService {
-    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
     public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
