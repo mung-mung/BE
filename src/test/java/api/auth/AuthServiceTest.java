@@ -1,5 +1,6 @@
 package api.auth;
 
+import api.auth.dto.SignInDto;
 import api.auth.dto.SignUpDto;
 import api.user.User;
 import jakarta.transaction.Transactional;
@@ -51,5 +52,21 @@ public class AuthServiceTest {
     public void pwFormat() {
         SignUpDto signUpDto = new SignUpDto("test@example.com", User.UserType.OWNER, "invalid_pw_format", "01012345678", User.Gender.MALE, LocalDateTime.now());
         assertThrows(IllegalArgumentException.class, () -> authService.signUp(signUpDto));
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 계정 테스트")
+    public void userNotFound() {
+        SignInDto signInDto = new SignInDto("nonexistent@example.com", "password123");
+        assertThrows(IllegalArgumentException.class, () -> authService.signIn(signInDto));
+    }
+
+    @Test
+    @DisplayName("잘못된 비밀번호 테스트")
+    public void wrongPw() {
+        SignUpDto signUpDto = new SignUpDto("valid@example.com", User.UserType.OWNER, "CorrectPassword1!", "01012345678", User.Gender.MALE, LocalDateTime.now());
+        authService.signUp(signUpDto);
+        SignInDto signInDto = new SignInDto("valid@example.com", "WrongPassword1!");
+        assertThrows(IllegalArgumentException.class, () -> authService.signIn(signInDto));
     }
 }
