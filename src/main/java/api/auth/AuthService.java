@@ -3,7 +3,8 @@ package api.auth;
 import api.auth.dto.SignInDto;
 import api.auth.dto.SignUpDto;
 import api.user.User;
-import api.user.UserRepository;
+import api.user.repository.JpaUserRepository;
+import api.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
