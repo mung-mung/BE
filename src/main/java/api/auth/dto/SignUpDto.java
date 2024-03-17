@@ -12,7 +12,7 @@ public class SignUpDto {
     private User.Gender gender;
     private LocalDateTime birthday;
 
-    public SignUpDto(String email, User.UserType userType, String pw, String avatarUrl, String contact, User.Gender gender, LocalDateTime birthday){
+    public SignUpDto(String email, User.UserType userType, String pw, String contact, User.Gender gender, LocalDateTime birthday){
         this.email = email;
         this.userType = userType;
         this.pw = pw;
