@@ -1,5 +1,6 @@
 package api.user;
 
+import api.dog.Dog;
 import jakarta.persistence.EntityManager;
 
 import java.util.List;
@@ -43,4 +44,6 @@ public class UserRepository {
                 .setParameter("userType", "owner")
                 .getResultList();
     }
+
+
 }
