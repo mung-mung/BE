@@ -22,20 +22,16 @@ public class DogRepository { //JpaRepository 확장하기?
         return Optional.ofNullable((dog));
     }
 
-    public Optional<Dog> findByOwner(User owner) {
+    public List<Dog> findByOwner(User owner) {
         return em.createQuery("select d from Dog where d.owner = :owner", Dog.class)
                 .setParameter("owner", owner)
-                .getResultList()
-                .stream()
-                .findFirst();
+                .getResultList();
     }
 
-    public Optional<Dog> findByWalker(User walker) {
+    public List<Dog> findByWalker(User walker) {
         return em.createQuery("select d from Dog where d.walker = :walker", Dog.class)
                 .setParameter("walker", walker)
-                .getResultList()
-                .stream()
-                .findFirst();
+                .getResultList();
     }
 
     public List<Dog> findAll(){

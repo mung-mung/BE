@@ -1,7 +1,10 @@
 package api.user;
 
+import api.dog.Dog;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,6 +44,9 @@ public class User{
 
     @Column(name = "UPDATED_AT", nullable = false)
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "users")
+    private List<Dog> dogs = new ArrayList<>();
 
     public User() {
         this.createdAt = LocalDateTime.now();
