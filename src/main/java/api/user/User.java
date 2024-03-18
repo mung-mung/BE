@@ -1,6 +1,8 @@
 package api.user;
 
 import api.dog.Dog;
+import api.user.enums.Gender;
+import api.user.enums.UserType;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "EMAIL", nullable = false, unique = true)
     private String email;
 
     @Column(name = "USER_TYPE", nullable = false)
@@ -70,7 +72,7 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email);
+        return Objects.hash(id);
     }
 
     @Override
@@ -88,13 +90,6 @@ public class User {
                 '}';
     }
 
-    public enum UserType {
-        ADMIN, OWNER, WALKER
-    }
-
-    public enum Gender {
-        MALE, FEMALE, PREFER_NOT_TO_DISCOLSE
-    }
 
     public Long getId() {
         return id;

@@ -1,18 +1,20 @@
 package api.auth.dto;
 
 import api.user.User;
+import api.user.enums.Gender;
+import api.user.enums.UserType;
 
 import java.time.LocalDateTime;
 
 public class SignUpDto {
     private String email;
-    private User.UserType userType;
+    private UserType userType;
     private String pw;
     private String contact;
-    private User.Gender gender;
+    private Gender gender;
     private LocalDateTime birthday;
 
-    public SignUpDto(String email, User.UserType userType, String pw, String contact, User.Gender gender, LocalDateTime birthday){
+    public SignUpDto(String email, UserType userType, String pw, String contact, Gender gender, LocalDateTime birthday){
         this.email = email;
         this.userType = userType;
         this.pw = pw;
@@ -29,11 +31,10 @@ public class SignUpDto {
         this.email = email;
     }
 
-    public User.UserType getUserType() {
+    public UserType getUserType() {
         return userType;
     }
-
-    public void setUserType(User.UserType userType) {
+    public void setUserType(UserType userType) {
         this.userType = userType;
     }
 
@@ -53,11 +54,11 @@ public class SignUpDto {
         this.contact = contact;
     }
 
-    public User.Gender getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(User.Gender gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 
