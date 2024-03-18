@@ -34,7 +34,9 @@ public class Dog {
     @Column(name = "UPDATED_AT", nullable = false)
     private LocalDateTime updatedAt;
 
-    public Dog() {
+    public Dog(String name, User owner) {
+        this.dogName = name;
+        this.owner = owner;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
