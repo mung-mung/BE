@@ -55,47 +55,23 @@ public class Dog {
         return dogId;
     }
 
-    public void setId(Long id) {
-        this.dogId = id;
-    }
-
     public String getDogName() {
         return dogName;
-    }
-
-    public void setDogName(String dogName) {
-        this.dogName = dogName;
     }
 
     public User getOwner() {
         return owner;
     }
 
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
-
     public User getWalker() {
         return walker;
-    }
-
-    public void setWalker(User walker) {
-        this.walker = walker;
     }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
     }
 }
