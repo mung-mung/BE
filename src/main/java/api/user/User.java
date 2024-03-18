@@ -4,13 +4,17 @@ import api.dog.Dog;
 import api.user.enums.Gender;
 import api.user.enums.UserType;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+@NoArgsConstructor
+@Getter
 @Entity
 @Table(name="users")
 public class User {
@@ -49,8 +53,6 @@ public class User {
 
 //    @OneToMany(mappedBy = "users")
 //    private List<Dog> dogs = new ArrayList<>();
-
-    public User(){}
 
     public User(String email, UserType userType, String pw, String contact, Gender gender, LocalDateTime birthday) {
         this.email = email;
@@ -92,44 +94,4 @@ public class User {
                 '}';
     }
 
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public UserType getUserType() {
-        return userType;
-    }
-
-    public String getPw() {
-        return pw;
-    }
-
-    public String getAvatarUrl() {
-        return avatarUrl;
-    }
-
-    public String getContact() {
-        return contact;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public LocalDateTime getBirthday() {
-        return birthday;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
 }
