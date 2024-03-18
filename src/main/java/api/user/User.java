@@ -45,7 +45,7 @@ public class User {
     @Column(name = "UPDATED_AT", nullable = false)
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "owner")
     private List<Dog> dogs = new ArrayList<>();
 
     public User(String email, UserType userType, String pw, String contact, Gender gender, LocalDateTime birthday) {
