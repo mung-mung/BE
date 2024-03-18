@@ -1,7 +1,9 @@
 package api.auth;
 
 import api.auth.dto.SignUpDto;
+import api.common.util.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,11 +24,14 @@ public class AuthController {
     }
 
     @PostMapping("/signUp")
-    @ResponseBody
-    public SignUpDto signUp(@RequestBody SignUpDto signUpDto){
-        return authService.signUp(signUpDto);
+    public ResponseEntity<Object> signUp(@RequestBody SignUpDto signUpDto){
+        try {
+            SignUpDto signUpResult = authService.signUp(signUpDto);
+            return HttpResponse.successCreated("User signup finished successfully", signUpResult);
+        } catch (Exception e) {
+            return HttpResponse.internalError("Error occurred during signup process", e);
+        }
     }
-
     @PostMapping("/signIn")
     @ResponseBody
     public void signIn(){
