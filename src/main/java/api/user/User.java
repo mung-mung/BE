@@ -6,8 +6,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Entity
 @Table(name="users")
@@ -45,9 +43,14 @@ public class User {
     @Column(name = "UPDATED_AT", nullable = false)
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "owner")
-    private List<Dog> dogs = new ArrayList<>();
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    private List<Dog> ownedDogs = new ArrayList<>();
 
+    @OneToMany(mappedBy = "walker", cascade = CascadeType.ALL)
+    private List<Dog> walkedDogs = new ArrayList<>();
+
+    public User(){
+    }
     public User(String email, UserType userType, String pw, String contact, Gender gender, LocalDateTime birthday) {
         this.email = email;
         this.userType = userType;
@@ -134,5 +137,13 @@ public class User {
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    public List<Dog> getOwnedDogs() {
+        return ownedDogs;
+    }
+
+    public List<Dog> getWalkedDogs() {
+        return walkedDogs;
     }
 }
