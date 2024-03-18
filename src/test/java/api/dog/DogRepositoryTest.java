@@ -76,4 +76,28 @@ public class DogRepositoryTest {
         assertThat(dog1.getWalker()).isEqualTo(null);
 
     }
+
+    @Test
+    @DisplayName("해당 walker가 등록된 dog 조회")
+    public void findDogsByWalker(){
+        User owner = new User("user@example.com", User.UserType.OWNER, "Abcd123@", "Abcd123@", User.Gender.MALE, LocalDateTime.now());
+        owner = userRepository.save(owner);
+
+        User walker = new User("walker@example.com", User.UserType.OWNER, "Abcd123@", "Abcd123@", User.Gender.MALE, LocalDateTime.now());
+        walker = userRepository.save(walker);
+
+        Dog dog1 = new Dog("testDog1", owner);
+        dogRepository.save(dog1);
+        dog1.setWalker(walker);
+
+        Dog dog2 = new Dog("testDog2", owner);
+        dogRepository.save(dog2);
+        dog2.setWalker(walker);
+
+        List<Dog> dogsByWalker = dogRepository.findByWalker(walker);
+
+        assertThat(dogsByWalker).isNotEmpty();
+        assertThat(dogsByWalker.get(0)).isEqualTo(dog1);
+        assertThat(dogsByWalker.get(1)).isEqualTo(dog2);
+    }
 }
