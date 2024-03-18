@@ -54,4 +54,26 @@ public class DogRepositoryTest {
         assertThat(dogsByOwner.get(0)).isEqualTo(dog1);
         assertThat(dogsByOwner.get(1)).isEqualTo(dog2);
     }
+
+    @Test
+    @DisplayName("Walker 등록/삭제")
+    public void setRemoveWalker(){
+        User owner = new User("owner@example.com", User.UserType.OWNER, "Abcd123@", "Abcd123@", User.Gender.MALE, LocalDateTime.now());
+        owner = userRepository.save(owner);
+
+        User walker = new User("walker@example.com", User.UserType.OWNER, "Abcd123@", "Abcd123@", User.Gender.MALE, LocalDateTime.now());
+        walker = userRepository.save(walker);
+
+        Dog dog1 = new Dog("testDog1", owner);
+        dog1 = dogRepository.save(dog1);
+
+        //try setting a walker
+        dog1.setWalker(walker);
+        assertThat(dog1.getWalker()).isEqualTo(walker);
+
+        //try removing the walker
+        dog1.removeWalker();
+        assertThat(dog1.getWalker()).isEqualTo(null);
+
+    }
 }

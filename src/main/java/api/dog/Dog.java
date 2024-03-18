@@ -80,4 +80,14 @@ public class Dog {
         return updatedAt;
     }
 
+    //현재 walker 등록
+    public void setWalker(User walker){
+        this.walker = walker;
+    }
+
+    //walker 삭제
+    public void removeWalker(){
+        this.walker = null;
+    }
+
 }
