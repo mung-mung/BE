@@ -34,7 +34,9 @@ public class Dog {
     @Column(name = "UPDATED_AT", nullable = false)
     private LocalDateTime updatedAt;
 
-    public Dog() {
+    public Dog(String name, User owner) {
+        this.dogName = name;
+        this.owner = owner;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
@@ -63,15 +65,29 @@ public class Dog {
         return owner;
     }
 
+
     public User getWalker() {
         return walker;
     }
+
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
+
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
+
+    //현재 walker 등록
+    public void setWalker(User walker){
+        this.walker = walker;
+    }
+
+    //walker 삭제
+    public void removeWalker(){
+        this.walker = null;
+    }
+
 }
