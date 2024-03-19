@@ -1,12 +1,20 @@
 package api.user;
 
 import api.dog.Dog;
+import api.user.enums.Gender;
+import api.user.enums.UserType;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+@NoArgsConstructor
+@Getter
 @Entity
 @Table(name="users")
 public class User {
@@ -14,7 +22,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "EMAIL", nullable = false, unique = true)
     private String email;
 
     @Column(name = "USER_TYPE", nullable = false)
@@ -73,7 +81,7 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email);
+        return Objects.hash(id);
     }
 
     @Override

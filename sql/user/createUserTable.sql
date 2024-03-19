@@ -10,5 +10,5 @@ CREATE TABLE users (
                        BIRTHDAY TIMESTAMP NOT NULL,
                        CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                        UPDATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                       PRIMARY KEY (ID, EMAIL)
+                       PRIMARY KEY (ID)
 );

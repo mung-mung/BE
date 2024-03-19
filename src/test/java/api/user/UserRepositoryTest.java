@@ -1,5 +1,7 @@
 package api.user;
 
+import api.user.enums.Gender;
+import api.user.enums.UserType;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -21,7 +23,7 @@ class UserRepositoryTest {
     @Test
     @DisplayName("유저 저장")
     public void save(){
-        User user = new User("user@example.com", User.UserType.OWNER, "Abcd123@", "Abcd123@", User.Gender.MALE, LocalDateTime.now());
+        User user = new User("user@example.com", UserType.OWNER, "Abcd123@", "Abcd123@", Gender.MALE, LocalDateTime.now());
         User savedUser = userRepository.save(user);
         assertThat(savedUser.getEmail()).isEqualTo("user@example.com");
     }
@@ -29,7 +31,7 @@ class UserRepositoryTest {
     @Test
     @DisplayName("유저 조회")
     public void findById(){
-        User user = new User("user@example.com", User.UserType.OWNER, "Abcd123@", "Abcd123@", User.Gender.MALE, LocalDateTime.now());
+        User user = new User("user@example.com", UserType.OWNER, "Abcd123@", "Abcd123@", Gender.MALE, LocalDateTime.now());
         User savedUser = userRepository.save(user);
 
         Optional<User> optionalUser = userRepository.findById(savedUser.getId());
@@ -41,8 +43,8 @@ class UserRepositoryTest {
     @Test
     @DisplayName("모든 유저 조회")
     public void findAll(){
-        userRepository.save(new User("user1@example.com", User.UserType.OWNER, "Abcd123@", "Abcd123@", User.Gender.MALE, LocalDateTime.now()));
-        userRepository.save(new User("user2@example.com", User.UserType.OWNER, "Abcd123@", "Abcd123@", User.Gender.MALE, LocalDateTime.now()));
+        userRepository.save(new User("user1@example.com", UserType.OWNER, "Abcd123@", "Abcd123@", Gender.MALE, LocalDateTime.now()));
+        userRepository.save(new User("user2@example.com", UserType.OWNER, "Abcd123@", "Abcd123@", Gender.MALE, LocalDateTime.now()));
 
         Iterable<User> users = userRepository.findAll();
 
@@ -53,8 +55,8 @@ class UserRepositoryTest {
     @Test
     @DisplayName("유저 수 조회")
     public void count(){
-        userRepository.save(new User("user1@example.com", User.UserType.OWNER, "Abcd123@", "Abcd123@", User.Gender.MALE, LocalDateTime.now()));
-        userRepository.save(new User("user2@example.com", User.UserType.OWNER, "Abcd123@", "Abcd123@", User.Gender.MALE, LocalDateTime.now()));
+        userRepository.save(new User("user1@example.com", UserType.OWNER, "Abcd123@", "Abcd123@", Gender.MALE, LocalDateTime.now()));
+        userRepository.save(new User("user2@example.com", UserType.OWNER, "Abcd123@", "Abcd123@", Gender.MALE, LocalDateTime.now()));
 
         long count = userRepository.count();
 
@@ -64,7 +66,7 @@ class UserRepositoryTest {
     @Test
     @DisplayName("유저 삭제")
     public void deleteById(){
-        User user = new User("user@example.com", User.UserType.OWNER, "Abcd123@", "Abcd123@", User.Gender.MALE, LocalDateTime.now());
+        User user = new User("user@example.com", UserType.OWNER, "Abcd123@", "Abcd123@", Gender.MALE, LocalDateTime.now());
         User savedUser = userRepository.save(user);
 
         userRepository.deleteById(savedUser.getId());
@@ -75,7 +77,7 @@ class UserRepositoryTest {
     @Test
     @DisplayName("이메일로 유저 조회")
     public void findByEmail(){
-        User user = new User("user@example.com", User.UserType.OWNER, "Abcd123@", "Abcd123@", User.Gender.MALE, LocalDateTime.now());
+        User user = new User("user@example.com", UserType.OWNER, "Abcd123@", "Abcd123@", Gender.MALE, LocalDateTime.now());
         userRepository.save(user);
 
         Optional<User> optionalUser = userRepository.findByEmail("user@example.com");
@@ -87,17 +89,17 @@ class UserRepositoryTest {
     @Test
     @DisplayName("유저 타입으로 유저 조회")
     public void findByUserType(){
-        User user1 = new User("user1@example.com", User.UserType.OWNER, "Abcd123@", "Abcd123@", User.Gender.MALE, LocalDateTime.now());
-        User user2 = new User("user2@example.com", User.UserType.WALKER, "Abcd123@", "Abcd123@", User.Gender.FEMALE, LocalDateTime.now());
+        User user1 = new User("user1@example.com", UserType.OWNER, "Abcd123@", "Abcd123@", Gender.MALE, LocalDateTime.now());
+        User user2 = new User("user2@example.com", UserType.WALKER, "Abcd123@", "Abcd123@", Gender.FEMALE, LocalDateTime.now());
         userRepository.save(user1);
         userRepository.save(user2);
 
-        List<User> owners = userRepository.findByUserType(User.UserType.OWNER);
+        List<User> owners = userRepository.findByUserType(UserType.OWNER);
 
         assertNotNull(owners);
         assertThat(owners).hasSizeGreaterThan(0);
         for (User owner : owners) {
-            assertEquals(User.UserType.OWNER, owner.getUserType());
+            assertEquals(UserType.OWNER, owner.getUserType());
         }
     }
 }
