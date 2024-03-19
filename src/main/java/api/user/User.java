@@ -57,8 +57,7 @@ public class User {
     @OneToMany(mappedBy = "walker", cascade = CascadeType.ALL)
     private List<Dog> walkedDogs = new ArrayList<>();
 
-    public User(){
-    }
+
     public User(String email, UserType userType, String pw, String contact, Gender gender, LocalDateTime birthday) {
         this.email = email;
         this.userType = userType;
@@ -97,61 +96,5 @@ public class User {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
-    }
-
-    public enum UserType {
-        ADMIN, OWNER, WALKER
-    }
-
-    public enum Gender {
-        MALE, FEMALE, PREFER_NOT_TO_DISCOLSE
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public UserType getUserType() {
-        return userType;
-    }
-
-    public String getPw() {
-        return pw;
-    }
-
-    public String getAvatarUrl() {
-        return avatarUrl;
-    }
-
-    public String getContact() {
-        return contact;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public LocalDateTime getBirthday() {
-        return birthday;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public List<Dog> getOwnedDogs() {
-        return ownedDogs;
-    }
-
-    public List<Dog> getWalkedDogs() {
-        return walkedDogs;
     }
 }

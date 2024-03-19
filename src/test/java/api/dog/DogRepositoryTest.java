@@ -2,6 +2,8 @@ package api.dog;
 
 import api.user.User;
 import api.user.UserRepository;
+import api.user.enums.Gender;
+import api.user.enums.UserType;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,7 +29,7 @@ public class DogRepositoryTest {
     @Test
     @DisplayName("dog 저장")
     public void save(){
-        User user = new User("user@example.com", User.UserType.OWNER, "Abcd123@", "Abcd123@", User.Gender.MALE, LocalDateTime.now());
+        User user = new User("user@example.com", UserType.OWNER, "Abcd123@", "Abcd123@", Gender.MALE, LocalDateTime.now());
         user = userRepository.save(user);
 
         Dog dog = new Dog("testDogName", user);
@@ -39,7 +41,7 @@ public class DogRepositoryTest {
     @Test
     @DisplayName("Owner가 소유한 dog 조회")
     public void findDogsByOwner(){
-        User owner = new User("user@example.com", User.UserType.OWNER, "Abcd123@", "Abcd123@", User.Gender.MALE, LocalDateTime.now());
+        User owner = new User("user@example.com", UserType.OWNER, "Abcd123@", "Abcd123@", Gender.MALE, LocalDateTime.now());
         owner = userRepository.save(owner);
 
         Dog dog1 = new Dog("testDog1", owner);
@@ -58,10 +60,10 @@ public class DogRepositoryTest {
     @Test
     @DisplayName("Walker 등록/삭제")
     public void setRemoveWalker(){
-        User owner = new User("owner@example.com", User.UserType.OWNER, "Abcd123@", "Abcd123@", User.Gender.MALE, LocalDateTime.now());
+        User owner = new User("owner@example.com", UserType.OWNER, "Abcd123@", "Abcd123@", Gender.MALE, LocalDateTime.now());
         owner = userRepository.save(owner);
 
-        User walker = new User("walker@example.com", User.UserType.OWNER, "Abcd123@", "Abcd123@", User.Gender.MALE, LocalDateTime.now());
+        User walker = new User("walker@example.com", UserType.OWNER, "Abcd123@", "Abcd123@", Gender.MALE, LocalDateTime.now());
         walker = userRepository.save(walker);
 
         Dog dog1 = new Dog("testDog1", owner);
@@ -80,10 +82,10 @@ public class DogRepositoryTest {
     @Test
     @DisplayName("해당 walker가 등록된 dog 조회")
     public void findDogsByWalker(){
-        User owner = new User("user@example.com", User.UserType.OWNER, "Abcd123@", "Abcd123@", User.Gender.MALE, LocalDateTime.now());
+        User owner = new User("user@example.com", UserType.OWNER, "Abcd123@", "Abcd123@", Gender.MALE, LocalDateTime.now());
         owner = userRepository.save(owner);
 
-        User walker = new User("walker@example.com", User.UserType.OWNER, "Abcd123@", "Abcd123@", User.Gender.MALE, LocalDateTime.now());
+        User walker = new User("walker@example.com", UserType.OWNER, "Abcd123@", "Abcd123@", Gender.MALE, LocalDateTime.now());
         walker = userRepository.save(walker);
 
         Dog dog1 = new Dog("testDog1", owner);
