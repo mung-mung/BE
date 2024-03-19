@@ -29,7 +29,7 @@ public class AuthController {
             SignUpDto signUpResult = authService.signUp(signUpDto);
             return HttpResponse.successCreated("User signup finished successfully", signUpResult);
         } catch (Exception e) {
-            return HttpResponse.internalError("Error occurred during signup process", e);
+            return HttpResponse.badRequest(e.getMessage(), null);
         }
     }
     @PostMapping("/signIn")
