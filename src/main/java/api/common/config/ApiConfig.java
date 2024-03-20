@@ -5,8 +5,10 @@ package api.common.config;
 
 
 import api.auth.AuthService;
+import api.user.owner.OwnerRepository;
 import api.user.userAccount.UserAccountRepository;
 import api.user.userAccount.UserAccountService;
+import api.user.walker.WalkerRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,8 +34,8 @@ public class ApiConfig {
     }
 
     @Bean
-    public AuthService authService(UserAccountRepository userAccountRepository){
-        return new AuthService(userAccountRepository, passwordEncoder);
+    public AuthService authService(UserAccountRepository userAccountRepository, OwnerRepository ownerRepository, WalkerRepository walkerRepository){
+        return new AuthService(userAccountRepository, ownerRepository, walkerRepository, passwordEncoder);
     }
 
 }

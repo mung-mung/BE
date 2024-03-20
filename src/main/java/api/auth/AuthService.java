@@ -2,14 +2,18 @@ package api.auth;
 
 import api.auth.dto.SignInDto;
 import api.auth.dto.SignUpDto;
+import api.user.owner.Owner;
+import api.user.owner.OwnerRepository;
 import api.user.userAccount.UserAccount;
 import api.user.userAccount.UserAccountRepository;
 import api.user.enums.Gender;
 import api.user.enums.Role;
+import api.user.walker.Walker;
+import api.user.walker.WalkerRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,9 +21,13 @@ import java.util.regex.Pattern;
 public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final UserAccountRepository userAccountRepository;
-    public AuthService(UserAccountRepository userAccountRepository, PasswordEncoder passwordEncoder){
+    private final OwnerRepository ownerRepository;
+    private final WalkerRepository walkerRepository;
+    public AuthService(UserAccountRepository userAccountRepository, OwnerRepository ownerRepository, WalkerRepository walkerRepository, PasswordEncoder passwordEncoder){
         this.userAccountRepository = userAccountRepository;
         this.passwordEncoder = passwordEncoder;
+        this.ownerRepository = ownerRepository;
+        this.walkerRepository = walkerRepository;
     }
 
 
@@ -54,7 +62,7 @@ public class AuthService {
         String pw = signUpDto.getPw();
         String contact = signUpDto.getContact();
         Gender gender= signUpDto.getGender() ;
-        LocalDateTime birthday = signUpDto.getBirthday();
+        LocalDate birthday = signUpDto.getBirthday();
         String hashedPw = passwordEncoder.encode(pw);
         if(!isValidEmail(email)){
             throw new IllegalArgumentException("Invalid email format");
@@ -63,8 +71,15 @@ public class AuthService {
             throw new IllegalArgumentException("Invalid pw format");
         }
         signUpDto.setPw(hashedPw);
-        UserAccount userAccount = new UserAccount(email, role, hashedPw, contact, gender, birthday);
-        userAccountRepository.save(userAccount);
+        if(role == Role.OWNER){
+            Owner owner = new Owner(email, role, hashedPw, contact, gender, birthday);
+            ownerRepository.save(owner);
+        }else if(role == Role.WALKER){
+            Walker walker = new Walker(email, role, hashedPw, contact, gender, birthday);
+            walkerRepository.save(walker);
+        }else{
+            // admin 구현
+        }
         return signUpDto;
     }
 
