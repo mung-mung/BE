@@ -1,4 +1,4 @@
-package api.owner;
+package api.walk.walker;
 
 import api.userAccount.UserAccount;
 import jakarta.persistence.*;
@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Entity
-@Table(name="owner")
-public class Owner {
+@Table(name="walker")
+public class Walker {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -23,15 +23,13 @@ public class Owner {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ACCOUNT_ID", nullable = false)
     private UserAccount userAccount;
-
     @Column(name = "CREATED_AT", nullable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "UPDATED_AT", nullable = false)
-
     private LocalDateTime updatedAt;
 
-    public Owner(UserAccount userAccount) {
+    public Walker(UserAccount userAccount) {
         this.userAccount = userAccount;
     }
 
