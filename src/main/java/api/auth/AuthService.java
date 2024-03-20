@@ -2,10 +2,10 @@ package api.auth;
 
 import api.auth.dto.SignInDto;
 import api.auth.dto.SignUpDto;
-import api.user.User;
-import api.user.UserRepository;
-import api.user.enums.Gender;
-import api.user.enums.UserType;
+import api.userAccount.UserAccount;
+import api.userAccount.UserAccountRepository;
+import api.userAccount.enums.Gender;
+import api.userAccount.enums.Role;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -16,9 +16,9 @@ import java.util.regex.Pattern;
 @Transactional
 public class AuthService {
     private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder){
-        this.userRepository = userRepository;
+    private final UserAccountRepository userAccountRepository;
+    public AuthService(UserAccountRepository userAccountRepository, PasswordEncoder passwordEncoder){
+        this.userAccountRepository = userAccountRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -47,10 +47,10 @@ public class AuthService {
 
     public SignUpDto signUp(SignUpDto signUpDto){
         String email = signUpDto.getEmail();
-        if (userRepository.findByEmail(email).isPresent()) {
+        if (userAccountRepository.findByEmail(email).isPresent()) {
             throw new IllegalStateException("duplicated email");
         }
-        UserType userType = signUpDto.getUserType();
+        Role role = signUpDto.getRole();
         String pw = signUpDto.getPw();
         String contact = signUpDto.getContact();
         Gender gender= signUpDto.getGender() ;
@@ -63,8 +63,8 @@ public class AuthService {
             throw new IllegalArgumentException("Invalid pw format");
         }
         signUpDto.setPw(hashedPw);
-        User user = new User(email, userType, hashedPw, contact, gender, birthday);
-        userRepository.save(user);
+        UserAccount userAccount = new UserAccount(email, role, hashedPw, contact, gender, birthday);
+        userAccountRepository.save(userAccount);
         return signUpDto;
     }
 
@@ -72,10 +72,10 @@ public class AuthService {
         String email = signInDto.getEmail();
         String password = signInDto.getPw();
 
-        User user = userRepository.findByEmail(email)
+        UserAccount userAccount = userAccountRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        if (!passwordEncoder.matches(password, user.getPw())) {
+        if (!passwordEncoder.matches(password, userAccount.getPw())) {
             throw new IllegalArgumentException("wrong pw");
         }
 

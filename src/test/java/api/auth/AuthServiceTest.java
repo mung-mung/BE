@@ -2,9 +2,8 @@ package api.auth;
 
 import api.auth.dto.SignInDto;
 import api.auth.dto.SignUpDto;
-import api.user.User;
-import api.user.enums.Gender;
-import api.user.enums.UserType;
+import api.userAccount.enums.Gender;
+import api.userAccount.enums.Role;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
@@ -27,7 +26,7 @@ public class AuthServiceTest {
     @Test
     @DisplayName("회원 가입")
     public void signUp() {
-        SignUpDto signUpDto = new SignUpDto("test@example.com", UserType.OWNER, "Abcd123@", "01012345678", Gender.MALE, LocalDateTime.of(2000, 1, 1, 0, 0));
+        SignUpDto signUpDto = new SignUpDto("test@example.com", Role.OWNER, "Abcd123@", "01012345678", Gender.MALE, LocalDateTime.of(2000, 1, 1, 0, 0));
         SignUpDto result = authService.signUp(signUpDto);
         assertThat(result).isNotNull();
         assertThat(result.getEmail()).isEqualTo("test@example.com");
@@ -36,23 +35,23 @@ public class AuthServiceTest {
     @Test
     @DisplayName("중복 이메일 회원가입 시도 에러 테스트")
     public void duplicatedEmail() {
-        SignUpDto signUpDto1 = new SignUpDto("test@example.com", UserType.OWNER, "Abcd123@", "01012345678", Gender.MALE, LocalDateTime.now());
+        SignUpDto signUpDto1 = new SignUpDto("test@example.com", Role.OWNER, "Abcd123@", "01012345678", Gender.MALE, LocalDateTime.now());
         authService.signUp(signUpDto1);
-        SignUpDto signUpDto2 = new SignUpDto("test@example.com", UserType.OWNER, "Efgh456#", "01087654321", Gender.FEMALE, LocalDateTime.now());
+        SignUpDto signUpDto2 = new SignUpDto("test@example.com", Role.OWNER, "Efgh456#", "01087654321", Gender.FEMALE, LocalDateTime.now());
         assertThrows(IllegalStateException.class, () -> authService.signUp(signUpDto2));
     }
 
     @Test
     @DisplayName("이메일 형식 에러 테스트")
     public void emailFormat() {
-        SignUpDto signUpDto = new SignUpDto("invalid_email_format", UserType.OWNER, "Abcd123@", "01012345678", Gender.MALE, LocalDateTime.now());
+        SignUpDto signUpDto = new SignUpDto("invalid_email_format", Role.OWNER, "Abcd123@", "01012345678", Gender.MALE, LocalDateTime.now());
         assertThrows(IllegalArgumentException.class, () -> authService.signUp(signUpDto));
     }
 
     @Test
     @DisplayName("비밀번호 형식 테스트")
     public void pwFormat() {
-        SignUpDto signUpDto = new SignUpDto("test@example.com", UserType.OWNER, "invalid_pw_format", "01012345678", Gender.MALE, LocalDateTime.now());
+        SignUpDto signUpDto = new SignUpDto("test@example.com", Role.OWNER, "invalid_pw_format", "01012345678", Gender.MALE, LocalDateTime.now());
         assertThrows(IllegalArgumentException.class, () -> authService.signUp(signUpDto));
     }
 
@@ -66,7 +65,7 @@ public class AuthServiceTest {
     @Test
     @DisplayName("잘못된 비밀번호 테스트")
     public void wrongPw() {
-        SignUpDto signUpDto = new SignUpDto("valid@example.com", UserType.OWNER, "CorrectPassword1!", "01012345678", Gender.MALE, LocalDateTime.now());
+        SignUpDto signUpDto = new SignUpDto("valid@example.com", Role.OWNER, "CorrectPassword1!", "01012345678", Gender.MALE, LocalDateTime.now());
         authService.signUp(signUpDto);
         SignInDto signInDto = new SignInDto("valid@example.com", "WrongPassword1!");
         assertThrows(IllegalArgumentException.class, () -> authService.signIn(signInDto));

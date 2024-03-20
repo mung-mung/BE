@@ -1,23 +1,25 @@
-package api.user;
+package api.userAccount;
 
 import api.dog.Dog;
-import api.user.enums.Gender;
-import api.user.enums.UserType;
+import api.userAccount.enums.Gender;
+import api.userAccount.enums.Role;
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+@EqualsAndHashCode
+@ToString
 @NoArgsConstructor
 @Getter
 @Entity
-@Table(name="users")
-public class User {
+@Table(name="user_account")
+public class UserAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,9 +27,9 @@ public class User {
     @Column(name = "EMAIL", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "USER_TYPE", nullable = false)
+    @Column(name = "ROLE", nullable = false)
     @Enumerated(EnumType.STRING)
-    private UserType userType;
+    private Role role;
 
     @Column(name = "PW", nullable = false)
     private String pw;
@@ -58,43 +60,14 @@ public class User {
     private List<Dog> walkedDogs = new ArrayList<>();
 
 
-    public User(String email, UserType userType, String pw, String contact, Gender gender, LocalDateTime birthday) {
+    public UserAccount(String email, Role role, String pw, String contact, Gender gender, LocalDateTime birthday) {
         this.email = email;
-        this.userType = userType;
+        this.role = role;
         this.pw = pw;
         this.contact = contact;
         this.gender = gender;
         this.birthday = birthday;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id) &&
-                Objects.equals(email, user.email);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", userType=" + userType +
-                ", avatarUrl='" + avatarUrl + '\'' +
-                ", contact='" + contact + '\'' +
-                ", gender=" + gender +
-                ", birthday=" + birthday +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
     }
 }

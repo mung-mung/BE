@@ -1,4 +1,4 @@
-package api.user.enums;
+package api.userAccount.enums;
 
 public enum Gender {
     MALE,
