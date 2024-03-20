@@ -7,7 +7,7 @@ CREATE TABLE user_account (
                        AVATAR_URL VARCHAR(255) DEFAULT 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png',
                        CONTACT VARCHAR(255) NOT NULL,
                        GENDER VARCHAR(20) NOT NULL CHECK (GENDER IN ('MALE', 'FEMALE', 'PREFER_NOT_TO_DISCLOSE')),
-                       BIRTHDAY TIMESTAMP NOT NULL,
+                       BIRTHDAY DATE NOT NULL,
                        CREATED_AT TIMESTAMP,
                        UPDATED_AT TIMESTAMP,
                        PRIMARY KEY (ID)
