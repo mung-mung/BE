@@ -14,10 +14,11 @@ import java.time.LocalDateTime;
 public class Dog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long dogId;
+    @Column(name = "ID", nullable = false)
+    private Long id;
 
-    @Column(name = "DOG_NAME", nullable = false)
-    private String dogName;
+    @Column(name = "NAME", nullable = false)
+    private String name;
 
     @ManyToOne()
     @JoinColumns({
@@ -38,7 +39,7 @@ public class Dog {
     private LocalDateTime updatedAt;
 
     public Dog(String name, User owner) {
-        this.dogName = name;
+        this.name = name;
         this.owner = owner;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
@@ -47,8 +48,8 @@ public class Dog {
     @Override
     public String toString() {
         return "Dog{" +
-                "id=" + dogId +
-                ", dogName='" + dogName + '\'' +
+                "id=" + id +
+                ", dogName='" + name + '\'' +
                 ", owner='" + owner + '\'' +
                 ", walker='" + walker + '\'' +
                 ", createdAt=" + createdAt +
