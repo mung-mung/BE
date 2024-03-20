@@ -77,7 +77,7 @@ public class AuthService {
         }else if(role == Role.WALKER){
             Walker walker = new Walker(email, role, hashedPw, contact, gender, birthday);
             walkerRepository.save(walker);
-        }else{
+        }else if(role == Role.ADMIN){
             // admin 구현
         }
         return signUpDto;
