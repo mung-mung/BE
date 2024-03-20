@@ -4,8 +4,8 @@ import api.auth.dto.SignInDto;
 import api.auth.dto.SignUpDto;
 import api.user.userAccount.UserAccount;
 import api.user.userAccount.UserAccountRepository;
-import api.user.userAccount.enums.Gender;
-import api.user.userAccount.enums.Role;
+import api.user.enums.Gender;
+import api.user.enums.Role;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
