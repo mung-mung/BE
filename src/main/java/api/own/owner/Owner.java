@@ -1,7 +1,6 @@
-package api.walking;
+package api.own.owner;
 
-import api.dog.Dog;
-import api.walker.Walker;
+import api.userAccount.UserAccount;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -15,25 +14,25 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Entity
-@Table(name="walking")
-public class Walking {
+@Table(name="owner")
+public class Owner {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "WALKER_ID", nullable = false)
-    private Walker walker;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "DOG_ID", nullable = false)
-    private Dog dog;
+    @JoinColumn(name = "ACCOUNT_ID", nullable = false)
+    private UserAccount userAccount;
+
     @Column(name = "CREATED_AT", nullable = false)
     private LocalDateTime createdAt;
+
     @Column(name = "UPDATED_AT", nullable = false)
+
     private LocalDateTime updatedAt;
 
-    public Walking(Walker walker, Dog dog){
-        this.walker = walker;
-        this.dog = dog;
+    public Owner(UserAccount userAccount) {
+        this.userAccount = userAccount;
     }
 
     @PrePersist
