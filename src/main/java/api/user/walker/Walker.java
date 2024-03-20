@@ -15,9 +15,9 @@ import java.time.LocalDate;
 @ToString
 @NoArgsConstructor
 @Getter
-@DiscriminatorValue("Walker")
+@DiscriminatorValue("WALKER")
 @Entity
-@Table(name="owner")
+@Table(name="walker")
 public class Walker extends UserAccount{
     public Walker(String email, Role role, String pw, String contact, Gender gender, LocalDate birthday) {
         super(email, role, pw, contact, gender, birthday);

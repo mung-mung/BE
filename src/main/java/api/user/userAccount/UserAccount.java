@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(name = "ROLE", discriminatorType = DiscriminatorType.STRING)
 @Entity
 @Table(name="user_account")
 public abstract class UserAccount {
@@ -27,7 +27,7 @@ public abstract class UserAccount {
     @Column(name = "EMAIL", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "ROLE", nullable = false)
+    @Column(name = "ROLE", nullable = false, insertable = false, updatable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
 
