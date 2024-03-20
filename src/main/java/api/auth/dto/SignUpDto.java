@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
@@ -16,9 +16,9 @@ public class SignUpDto {
     private String pw;
     private String contact;
     private Gender gender;
-    private LocalDateTime birthday;
+    private LocalDate birthday;
 
-    public SignUpDto(String email, Role role, String pw, String contact, Gender gender, LocalDateTime birthday){
+    public SignUpDto(String email, Role role, String pw, String contact, Gender gender, LocalDate birthday){
         this.email = email;
         this.role = role;
         this.pw = pw;
