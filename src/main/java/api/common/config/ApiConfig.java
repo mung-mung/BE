@@ -5,9 +5,8 @@ package api.common.config;
 
 
 import api.auth.AuthService;
-import api.user.User;
-import api.user.UserRepository;
-import api.user.UserService;
+import api.userAccount.UserAccountRepository;
+import api.userAccount.UserAccountService;
 import jakarta.persistence.EntityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,13 +27,13 @@ public class ApiConfig {
     }
 
     @Bean
-    public UserService userService(UserRepository userRepository){
-        return new UserService(userRepository);
+    public UserAccountService userService(UserAccountRepository userAccountRepository){
+        return new UserAccountService(userAccountRepository);
     }
 
     @Bean
-    public AuthService authService(UserRepository userRepository){
-        return new AuthService(userRepository, passwordEncoder);
+    public AuthService authService(UserAccountRepository userAccountRepository){
+        return new AuthService(userAccountRepository, passwordEncoder);
     }
 
 }

@@ -1,7 +1,7 @@
-drop table if exists users CASCADE;
-CREATE TABLE users (
+drop table if exists user_account CASCADE;
+CREATE TABLE user_account (
                        ID SERIAL,
-                       USER_TYPE VARCHAR(20) NOT NULL,
+                       ROLE VARCHAR(20) NOT NULL,
                        EMAIL VARCHAR(255) UNIQUE NOT NULL,
                        PW VARCHAR(255) NOT NULL,
                        AVATAR_URL VARCHAR(255) DEFAULT 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png',
