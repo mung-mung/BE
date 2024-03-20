@@ -35,7 +35,7 @@ public class DogRepositoryTest {
         Dog dog = new Dog("testDogName", user);
         Dog savedDog = dogRepository.save(dog);
 
-        assertThat(savedDog.getDogName()).isEqualTo("testDogName");
+        assertThat(savedDog.getName()).isEqualTo("testDogName");
     }
 
     @Test
