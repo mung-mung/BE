@@ -7,9 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface DogRepository extends JpaRepository<Dog, Long> { //JpaRepository 확장하기?
-
-    List<Dog> findByOwner(User owner);
-    List<Dog> findByWalker(User walker);
+public interface DogRepository extends JpaRepository<Dog, Integer> { //JpaRepository 확장하기?
 
 }

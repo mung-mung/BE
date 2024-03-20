@@ -1,36 +1,42 @@
 package api.dog;
 
-import api.user.User;
+import api.dog.enums.Sex;
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-
+@EqualsAndHashCode
+@ToString
 @NoArgsConstructor
 @Getter
 @Entity
-@Table(name = "dogs")
+@Table(name="dog")
 public class Dog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", nullable = false)
-    private Long id;
+    private Integer id;
 
     @Column(name = "NAME", nullable = false)
     private String name;
 
-    @ManyToOne()
-    @JoinColumns({
-            @JoinColumn(name = "OWNER_ID", referencedColumnName = "ID"),
-    })
-    private User owner;
+    @Column(name = "BIRTHDAY", nullable = false)
+    private LocalDate birthday;
 
-    @ManyToOne(optional = true)
-    @JoinColumns({
-            @JoinColumn(name = "WALKER_ID", referencedColumnName = "ID", nullable = true),
-    })
-    private User walker;
+    @Column(name = "BREED", nullable = false, length = 20)
+    private String breed;
+
+    @Column(name = "WEIGHT", nullable = false)
+    private Float weight;
+
+    @Column(name = "SEX", nullable = false, length = 20)
+    private Sex sex;
+
+    @Column(name = "PHOTO_URL", nullable = false)
+    private String photoUrl = "https://cdn.pixabay.com/photo/2018/05/26/18/06/dog-3431913_1280.jpg";
 
     @Column(name = "CREATED_AT", nullable = false)
     private LocalDateTime createdAt;
@@ -38,32 +44,14 @@ public class Dog {
     @Column(name = "UPDATED_AT", nullable = false)
     private LocalDateTime updatedAt;
 
-    public Dog(String name, User owner) {
+    public Dog(String name, LocalDate birthday, String breed, Float weight, Sex sex){
         this.name = name;
-        this.owner = owner;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+        this.birthday = birthday;
+        this.breed = breed;
+        this.weight = weight;
+        this.sex = sex;
     }
 
-    @Override
-    public String toString() {
-        return "Dog{" +
-                "id=" + id +
-                ", dogName='" + name + '\'' +
-                ", owner='" + owner + '\'' +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
-    }
-
-    //현재 walker 등록
-    public void setWalker(User walker){
-        this.walker = walker;
-    }
-
-    //walker 삭제
-    public void removeWalker(){
-        this.walker = null;
-    }
 
 }
+
