@@ -53,13 +53,6 @@ public class UserAccount {
     @Column(name = "UPDATED_AT", nullable = false)
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-    private List<Dog> ownedDogs = new ArrayList<>();
-
-    @OneToMany(mappedBy = "walker", cascade = CascadeType.ALL)
-    private List<Dog> walkedDogs = new ArrayList<>();
-
-
     public UserAccount(String email, Role role, String pw, String contact, Gender gender, LocalDateTime birthday) {
         this.email = email;
         this.role = role;
@@ -67,7 +60,15 @@ public class UserAccount {
         this.contact = contact;
         this.gender = gender;
         this.birthday = birthday;
+    }
+    @PrePersist
+    protected void onCreate() {
         this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
 }
