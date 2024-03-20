@@ -87,14 +87,14 @@ class UserAccountRepositoryTest {
     }
 
     @Test
-    @DisplayName("유저 타입으로 유저 조회")
+    @DisplayName("유저 role 으로 유저 조회")
     public void findByUserType(){
         UserAccount userAccount1 = new UserAccount("user1@example.com", Role.OWNER, "Abcd123@", "Abcd123@", Gender.MALE, LocalDateTime.now());
         UserAccount userAccount2 = new UserAccount("user2@example.com", Role.WALKER, "Abcd123@", "Abcd123@", Gender.FEMALE, LocalDateTime.now());
         userAccountRepository.save(userAccount1);
         userAccountRepository.save(userAccount2);
 
-        List<UserAccount> owners = userAccountRepository.findByUserType(Role.OWNER);
+        List<UserAccount> owners = userAccountRepository.findByRole(Role.OWNER);
 
         assertNotNull(owners);
         assertThat(owners).hasSizeGreaterThan(0);
