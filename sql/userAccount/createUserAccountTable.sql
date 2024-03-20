@@ -8,7 +8,7 @@ CREATE TABLE user_account (
                        CONTACT VARCHAR(255) NOT NULL,
                        GENDER VARCHAR(20) NOT NULL CHECK (GENDER IN ('MALE', 'FEMALE', 'PREFER_NOT_TO_DISCLOSE')),
                        BIRTHDAY TIMESTAMP NOT NULL,
-                       CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                       UPDATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                       CREATED_AT TIMESTAMP,
+                       UPDATED_AT TIMESTAMP,
                        PRIMARY KEY (ID)
 );
