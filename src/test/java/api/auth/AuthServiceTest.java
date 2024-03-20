@@ -2,8 +2,8 @@ package api.auth;
 
 import api.auth.dto.SignInDto;
 import api.auth.dto.SignUpDto;
-import api.user.userAccount.enums.Gender;
-import api.user.userAccount.enums.Role;
+import api.user.enums.Gender;
+import api.user.enums.Role;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
@@ -12,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;

@@ -1,46 +1,24 @@
 package api.user.walker;
 
 import api.user.userAccount.UserAccount;
+import api.user.enums.Gender;
+import api.user.enums.Role;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 @ToString
 @NoArgsConstructor
 @Getter
 @Entity
-@Table(name="walker")
-public class Walker {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ACCOUNT_ID", nullable = false)
-    private UserAccount userAccount;
-    @Column(name = "CREATED_AT", nullable = false)
-    private LocalDateTime createdAt;
-
-    @Column(name = "UPDATED_AT", nullable = false)
-    private LocalDateTime updatedAt;
-
-    public Walker(UserAccount userAccount) {
-        this.userAccount = userAccount;
-    }
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
+@Table(name="owner")
+public class Walker extends UserAccount{
+    public Walker(String email, Role role, String pw, String contact, Gender gender, LocalDate birthday) {
+        super(email, role, pw, contact, gender, birthday);
     }
 }
