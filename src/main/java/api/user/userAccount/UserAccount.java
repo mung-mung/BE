@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @EqualsAndHashCode
@@ -42,7 +43,7 @@ public abstract class UserAccount {
     private Gender gender;
 
     @Column(name = "BIRTHDAY", nullable = false)
-    private LocalDateTime birthday;
+    private LocalDate birthday;
 
     @Column(name = "CREATED_AT", nullable = false)
     private LocalDateTime createdAt;
@@ -50,7 +51,7 @@ public abstract class UserAccount {
     @Column(name = "UPDATED_AT", nullable = false)
     private LocalDateTime updatedAt;
 
-    public UserAccount(String email, Role role, String pw, String contact, Gender gender, LocalDateTime birthday) {
+    public UserAccount(String email, Role role, String pw, String contact, Gender gender, LocalDate birthday) {
         this.email = email;
         this.role = role;
         this.pw = pw;
