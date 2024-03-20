@@ -1,6 +1,7 @@
 drop table if exists user_account CASCADE;
 CREATE TABLE user_account (
                        ID SERIAL,
+                       DTYPE VARCHAR(255),
                        ROLE VARCHAR(20) NOT NULL,
                        EMAIL VARCHAR(255) UNIQUE NOT NULL,
                        PW VARCHAR(255) NOT NULL,

@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 @ToString
 @NoArgsConstructor
 @Getter
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING)
 @Entity
 @Table(name="user_account")
 public abstract class UserAccount {
