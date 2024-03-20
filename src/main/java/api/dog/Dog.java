@@ -2,8 +2,13 @@ package api.dog;
 
 import api.user.User;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
+@NoArgsConstructor
+@Getter
 @Entity
 @Table(name = "dogs")
 public class Dog {
@@ -49,33 +54,6 @@ public class Dog {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
-    }
-
-    public Long getId() {
-        return dogId;
-    }
-
-    public String getDogName() {
-        return dogName;
-    }
-
-    public User getOwner() {
-        return owner;
-    }
-
-
-    public User getWalker() {
-        return walker;
-    }
-
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
     }
 
     //현재 walker 등록
