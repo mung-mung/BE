@@ -1,8 +1,7 @@
-package api.userAccount;
+package api.user.userAccount;
 
-import api.dog.Dog;
-import api.userAccount.enums.Gender;
-import api.userAccount.enums.Role;
+import api.user.userAccount.enums.Gender;
+import api.user.userAccount.enums.Role;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -10,16 +9,14 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+
 @EqualsAndHashCode
 @ToString
 @NoArgsConstructor
 @Getter
 @Entity
 @Table(name="user_account")
-public class UserAccount {
+public abstract class UserAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

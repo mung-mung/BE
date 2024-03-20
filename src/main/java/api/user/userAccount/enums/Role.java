@@ -1,4 +1,4 @@
-package api.userAccount.enums;
+package api.user.userAccount.enums;
 
 public enum Role {
     ADMIN,

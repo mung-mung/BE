@@ -1,7 +1,9 @@
 package api.userAccount;
 
-import api.userAccount.enums.Gender;
-import api.userAccount.enums.Role;
+import api.user.userAccount.UserAccount;
+import api.user.userAccount.UserAccountRepository;
+import api.user.userAccount.enums.Gender;
+import api.user.userAccount.enums.Role;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;

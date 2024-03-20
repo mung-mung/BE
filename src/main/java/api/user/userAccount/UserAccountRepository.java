@@ -1,6 +1,6 @@
-package api.userAccount;
+package api.user.userAccount;
 
-import api.userAccount.enums.Role;
+import api.user.userAccount.enums.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

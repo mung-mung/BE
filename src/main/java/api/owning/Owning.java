@@ -1,7 +1,7 @@
-package api.own.owning;
+package api.owning;
 
 import api.dog.Dog;
-import api.own.owner.Owner;
+import api.user.owner.Owner;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

@@ -2,10 +2,10 @@ package api.auth;
 
 import api.auth.dto.SignInDto;
 import api.auth.dto.SignUpDto;
-import api.userAccount.UserAccount;
-import api.userAccount.UserAccountRepository;
-import api.userAccount.enums.Gender;
-import api.userAccount.enums.Role;
+import api.user.userAccount.UserAccount;
+import api.user.userAccount.UserAccountRepository;
+import api.user.userAccount.enums.Gender;
+import api.user.userAccount.enums.Role;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
