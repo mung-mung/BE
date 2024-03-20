@@ -26,7 +26,7 @@ public class Dog {
     })
     private User owner;
 
-    @ManyToOne()
+    @ManyToOne(optional = true)
     @JoinColumns({
             @JoinColumn(name = "WALKER_ID", referencedColumnName = "ID", nullable = true),
     })
@@ -51,7 +51,6 @@ public class Dog {
                 "id=" + id +
                 ", dogName='" + name + '\'' +
                 ", owner='" + owner + '\'' +
-                ", walker='" + walker + '\'' +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
