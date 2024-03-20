@@ -1,7 +1,7 @@
 package api.auth.dto;
 
-import api.userAccount.enums.Gender;
-import api.userAccount.enums.Role;
+import api.user.userAccount.enums.Gender;
+import api.user.userAccount.enums.Role;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

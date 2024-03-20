@@ -1,6 +1,6 @@
-package api.own.owner;
+package api.user.owner;
 
-import api.userAccount.UserAccount;
+import api.user.userAccount.UserAccount;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

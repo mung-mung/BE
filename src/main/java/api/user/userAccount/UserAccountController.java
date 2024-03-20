@@ -1,4 +1,4 @@
-package api.userAccount;
+package api.user.userAccount;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

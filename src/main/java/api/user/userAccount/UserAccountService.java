@@ -1,4 +1,4 @@
-package api.userAccount;
+package api.user.userAccount;
 
 
 public class UserAccountService {

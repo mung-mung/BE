@@ -5,8 +5,8 @@ package api.common.config;
 
 
 import api.auth.AuthService;
-import api.userAccount.UserAccountRepository;
-import api.userAccount.UserAccountService;
+import api.user.userAccount.UserAccountRepository;
+import api.user.userAccount.UserAccountService;
 import jakarta.persistence.EntityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

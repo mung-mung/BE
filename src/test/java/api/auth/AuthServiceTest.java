@@ -2,8 +2,8 @@ package api.auth;
 
 import api.auth.dto.SignInDto;
 import api.auth.dto.SignUpDto;
-import api.userAccount.enums.Gender;
-import api.userAccount.enums.Role;
+import api.user.userAccount.enums.Gender;
+import api.user.userAccount.enums.Role;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
