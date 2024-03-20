@@ -17,14 +17,12 @@ public class Dog {
     @ManyToOne()
     @JoinColumns({
             @JoinColumn(name = "OWNER_ID", referencedColumnName = "ID"),
-            @JoinColumn(name = "OWNER_EMAIL", referencedColumnName = "EMAIL")
     })
     private User owner;
 
     @ManyToOne()
     @JoinColumns({
-            @JoinColumn(name = "WALKER_ID", referencedColumnName = "ID"),
-            @JoinColumn(name = "WALKER_EMAIL", referencedColumnName = "EMAIL")
+            @JoinColumn(name = "WALKER_ID", referencedColumnName = "ID", nullable = true),
     })
     private User walker;
 
