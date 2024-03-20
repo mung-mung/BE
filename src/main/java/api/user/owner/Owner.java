@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @ToString
 @NoArgsConstructor
 @Getter
-@DiscriminatorValue("Owner")
+@DiscriminatorValue("OWNER")
 @Entity
 @Table(name="owner")
 public class Owner extends UserAccount{
