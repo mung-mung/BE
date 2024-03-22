@@ -70,7 +70,7 @@ public class AuthService {
         if(!isValidPw(pw)){
             throw new IllegalArgumentException("Invalid pw format");
         }
-        signUpDto.setPw(hashedPw);
+            signUpDto.setPw(hashedPw);
         if(role == Role.OWNER){
             Owner owner = new Owner(email, role, hashedPw, contact, gender, birthday);
             ownerRepository.save(owner);
