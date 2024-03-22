@@ -19,7 +19,7 @@ public class LogInFilter extends UsernamePasswordAuthenticationFilter {
     }
 
     @Override
-    public Authentication atteptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         String username = obtainUsername(request);
         String password = obtainPassword(request);
 
