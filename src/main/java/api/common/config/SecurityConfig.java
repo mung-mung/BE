@@ -1,6 +1,7 @@
 package api.common.config;
 
 
+import api.auth.jwt.JWTUtil;
 import api.auth.jwt.LogInFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,9 +19,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final AuthenticationConfiguration authenticationConfiguration;
+    private final JWTUtil jwtUtil;
 
-    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration){
+    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil){
         this.authenticationConfiguration = authenticationConfiguration;
+        this.jwtUtil = jwtUtil;
     }
 
     @Bean
@@ -50,12 +53,12 @@ public class SecurityConfig {
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/api/auth/signUp", "/api/auth/signIn").permitAll()
+                        .requestMatchers("/api/auth/signUp", "/api/auth/signIn", "/api/auth/test").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated());
 
         http
-                .addFilterAt(new LogInFilter(authenticationManager(authenticationConfiguration)), UsernamePasswordAuthenticationFilter.class);
+                .addFilterAt(new LogInFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
         //세션 설정
         http
