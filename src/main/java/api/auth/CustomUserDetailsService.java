@@ -1,14 +1,12 @@
 package api.auth;
 
+import api.auth.dto.CustomUserDetails;
 import api.user.userAccount.UserAccount;
 import api.user.userAccount.UserAccountRepository;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
