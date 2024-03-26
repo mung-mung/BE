@@ -1,7 +1,7 @@
 package api.common.config;
 
 
-import api.auth.jwt.JWTUtil;
+import api.common.util.http.JWTUtil;
 import api.auth.jwt.LogInFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package api.auth.jwt;
+package api.common.util.http;
 
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
