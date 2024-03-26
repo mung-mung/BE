@@ -1,6 +1,7 @@
 package api.auth.jwt;
 
 import api.auth.dto.CustomUserDetails;
+import api.common.util.http.JWTUtil;
 import api.user.enums.Gender;
 import api.user.enums.Role;
 import api.user.owner.Owner;
@@ -60,7 +61,7 @@ public class JWTFilter extends OncePerRequestFilter {
         if (role == "OWNER"){
             user = new Owner(username, Role.OWNER, "testpassword", "1234", Gender.MALE, LocalDate.of(1990, 1, 1)); //test values
         }
-        else { //ADMIN 유저 생성 시 수정 필요
+        if (role == "WALKER") { //ADMIN 유저 생성 시 수정 필요
             user = new Walker(username, Role.WALKER, "testpassword", "1234", Gender.MALE, LocalDate.of(1990, 1, 1)); //test values
         }
 
