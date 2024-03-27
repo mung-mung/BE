@@ -1,6 +1,6 @@
-package api.auth.jwt;
+package api.auth.filter;
 
-import api.common.util.http.JWTUtil;
+import api.common.util.jwt.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,9 +18,9 @@ import java.util.Iterator;
 public class LogInFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
-    private final JWTUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
-    public LogInFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil){
+    public LogInFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil){
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
     }
