@@ -34,6 +34,7 @@ public class LogInFilter extends UsernamePasswordAuthenticationFilter {
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password, null);
 
         //token에 담은 검증을 위한 AuthenticationManager로 전달
+        System.out.println("login attempt");
         return authenticationManager.authenticate(authToken);
     }
 
@@ -51,7 +52,7 @@ public class LogInFilter extends UsernamePasswordAuthenticationFilter {
         String token = jwtUtil.createJwt(username, role, 60 * 60 * 10L);
 
         response.addHeader("Authorization", "Bearer " + token);
-
+        System.out.println("login success");
     }
 
     //로그인 실패시 실행하는 메소드

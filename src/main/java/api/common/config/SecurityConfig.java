@@ -53,9 +53,14 @@ public class SecurityConfig {
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/api/auth/signUp", "/api/auth/signIn", "/api/auth/test", "/logIn").permitAll()
+                        .requestMatchers("/api/auth/signUp", "/api/auth/test", "/login").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .anyRequest().authenticated());
+                        .anyRequest().authenticated()
+                )
+                .formLogin(formLogin -> formLogin
+                        .loginPage("/api/auth/signIn")
+                        .permitAll()
+                );
 
         http
                 .addFilterAt(new LogInFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
