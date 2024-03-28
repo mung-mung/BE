@@ -1,7 +1,7 @@
-package api.auth.jwt;
+package api.auth.filter;
 
 import api.auth.dto.CustomUserDetails;
-import api.common.util.http.JWTUtil;
+import api.common.util.jwt.JwtUtil;
 import api.user.enums.Gender;
 import api.user.enums.Role;
 import api.user.owner.Owner;
@@ -19,10 +19,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.time.LocalDate;
 
-public class JWTFilter extends OncePerRequestFilter {
-    private final JWTUtil jwtUtil;
+public class JwtFilter extends OncePerRequestFilter {
+    private final JwtUtil jwtUtil;
 
-    public JWTFilter(JWTUtil jwtUtil){
+    public JwtFilter(JwtUtil jwtUtil){
         this.jwtUtil = jwtUtil;
     }
 
