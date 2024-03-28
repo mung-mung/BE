@@ -1,4 +1,4 @@
-package api.common.util.http;
+package api.common.util.jwt;
 
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Component
-public class JWTUtil {
+public class JwtUtil {
 
     private SecretKey secretKey;
 
