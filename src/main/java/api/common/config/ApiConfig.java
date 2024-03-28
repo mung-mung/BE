@@ -12,6 +12,8 @@ import api.user.owner.OwnerRepository;
 import api.user.userAccount.UserAccountRepository;
 import api.user.userAccount.UserAccountService;
 import api.user.walker.WalkerRepository;
+import api.walking.WalkingRepository;
+import api.walking.WalkingService;
 import jakarta.persistence.EntityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,6 +47,12 @@ public class ApiConfig {
     public OwningService owningService(OwningRepository owningRepository, OwnerRepository ownerRepository, DogRepository dogRepository){
         return new OwningService(owningRepository, ownerRepository, dogRepository);
     }
+
+    @Bean
+    public WalkingService walkingService(WalkingRepository walkingRepository, WalkerRepository walkerRepository, DogRepository dogRepository){
+        return new WalkingService(walkingRepository, walkerRepository, dogRepository);
+    }
+
 
 }
 
