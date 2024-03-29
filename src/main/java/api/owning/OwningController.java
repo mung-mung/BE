@@ -16,14 +16,14 @@ public class OwningController {
     public OwningController(OwningService owningService){
         this.owningService = owningService;
     }
-    @PostMapping("/addOwning")
+    @PostMapping("/createOwning")
     @ResponseBody
-    public ResponseEntity<Object> addOwning(@RequestBody OwningDto owningDto){
+    public ResponseEntity<Object> createOwning(@RequestBody OwningDto owningDto){
         try {
-            OwningDto addedOwning = owningService.addOwning(owningDto);
-            return HttpResponse.successCreated("Owning successfully added.", addedOwning);
+            OwningDto createedOwning = owningService.createOwning(owningDto);
+            return HttpResponse.successCreated("Owning successfully createed.", createedOwning);
         } catch (Exception e) {
-            return HttpResponse.badRequest("Error adding owning: " + e.getMessage(), null);
+            return HttpResponse.badRequest("Error createing owning: " + e.getMessage(), null);
         }
     }
     @PostMapping("/deleteOwning")
