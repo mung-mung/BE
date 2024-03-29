@@ -19,7 +19,7 @@ public class WalkingService {
         this.dogRepository = dogRepository;
 
     }
-    public WalkingDto addWalking(WalkingDto walkingDto) {
+    public WalkingDto createWalking(WalkingDto walkingDto) {
         Optional<Walker> walker = walkerRepository.findById(walkingDto.getWalkerId());
         Optional<Dog> dog = dogRepository.findById(walkingDto.getDogId());
 
