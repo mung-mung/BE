@@ -16,14 +16,14 @@ public class WalkingController {
     public WalkingController(WalkingService walkingService){
         this.walkingService = walkingService;
     }
-    @PostMapping("/addWalking")
+    @PostMapping("/createWalking")
     @ResponseBody
-    public ResponseEntity<Object> addWalking(@RequestBody WalkingDto walkingDto){
+    public ResponseEntity<Object> createWalking(@RequestBody WalkingDto walkingDto){
         try {
-            WalkingDto addedWalking = walkingService.addWalking(walkingDto);
-            return HttpResponse.successCreated("Walking successfully added.", addedWalking);
+            WalkingDto createedWalking = walkingService.createWalking(walkingDto);
+            return HttpResponse.successCreated("Walking successfully createed.", createedWalking);
         } catch (Exception e) {
-            return HttpResponse.badRequest("Error adding walking: " + e.getMessage(), null);
+            return HttpResponse.badRequest("Error createing walking: " + e.getMessage(), null);
         }
     }
     @PostMapping("/deleteWalking")
