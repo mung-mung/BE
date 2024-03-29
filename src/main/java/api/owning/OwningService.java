@@ -21,7 +21,7 @@ public class OwningService {
         this.dogRepository = dogRepository;
 
     }
-    public OwningDto addOwning(OwningDto owningDto) {
+    public OwningDto createOwning(OwningDto owningDto) {
         Optional<Owner> owner = ownerRepository.findById(owningDto.getOwnerId());
         Optional<Dog> dog = dogRepository.findById(owningDto.getDogId());
 
