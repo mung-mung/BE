@@ -1,6 +1,7 @@
 package api.common.config;
 
 
+import api.auth.filter.JwtFilter;
 import api.common.util.jwt.JwtUtil;
 import api.auth.filter.LogInFilter;
 import org.springframework.context.annotation.Bean;
@@ -53,8 +54,8 @@ public class SecurityConfig {
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/api/auth/signUp", "/api/auth/test", "/login").permitAll()
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/auth/signUp", "/api/auth/test", "/login", "/api/auth/signIn").permitAll()
+                        .requestMatchers("/api/admin/**").hasRole("OWNER") //접근 권한 분리 테스트 용, 추후 admin으로 수정 필요
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin
@@ -62,6 +63,8 @@ public class SecurityConfig {
                         .permitAll()
                 );
 
+        http.
+                addFilterBefore(new JwtFilter(jwtUtil), LogInFilter.class);
         http
                 .addFilterAt(new LogInFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
