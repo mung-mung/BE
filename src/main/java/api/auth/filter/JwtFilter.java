@@ -58,10 +58,10 @@ public class JwtFilter extends OncePerRequestFilter {
         UserAccount user = new Owner();
 
         //userEntity를 생성하여 값 set
-        if (role == "OWNER"){
+        if (role.equals("OWNER")){
             user = new Owner(username, Role.OWNER, "testpassword", "1234", Gender.MALE, LocalDate.of(1990, 1, 1)); //test values
         }
-        if (role == "WALKER") { //ADMIN 유저 생성 시 수정 필요
+        if (role.equals("WALKER")) { //ADMIN 유저 생성 시 수정 필요
             user = new Walker(username, Role.WALKER, "testpassword", "1234", Gender.MALE, LocalDate.of(1990, 1, 1)); //test values
         }
 
