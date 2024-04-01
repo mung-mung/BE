@@ -15,6 +15,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -56,12 +58,17 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/api/auth/signUp", "/api/auth/test", "/login", "/api/auth/signIn").permitAll()
-                        .requestMatchers("/api/admin/**").hasRole("OWNER") //접근 권한 분리 테스트 용, 추후 admin으로 수정 필요
+                        .requestMatchers("/api/admin/test").hasAuthority("OWNER") //접근 권한 분리 테스트 용, 추후 admin으로 수정 필요
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin
                         .loginPage("/api/auth/signIn")
                         .permitAll()
+                )
+                .logout((logout) -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                        .logoutSuccessUrl("/api/auth/signIn")
+                        .invalidateHttpSession(true)
                 );
 
         http.
