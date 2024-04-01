@@ -58,7 +58,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/api/auth/signUp", "/api/auth/test", "/login", "/api/auth/signIn").permitAll()
-                        .requestMatchers("/api/admin/test").hasAuthority("OWNER") //접근 권한 분리 테스트 용, 추후 admin으로 수정 필요
+                        .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin

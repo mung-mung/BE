@@ -2,6 +2,7 @@ package api.auth.filter;
 
 import api.auth.dto.CustomUserDetails;
 import api.common.util.jwt.JwtUtil;
+import api.user.admin.Admin;
 import api.user.enums.Gender;
 import api.user.enums.Role;
 import api.user.owner.Owner;
@@ -61,8 +62,11 @@ public class JwtFilter extends OncePerRequestFilter {
         if (role.equals("OWNER")){
             user = new Owner(username, Role.OWNER, "testpassword", "1234", Gender.MALE, LocalDate.of(1990, 1, 1)); //test values
         }
-        if (role.equals("WALKER")) { //ADMIN 유저 생성 시 수정 필요
+        else if (role.equals("WALKER")) { //ADMIN 유저 생성 시 수정 필요
             user = new Walker(username, Role.WALKER, "testpassword", "1234", Gender.MALE, LocalDate.of(1990, 1, 1)); //test values
+        }
+        else if (role.equals("ADMIN")) {
+            user = new Admin(username, Role.ADMIN, "testpassword", "1234", Gender.MALE, LocalDate.of(1990, 1, 1)); //test values
         }
 
         //UserDetails에 회원 정보 객체 담기

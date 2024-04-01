@@ -5,6 +5,7 @@ package api.common.config;
 
 
 import api.auth.AuthService;
+import api.user.admin.AdminRepository;
 import api.user.owner.OwnerRepository;
 import api.user.userAccount.UserAccountRepository;
 import api.user.userAccount.UserAccountService;
@@ -34,8 +35,8 @@ public class ApiConfig {
     }
 
     @Bean
-    public AuthService authService(UserAccountRepository userAccountRepository, OwnerRepository ownerRepository, WalkerRepository walkerRepository){
-        return new AuthService(userAccountRepository, ownerRepository, walkerRepository, passwordEncoder);
+    public AuthService authService(UserAccountRepository userAccountRepository, OwnerRepository ownerRepository, WalkerRepository walkerRepository, AdminRepository adminRepository){
+        return new AuthService(userAccountRepository, ownerRepository, walkerRepository, adminRepository, passwordEncoder);
     }
 
 }

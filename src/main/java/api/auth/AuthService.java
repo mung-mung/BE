@@ -2,6 +2,8 @@ package api.auth;
 
 import api.auth.dto.SignInDto;
 import api.auth.dto.SignUpDto;
+import api.user.admin.Admin;
+import api.user.admin.AdminRepository;
 import api.user.owner.Owner;
 import api.user.owner.OwnerRepository;
 import api.user.userAccount.UserAccount;
@@ -23,11 +25,13 @@ public class AuthService {
     private final UserAccountRepository userAccountRepository;
     private final OwnerRepository ownerRepository;
     private final WalkerRepository walkerRepository;
-    public AuthService(UserAccountRepository userAccountRepository, OwnerRepository ownerRepository, WalkerRepository walkerRepository, PasswordEncoder passwordEncoder){
+    private final AdminRepository adminRepository;
+    public AuthService(UserAccountRepository userAccountRepository, OwnerRepository ownerRepository, WalkerRepository walkerRepository, AdminRepository adminRepository, PasswordEncoder passwordEncoder){
         this.userAccountRepository = userAccountRepository;
         this.passwordEncoder = passwordEncoder;
         this.ownerRepository = ownerRepository;
         this.walkerRepository = walkerRepository;
+        this.adminRepository = adminRepository;
     }
 
 
@@ -78,7 +82,8 @@ public class AuthService {
             Walker walker = new Walker(email, role, hashedPw, contact, gender, birthday);
             walkerRepository.save(walker);
         }else if(role == Role.ADMIN){
-            // admin 구현
+            Admin admin = new Admin(email, role, hashedPw, contact, gender, birthday);
+            adminRepository.save(admin);
         }
         return signUpDto;
     }
