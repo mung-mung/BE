@@ -14,6 +14,7 @@ import api.user.owner.OwnerService;
 import api.user.userAccount.UserAccountRepository;
 import api.user.userAccount.UserAccountService;
 import api.user.walker.WalkerRepository;
+import api.user.walker.WalkerService;
 import api.walking.WalkingRepository;
 import api.walking.WalkingService;
 import jakarta.persistence.EntityManager;
@@ -66,10 +67,8 @@ public class ApiConfig {
     }
 
     @Bean
-    public OwnerService walkerService(WalkerRepository walkerRepository){
-        return new OwnerService(walkerRepository);
+    public WalkerService walkerService(WalkerRepository walkerRepository){
+        return new WalkerService(walkerRepository);
     }
-
-
 }
 
