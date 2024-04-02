@@ -5,6 +5,10 @@ package api.common.config;
 
 
 import api.auth.AuthService;
+import api.dog.DogRepository;
+import api.dog.DogService;
+import api.owning.OwningRepository;
+import api.owning.OwningService;
 import api.user.owner.OwnerRepository;
 import api.user.userAccount.UserAccountRepository;
 import api.user.userAccount.UserAccountService;
@@ -48,6 +52,11 @@ public class ApiConfig {
     @Bean
     public WalkingService walkingService(WalkingRepository walkingRepository, WalkerRepository walkerRepository, DogRepository dogRepository){
         return new WalkingService(walkingRepository, walkerRepository, dogRepository);
+    }
+
+    @Bean
+    public DogService dogService(DogRepository dogRepository){
+        return new DogService(dogRepository);
     }
 
 
