@@ -10,6 +10,7 @@ import api.dog.DogService;
 import api.owning.OwningRepository;
 import api.owning.OwningService;
 import api.user.owner.OwnerRepository;
+import api.user.owner.OwnerService;
 import api.user.userAccount.UserAccountRepository;
 import api.user.userAccount.UserAccountService;
 import api.user.walker.WalkerRepository;
@@ -57,6 +58,16 @@ public class ApiConfig {
     @Bean
     public DogService dogService(DogRepository dogRepository){
         return new DogService(dogRepository);
+    }
+
+    @Bean
+    public OwnerService ownerService(OwnerRepository ownerRepository){
+        return new OwnerService(ownerRepository);
+    }
+
+    @Bean
+    public OwnerService walkerService(WalkerRepository walkerRepository){
+        return new OwnerService(walkerRepository);
     }
 
 
