@@ -4,10 +4,7 @@ import api.common.util.http.HttpResponse;
 import api.walking.dto.WalkingDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/walking")
 @Controller
@@ -16,24 +13,25 @@ public class WalkingController {
     public WalkingController(WalkingService walkingService){
         this.walkingService = walkingService;
     }
-    @PostMapping("/createWalking")
+    @GetMapping("/")
     @ResponseBody
-    public ResponseEntity<Object> createWalking(@RequestBody WalkingDto walkingDto){
-        try {
-            WalkingDto createedWalking = walkingService.createWalking(walkingDto);
-            return HttpResponse.successCreated("Walking successfully createed.", createedWalking);
-        } catch (Exception e) {
-            return HttpResponse.badRequest("Error createing walking: " + e.getMessage(), null);
-        }
+    public ResponseEntity<Object> findWalking(
+            @RequestParam(value = "id", required = false) Integer id,
+            @RequestParam(value = "walkerId", required = false) Integer walkerId,
+            @RequestParam(value = "dogId", required = false) Integer dogId){
+
     }
-    @PostMapping("/deleteWalking")
+
+    @PostMapping("/")
     @ResponseBody
-    public ResponseEntity<Object> deleteWalking(@RequestBody WalkingDto walkingDto) {
-        try {
-            WalkingDto deletedWalking = walkingService.deleteWalking(walkingDto);
-            return HttpResponse.successOk("Walking successfully deleted.", deletedWalking);
-        } catch (Exception e) {
-            return HttpResponse.badRequest("Error deleting walking: " + e.getMessage(), null);
-        }
+    public ResponseEntity<Object> createWalking(WalkingDto walkingDto){
+
     }
+
+    @DeleteMapping
+    @RequestBody
+    public ResponseEntity<Object> deleteWalking(@PathVariable Integer walkingId){
+
+    }
+
 }

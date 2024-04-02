@@ -4,12 +4,9 @@ import api.common.util.http.HttpResponse;
 import api.dog.dto.DogDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/api/dogs")
+@RequestMapping("/api/dog")
 @Controller
 public class DogController {
     private final DogService dogService;
@@ -18,7 +15,14 @@ public class DogController {
         this.dogService = dogService;
     }
 
-    @PostMapping("/createDog")
+
+    @GetMapping("/")
+    @ResponseBody
+    public ResponseEntity<Object> findAllDogs() {
+
+    }
+
+    @PostMapping("/")
     @ResponseBody
     public ResponseEntity<Object> createDog(@RequestBody DogDto dogDto) {
         try {
@@ -29,14 +33,27 @@ public class DogController {
         }
     }
 
-    @PostMapping("/deleteDog")
+
+    @GetMapping("/{dogId}")
     @ResponseBody
-    public ResponseEntity<Object> deleteDog(@RequestBody DogDto dogDto) {
+    public ResponseEntity<Object> findDogById(@PathVariable Integer dogId) {
         try {
-            DogDto deletedDog = dogService.deleteDog(dogDto);
-            return HttpResponse.successOk("Dog successfully deleted.", deletedDog);
+            DogDto foundDog = dogService.findDogByDogId(dogId);
+            return HttpResponse.successOk("Dog successfully found.", foundDog);
         } catch (Exception e) {
-            return HttpResponse.badRequest("Error deleting dog: " + e.getMessage(), dogDto);
+            return HttpResponse.notFound("Dog not found: " + e.getMessage(), null);
         }
+    }
+
+    @PatchMapping("/{dogId}")
+    @ResponseBody
+    public ResponseEntity<Object> updateDogById(@PathVariable Integer dogId) {
+
+    }
+
+    @DeleteMapping("/{dogId}")
+    @ResponseBody
+    public ResponseEntity<Object> deleteDogById(@PathVariable Integer dogId) {
+
     }
 }

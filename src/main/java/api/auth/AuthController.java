@@ -23,7 +23,7 @@ public class AuthController {
         return 1;
     }
 
-    @PostMapping("/signUp")
+    @PostMapping("/sign-up")
     public ResponseEntity<Object> signUp(@RequestBody SignUpDto signUpDto){
         try {
             SignUpDto signUpResult = authService.signUp(signUpDto);
@@ -32,13 +32,13 @@ public class AuthController {
             return HttpResponse.badRequest(e.getMessage(), null);
         }
     }
-    @PostMapping("/signIn")
+    @PostMapping("/sign-in")
     @ResponseBody
     public void signIn(){
 
     }
 
-    @GetMapping("/signOut")
+    @GetMapping("/sign-out")
     @ResponseBody
     public void signOut(){}
 }
