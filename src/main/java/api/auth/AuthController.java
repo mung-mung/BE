@@ -32,7 +32,10 @@ public class AuthController {
             return HttpResponse.badRequest(e.getMessage(), null);
         }
     }
-    @PostMapping("/signIn")
+
+
+    //로그인 리퀘스트는 '/login'으로 전송
+    @GetMapping("/signIn")
     @ResponseBody
     public void signIn(){
 
