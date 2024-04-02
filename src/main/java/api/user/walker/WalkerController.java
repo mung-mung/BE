@@ -22,16 +22,24 @@ public class WalkerController {
     @GetMapping("/")
     @ResponseBody
     public ResponseEntity<Object> findAllWalkers() {
+        List<Walker> walkers = walkerService.findAllWalkers();
+        if (walkers.isEmpty()) {
+            return HttpResponse.notFound("No walkers found", null);
+        }
+        return HttpResponse.successOk("Walkers retrieved successfully", walkers);
     }
 
     @GetMapping("/{walkerId}")
     @ResponseBody
     public ResponseEntity<Object> findWalkerById(@PathVariable Integer walkerId) {
+        return walkerService.findWalkerById(walkerId)
+                .map(walker -> HttpResponse.successOk("Walker found", walker))
+                .orElseGet(() -> HttpResponse.notFound("Walker not found with id: " + walkerId, null));
     }
 
-    @PatchMapping("/{walkerId}")
-    @ResponseBody
-    public ResponseEntity<Object> updateWalkerById(@PathVariable Integer walkerId) {
-    }
+//    @PatchMapping("/{walkerId}")
+//    @ResponseBody
+//    public ResponseEntity<Object> updateWalkerById(@PathVariable Integer walkerId) {
+//    }
 
 }

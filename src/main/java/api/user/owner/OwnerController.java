@@ -22,16 +22,24 @@ public class OwnerController {
     @GetMapping("/")
     @ResponseBody
     public ResponseEntity<Object> findAllOwners() {
+        List<Owner> owners = ownerService.findAllOwners();
+        if (owners.isEmpty()) {
+            return HttpResponse.notFound("No owners found", null);
+        }
+        return HttpResponse.successOk("Owners retrieved successfully", owners);
     }
 
     @GetMapping("/{ownerId}")
     @ResponseBody
     public ResponseEntity<Object> findOwnerById(@PathVariable Integer ownerId) {
+        return ownerService.findOwnerById(ownerId)
+                .map(owner -> HttpResponse.successOk("Owner found", owner))
+                .orElseGet(() -> HttpResponse.notFound("Owner not found with id: " + ownerId, null));
     }
 
-    @PatchMapping("/{ownerId}")
-    @ResponseBody
-    public ResponseEntity<Object> updateOwnerById(@PathVariable Integer ownerId) {
-    }
+//    @PatchMapping("/{ownerId}")
+//    @ResponseBody
+//    public ResponseEntity<Object> updateOwnerById(@PathVariable Integer ownerId) {
+//    }
 
 }
