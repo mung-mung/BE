@@ -40,8 +40,8 @@ public class ApiConfig {
     }
 
     @Bean
-    public AuthService authService(UserAccountRepository userAccountRepository, OwnerRepository ownerRepository, WalkerRepository walkerRepository){
-        return new AuthService(userAccountRepository, ownerRepository, walkerRepository, passwordEncoder);
+    public AuthService authService(UserAccountRepository userAccountRepository, OwnerRepository ownerRepository, WalkerRepository walkerRepository, AdminRepository adminRepository){
+        return new AuthService(userAccountRepository, ownerRepository, walkerRepository, adminRepository, passwordEncoder);
     }
 
     @Bean
