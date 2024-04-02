@@ -1,4 +1,4 @@
-package api.common.config;
+package api.common.config.security;
 
 
 import api.auth.filter.JwtFilter;
@@ -81,17 +81,17 @@ public class SecurityConfig {
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/api/auth/signUp", "/api/auth/test", "/login", "/api/auth/signIn").permitAll()
+                        .requestMatchers("/api/auth/sign-up", "/api/auth/test",  "/api/auth/sign-in").permitAll()
                         .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin
-                        .loginPage("/api/auth/signIn")
+                        .loginPage("/api/auth/sign-in")
                         .permitAll()
                 )
                 .logout((logout) -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                        .logoutSuccessUrl("/api/auth/signIn")
+                        .logoutSuccessUrl("/api/auth/sign-in")
                         .invalidateHttpSession(true)
                 );
 
