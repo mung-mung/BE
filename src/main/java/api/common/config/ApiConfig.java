@@ -48,16 +48,6 @@ public class ApiConfig {
     }
 
     @Bean
-    public OwningService owningService(OwningRepository owningRepository){
-        return new OwningService(owningRepository);
-    }
-
-    @Bean
-    public WalkingService walkingService(WalkingRepository walkingRepository){
-        return new WalkingService(walkingRepository);
-    }
-
-    @Bean
     public DogService dogService(DogRepository dogRepository){
         return new DogService(dogRepository);
     }
@@ -70,6 +60,16 @@ public class ApiConfig {
     @Bean
     public WalkerService walkerService(WalkerRepository walkerRepository){
         return new WalkerService(walkerRepository);
+    }
+
+    @Bean
+    public OwningService owningService(OwningRepository owningRepository){
+        return new OwningService(owningRepository);
+    }
+
+    @Bean
+    public WalkingService walkingService(WalkingRepository walkingRepository, DogRepository dogRepository, WalkerRepository walkerRepository){
+        return new WalkingService(walkingRepository, dogRepository, walkerRepository);
     }
 
 }

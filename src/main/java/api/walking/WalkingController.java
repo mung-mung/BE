@@ -1,6 +1,7 @@
 package api.walking;
 
 import api.common.util.http.HttpResponse;
+import api.walking.dto.WalkingDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -27,5 +28,27 @@ public class WalkingController {
         }
     }
 
+    @PostMapping("/")
+    public ResponseEntity<Object> createWalking(@RequestBody WalkingDto walkingDto) {
+        try {
+            Walking walking = walkingService.createWalking(walkingDto);
+            return HttpResponse.successCreated("Walking created successfully", walking);
+        } catch (IllegalArgumentException e) {
+            return HttpResponse.badRequest("Invalid walker ID or dog ID", null);
+        } catch (Exception e) {
+            return HttpResponse.internalError("Error creating walking", null);
+        }
+    }
 
+    @DeleteMapping("/{walkingId}")
+    public ResponseEntity<Object> deleteWalking(@PathVariable Integer walkingId) {
+        try {
+            walkingService.deleteWalkingById(walkingId);
+            return HttpResponse.successOk("Walking deleted successfully", null);
+        } catch (IllegalArgumentException e) {
+            return HttpResponse.notFound("Walking not found", null);
+        } catch (Exception e) {
+            return HttpResponse.internalError("Error deleting walking", null);
+        }
+    }
 }

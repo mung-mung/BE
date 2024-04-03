@@ -1,6 +1,11 @@
 package api.walking;
 
 
+import api.dog.Dog;
+import api.dog.DogRepository;
+import api.user.walker.Walker;
+import api.user.walker.WalkerRepository;
+import api.walking.dto.WalkingDto;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -9,8 +14,12 @@ import java.util.stream.Collectors;
 
 public class WalkingService {
     private final WalkingRepository walkingRepository;
-    public WalkingService(WalkingRepository walkingRepository){
+    private final DogRepository dogRepository;
+    private final WalkerRepository walkerRepository;
+    public WalkingService(WalkingRepository walkingRepository, DogRepository dogRepository, WalkerRepository walkerRepository){
         this.walkingRepository = walkingRepository;
+        this.dogRepository = dogRepository;
+        this.walkerRepository = walkerRepository;
     }
     @Transactional(readOnly = true)
     public List<Walking> findWalkings(Integer id, Integer walkerId, Integer dogId) {
@@ -45,6 +54,19 @@ public class WalkingService {
         }
 
         return results;
+    }
+
+    @Transactional
+    public Walking createWalking(WalkingDto walkingDto) {
+        Dog dog = dogRepository.findById(walkingDto.getDogId()).orElseThrow(() -> new IllegalArgumentException("Invalid dog ID"));
+        Walker walker = walkerRepository.findById(walkingDto.getWalkerId()).orElseThrow(() -> new IllegalArgumentException("Invalid walker ID"));
+        Walking walking = new Walking(walker, dog);
+        return walkingRepository.save(walking);
+    }
+
+    @Transactional
+    public void deleteWalkingById(Integer walkingId) {
+        walkingRepository.deleteById(walkingId);
     }
 
 }
