@@ -9,6 +9,7 @@ import api.dog.DogRepository;
 import api.dog.DogService;
 import api.owning.OwningRepository;
 import api.owning.OwningService;
+import api.user.admin.AdminRepository;
 import api.user.owner.OwnerRepository;
 import api.user.owner.OwnerService;
 import api.user.userAccount.UserAccountRepository;
@@ -47,13 +48,13 @@ public class ApiConfig {
     }
 
     @Bean
-    public OwningService owningService(OwningRepository owningRepository, OwnerRepository ownerRepository, DogRepository dogRepository){
-        return new OwningService(owningRepository, ownerRepository, dogRepository);
+    public OwningService owningService(OwningRepository owningRepository){
+        return new OwningService(owningRepository);
     }
 
     @Bean
-    public WalkingService walkingService(WalkingRepository walkingRepository, WalkerRepository walkerRepository, DogRepository dogRepository){
-        return new WalkingService(walkingRepository, walkerRepository, dogRepository);
+    public WalkingService walkingService(WalkingRepository walkingRepository){
+        return new WalkingService(walkingRepository);
     }
 
     @Bean
@@ -70,5 +71,6 @@ public class ApiConfig {
     public WalkerService walkerService(WalkerRepository walkerRepository){
         return new WalkerService(walkerRepository);
     }
+
 }
 
