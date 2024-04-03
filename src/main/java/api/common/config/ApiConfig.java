@@ -9,10 +9,13 @@ import api.dog.DogRepository;
 import api.dog.DogService;
 import api.owning.OwningRepository;
 import api.owning.OwningService;
+import api.user.admin.AdminRepository;
 import api.user.owner.OwnerRepository;
+import api.user.owner.OwnerService;
 import api.user.userAccount.UserAccountRepository;
 import api.user.userAccount.UserAccountService;
 import api.user.walker.WalkerRepository;
+import api.user.walker.WalkerService;
 import api.walking.WalkingRepository;
 import api.walking.WalkingService;
 import jakarta.persistence.EntityManager;
@@ -45,20 +48,29 @@ public class ApiConfig {
     }
 
     @Bean
-    public OwningService owningService(OwningRepository owningRepository, OwnerRepository ownerRepository, DogRepository dogRepository){
-        return new OwningService(owningRepository, ownerRepository, dogRepository);
-    }
-
-    @Bean
-    public WalkingService walkingService(WalkingRepository walkingRepository, WalkerRepository walkerRepository, DogRepository dogRepository){
-        return new WalkingService(walkingRepository, walkerRepository, dogRepository);
-    }
-
-    @Bean
     public DogService dogService(DogRepository dogRepository){
         return new DogService(dogRepository);
     }
 
+    @Bean
+    public OwnerService ownerService(OwnerRepository ownerRepository){
+        return new OwnerService(ownerRepository);
+    }
+
+    @Bean
+    public WalkerService walkerService(WalkerRepository walkerRepository){
+        return new WalkerService(walkerRepository);
+    }
+
+    @Bean
+    public OwningService owningService(OwningRepository owningRepository){
+        return new OwningService(owningRepository);
+    }
+
+    @Bean
+    public WalkingService walkingService(WalkingRepository walkingRepository, DogRepository dogRepository, WalkerRepository walkerRepository){
+        return new WalkingService(walkingRepository, dogRepository, walkerRepository);
+    }
 
 }
 
