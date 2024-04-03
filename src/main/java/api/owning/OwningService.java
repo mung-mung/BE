@@ -1,49 +1,50 @@
 package api.owning;
 
-import api.common.util.http.HttpResponse;
-import api.dog.Dog;
-import api.dog.DogRepository;
-import api.owning.dto.OwningDto;
-import api.user.owner.Owner;
-import api.user.owner.OwnerRepository;
-import jakarta.transaction.Transactional;
 
-import java.util.NoSuchElementException;
-import java.util.Optional;
-@Transactional
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class OwningService {
     private final OwningRepository owningRepository;
-    private final OwnerRepository ownerRepository;
-    private final DogRepository dogRepository;
-    public OwningService(OwningRepository owningRepository, OwnerRepository ownerRepository, DogRepository dogRepository){
+    public OwningService(OwningRepository owningRepository){
         this.owningRepository = owningRepository;
-        this.ownerRepository = ownerRepository;
-        this.dogRepository = dogRepository;
-
     }
-    public OwningDto createOwning(OwningDto owningDto) {
-        Optional<Owner> owner = ownerRepository.findById(owningDto.getOwnerId());
-        Optional<Dog> dog = dogRepository.findById(owningDto.getDogId());
-
-        if (owner.isPresent() && dog.isPresent()) {
-            Owning owning = new Owning(owner.get(), dog.get());
-            owningRepository.save(owning);
-            return owningDto;
-        } else {
-            throw new RuntimeException("Owner or Dog not found");
+    @Transactional(readOnly = true)
+    public List<Owning> findOwnings(Integer id, Integer ownerId, Integer dogId) {
+        if (id != null) {
+            return owningRepository.findById(id)
+                    .map(List::of)
+                    .orElseGet(ArrayList::new);
         }
-    }
 
-    public OwningDto deleteOwning(OwningDto owningDto) {
-        Optional<Owner> owner = ownerRepository.findById(owningDto.getOwnerId());
-        Optional<Dog> dog = dogRepository.findById(owningDto.getDogId());
+        List<Owning> results = new ArrayList<>();
 
-        if (owner.isPresent() && dog.isPresent()) {
-            Optional<Owning> owning = owningRepository.findByOwnerAndDog(owner.get(), dog.get());
-            owning.ifPresent(owningRepository::delete);
-            return owningDto;
-        } else {
-            throw new RuntimeException("Owner or Dog not found");
+        // ownerId와 dogId가 모두 null이 아닌 경우
+        if (ownerId != null && dogId != null) {
+            List<Owning> ownerResults = owningRepository.findByOwnerId(ownerId);
+            List<Owning> dogResults = owningRepository.findByDogId(dogId);
+            results = ownerResults.stream()
+                    .filter(dogResults::contains)
+                    .collect(Collectors.toList());
+            return results;
         }
+
+        // ownerId 또는 dogId 중 하나만 null인 경우
+        if (ownerId != null) {
+            results.addAll(owningRepository.findByOwnerId(ownerId));
+        } else if (dogId != null) {
+            results.addAll(owningRepository.findByDogId(dogId));
+        }
+
+        // 모든 인자가 null인 경우
+        if (ownerId == null && dogId == null) {
+            results.addAll(owningRepository.findAll());
+        }
+
+        return results;
     }
+
 }
