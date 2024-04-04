@@ -89,19 +89,6 @@ public class AuthService {
         return signUpDto;
     }
 
-    public void signIn(SignInDto signInDto) {
-        String email = signInDto.getEmail();
-        String password = signInDto.getPw();
-
-        UserAccount userAccount = userAccountRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
-        if (!passwordEncoder.matches(password, userAccount.getPw())) {
-            throw new IllegalArgumentException("wrong pw");
-        }
-
-        // jwt 구현
-    }
 }
 
 

@@ -7,11 +7,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class CustomUserDetails implements UserDetails {
+public class AuthUserDetails implements UserDetails {
     //DB에서 유저 조회 후 리턴
     private final UserAccount userAccount;
 
-    public CustomUserDetails(UserAccount userAccount){
+    public AuthUserDetails(UserAccount userAccount){
         this.userAccount = userAccount;
     }
 
@@ -31,13 +31,11 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-
         return userAccount.getPw();
     }
 
     @Override
     public String getUsername() {
-
         return userAccount.getEmail();
     }
 

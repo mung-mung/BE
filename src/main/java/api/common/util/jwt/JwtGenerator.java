@@ -10,16 +10,16 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Component
-public class JwtUtil {
+public class JwtGenerator {
 
     private SecretKey secretKey;
 
-    public JwtUtil(@Value("${jwt.secret.key}")String secret) {
+    public JwtGenerator(@Value("${jwt.secret.key}")String secret) {
 
         secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
     }
 
-    public String getUsername(String token) {
+    public String getEmail(String token) {
 
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("email", String.class);
     }
