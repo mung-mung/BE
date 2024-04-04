@@ -64,6 +64,7 @@ public class AuthService {
         }
         Role role = signUpDto.getRole();
         String pw = signUpDto.getPw();
+        String avatarUrl = signUpDto.getAvatarUrl();
         String contact = signUpDto.getContact();
         Gender gender= signUpDto.getGender() ;
         LocalDate birthday = signUpDto.getBirthday();
