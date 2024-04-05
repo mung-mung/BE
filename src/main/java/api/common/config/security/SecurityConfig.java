@@ -1,6 +1,7 @@
 package api.common.config.security;
 
 import api.auth.filter.AuthenticationFilter;
+import api.auth.filter.JwtFilter;
 import api.common.util.http.HttpResponse;
 import api.common.util.jwt.JwtGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -73,6 +74,10 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/sign-out").authenticated()
                 .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated());
+
+        //Jwt 검증 필터 등록
+        http.
+                addFilterBefore(new JwtFilter(jwtGenerator), AuthenticationFilter.class);
 
         // AuthenticationFilter 설정 및 로그인 경로 지정
         AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager(authenticationConfiguration), jwtGenerator);
