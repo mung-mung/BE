@@ -33,10 +33,9 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //request에서 Authorization 헤더를 찾음
         String accessToken = request.getHeader("access");
-
         //Access token 확인
         if (accessToken == null) {
-            System.out.println("token null");
+            System.out.println("Access token is null");
             filterChain.doFilter(request, response);
             return;
         }
