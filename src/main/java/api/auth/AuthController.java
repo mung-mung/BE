@@ -115,7 +115,7 @@ public class AuthController {
         Date date = new Date(System.currentTimeMillis() + expiredMs);
 
         RefreshEntity refreshEntity = new RefreshEntity();
-        refreshEntity.setExpiration(email);
+        refreshEntity.setEmail(email);
         refreshEntity.setRefresh(refresh);
         refreshEntity.setExpiration(date.toString());
 
