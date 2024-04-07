@@ -70,7 +70,7 @@ public class SecurityConfig {
 
         // 요청별 권한 설정
         http.authorizeHttpRequests((auth) -> auth
-                .requestMatchers("/api/auth/sign-up", "/api/auth/test", "/api/auth/sign-in").permitAll()
+                .requestMatchers("/api/auth/sign-up", "/api/auth/test", "/api/auth/sign-in","/api/auth/reissue").permitAll()
                 .requestMatchers("/api/auth/sign-out").authenticated()
                 .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated());
