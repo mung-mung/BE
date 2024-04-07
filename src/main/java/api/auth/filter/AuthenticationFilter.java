@@ -1,5 +1,7 @@
 package api.auth.filter;
 
+import api.auth.refresh.RefreshEntity;
+import api.auth.refresh.RefreshRepository;
 import api.common.util.http.HttpResponse;
 import api.common.util.jwt.JwtGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,18 +21,21 @@ import api.auth.dto.AuthUserDetails;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final JwtGenerator jwtGenerator;
+    private final RefreshRepository refreshRepository;
 
-    public AuthenticationFilter(AuthenticationManager authenticationManager, JwtGenerator jwtGenerator){
+    public AuthenticationFilter(AuthenticationManager authenticationManager, JwtGenerator jwtGenerator, RefreshRepository refreshRepository){
         super();
         setUsernameParameter("email");
         setPasswordParameter("pw");
         this.authenticationManager = authenticationManager;
         this.jwtGenerator = jwtGenerator;
+        this.refreshRepository = refreshRepository;
     }
 
     @Override
@@ -61,6 +66,9 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         // Create access token and request token
         String access = jwtGenerator.createJwt("access", email, role, 60 * 10000L);
         String refresh = jwtGenerator.createJwt("refresh", email, role, 86400000L); //24h
+
+        //서버에 Refresh 토큰 저장
+        addRefreshEntity(email, refresh, 86400000L);
 
         //Add access token to header and request token to cookie
         response.addHeader("access", access);
@@ -116,5 +124,16 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         cookie.setHttpOnly(true);
 
         return cookie;
+    }
+
+    private void addRefreshEntity(String email, String refresh, Long expiredMs) {
+        Date date = new Date(System.currentTimeMillis() + expiredMs);
+
+        RefreshEntity refreshEntity = new RefreshEntity();
+        refreshEntity.setEmail(email);
+        refreshEntity.setRefresh(refresh);
+        refreshEntity.setExpiration(date.toString());
+
+        refreshRepository.save(refreshEntity);
     }
 }

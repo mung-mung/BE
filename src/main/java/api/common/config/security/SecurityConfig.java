@@ -2,6 +2,7 @@ package api.common.config.security;
 
 import api.auth.filter.AuthenticationFilter;
 import api.auth.filter.JwtFilter;
+import api.auth.refresh.RefreshRepository;
 import api.common.util.http.HttpResponse;
 import api.common.util.jwt.JwtGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,10 +32,12 @@ public class SecurityConfig {
 
     private final AuthenticationConfiguration authenticationConfiguration;
     private final JwtGenerator jwtGenerator;
+    private final RefreshRepository refreshRepository;
 
-    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JwtGenerator jwtGenerator) {
+    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JwtGenerator jwtGenerator, RefreshRepository refreshRepository) {
         this.authenticationConfiguration = authenticationConfiguration;
         this.jwtGenerator = jwtGenerator;
+        this.refreshRepository = refreshRepository;
     }
 
     @Bean
@@ -80,7 +83,7 @@ public class SecurityConfig {
                 addFilterBefore(new JwtFilter(jwtGenerator), AuthenticationFilter.class);
 
         // AuthenticationFilter 설정 및 로그인 경로 지정
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager(authenticationConfiguration), jwtGenerator);
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager(authenticationConfiguration), jwtGenerator, refreshRepository);
         authenticationFilter.setFilterProcessesUrl("/api/auth/sign-in"); // 로그인 경로 설정
 
         // AuthenticationFilter 추가
