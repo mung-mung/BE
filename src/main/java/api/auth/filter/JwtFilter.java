@@ -1,7 +1,7 @@
 package api.auth.filter;
 
-import api.auth.dto.CustomUserDetails;
-import api.common.util.jwt.JwtUtil;
+import api.auth.dto.AuthUserDetails;
+import api.common.util.jwt.JwtGenerator;
 import api.user.admin.Admin;
 import api.user.enums.Gender;
 import api.user.enums.Role;
@@ -21,10 +21,10 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 public class JwtFilter extends OncePerRequestFilter {
-    private final JwtUtil jwtUtil;
+    private final JwtGenerator jwtGenerator;
 
-    public JwtFilter(JwtUtil jwtUtil){
-        this.jwtUtil = jwtUtil;
+    public JwtFilter(JwtGenerator jwtGenerator){
+        this.jwtGenerator = jwtGenerator;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class JwtFilter extends OncePerRequestFilter {
         //Bearer 부분 제거 후 순수 토큰만 획득
         String token = authorization.split(" ")[1];
 
-        if (jwtUtil.isExpired(token)) {
+        if (jwtGenerator.isExpired(token)) {
             System.out.println("token expired");
             filterChain.doFilter(request, response);
 
@@ -53,8 +53,8 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         //토큰에서 username과 role 획득
-        String username = jwtUtil.getUsername(token);
-        String role = jwtUtil.getRole(token);
+        String username = jwtGenerator.getEmail(token);
+        String role = jwtGenerator.getRole(token);
 
         UserAccount user = new Owner();
 
@@ -70,10 +70,10 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         //UserDetails에 회원 정보 객체 담기
-        CustomUserDetails customUserDetails = new CustomUserDetails(user);
+        AuthUserDetails authUserDetails = new AuthUserDetails(user);
 
         //스프링 시큐리티 인증 토큰 생성
-        Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
+        Authentication authToken = new UsernamePasswordAuthenticationToken(authUserDetails, null, authUserDetails.getAuthorities());
         //세션에 사용자 등록
         SecurityContextHolder.getContext().setAuthentication(authToken);
 

@@ -32,13 +32,4 @@ public class AuthController {
             return HttpResponse.badRequest(e.getMessage(), null);
         }
     }
-    @PostMapping("/sign-in")
-    @ResponseBody
-    public void signIn(){
-
-    }
-
-    @GetMapping("/sign-out")
-    @ResponseBody
-    public void signOut(){}
 }
