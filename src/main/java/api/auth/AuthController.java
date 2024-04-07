@@ -75,11 +75,24 @@ public class AuthController {
         String email = jwtGenerator.getEmail(refresh);
         String role = jwtGenerator.getRole(refresh);
 
-        //새로운 Access 토큰 발급
+        //새로운 Access, Refresh 토큰 발급
         String newAccess = jwtGenerator.createJwt("access", email, role, 60 * 10000L);
+        String newRefresh = jwtGenerator.createJwt("refresh", email, role, 86400000L);
 
         response.setHeader("access", newAccess);
+        response.addCookie(createCookie("refresh", newRefresh));
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    private Cookie createCookie(String key, String value) {
+        Cookie cookie = new Cookie(key, value);
+        cookie.setMaxAge(24*60*60);
+//        cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+
+        return cookie;
+    }
+
 }
