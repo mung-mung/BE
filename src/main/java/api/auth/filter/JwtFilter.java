@@ -8,6 +8,7 @@ import api.user.enums.Role;
 import api.user.owner.Owner;
 import api.user.userAccount.UserAccount;
 import api.user.walker.Walker;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDate;
 
 public class JwtFilter extends OncePerRequestFilter {
@@ -30,43 +32,52 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //request에서 Authorization 헤더를 찾음
-        String authorization = request.getHeader("Authorization");
-
-        //Authorization 헤더 검증
-        if (authorization == null || !authorization.startsWith("Bearer ")) {
-            System.out.println("token null");
+        String accessToken = request.getHeader("access");
+        //Access token 확인
+        if (accessToken == null) {
+            System.out.println("Access token is null");
             filterChain.doFilter(request, response);
-
-            //조건이 해당되면 메소드 종료 (필수)
             return;
         }
 
         System.out.println("authorization now");
-        //Bearer 부분 제거 후 순수 토큰만 획득
-        String token = authorization.split(" ")[1];
 
-        if (jwtGenerator.isExpired(token)) {
-            System.out.println("token expired");
-            filterChain.doFilter(request, response);
+        try {
+            jwtGenerator.isExpired(accessToken);
+        } catch (ExpiredJwtException e) {
+            //Access token이 만료되었을 경우 클라이언트에게 알림
+            PrintWriter writer = response.getWriter();
+            writer.print("Access token expired");
 
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+
+        String category = jwtGenerator.getCategory(accessToken);
+        //Access token이 아닌 경우
+        if (!category.equals("access")) {
+            PrintWriter writer = response.getWriter();
+            writer.print("Invalid access token");
+
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
         //토큰에서 username과 role 획득
-        String username = jwtGenerator.getEmail(token);
-        String role = jwtGenerator.getRole(token);
+        String email = jwtGenerator.getEmail(accessToken);
+        String role = jwtGenerator.getRole(accessToken);
 
         UserAccount user = new Owner();
 
         //userEntity를 생성하여 값 set
         if (role.equals("OWNER")){
-            user = new Owner(username, Role.OWNER, "testpassword", "1234", Gender.MALE, LocalDate.of(1990, 1, 1)); //test values
+            user = new Owner(email, Role.OWNER, "testpassword", "1234", Gender.MALE, LocalDate.of(1990, 1, 1)); //test values
         }
         else if (role.equals("WALKER")) { //ADMIN 유저 생성 시 수정 필요
-            user = new Walker(username, Role.WALKER, "testpassword", "1234", Gender.MALE, LocalDate.of(1990, 1, 1)); //test values
+            user = new Walker(email, Role.WALKER, "testpassword", "1234", Gender.MALE, LocalDate.of(1990, 1, 1)); //test values
         }
         else if (role.equals("ADMIN")) {
-            user = new Admin(username, Role.ADMIN, "testpassword", "1234", Gender.MALE, LocalDate.of(1990, 1, 1)); //test values
+            user = new Admin(email, Role.ADMIN, "testpassword", "1234", Gender.MALE, LocalDate.of(1990, 1, 1)); //test values
         }
 
         //UserDetails에 회원 정보 객체 담기
