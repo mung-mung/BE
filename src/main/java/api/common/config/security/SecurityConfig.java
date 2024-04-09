@@ -1,6 +1,7 @@
 package api.common.config.security;
 
 import api.auth.filter.AuthenticationFilter;
+import api.auth.filter.CustomLogoutFilter;
 import api.auth.filter.JwtFilter;
 import api.auth.refresh.RefreshRepository;
 import api.common.util.http.HttpResponse;
@@ -20,6 +21,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -88,6 +90,9 @@ public class SecurityConfig {
 
         // AuthenticationFilter 추가
         http.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        // CustomLogoutFilter 추가
+        http.addFilterBefore(new CustomLogoutFilter(jwtGenerator, refreshRepository), LogoutFilter.class);
 
         // 로그아웃 설정
         http.logout((logout) -> logout
