@@ -22,7 +22,6 @@ import api.auth.dto.AuthUserDetails;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
@@ -68,11 +67,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         String refresh = jwtGenerator.createJwt("refresh", email, role, 86400000L); //24h
 
         //서버에 Refresh 토큰 저장
-        addRefreshEntity(email, refresh, 86400000L);
+        addRefreshEntity(email, refresh);
 
         //Add access token to header and request token to cookie
-        response.addHeader("access", access);
-        response.addCookie(createCookie("refresh", refresh));
+        response.addHeader("Authorization", access);
+        response.addCookie(createCookie(refresh));
         response.setStatus(HttpStatus.OK.value());
 
         // Create a response entity with a success message and null data
@@ -116,8 +115,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     }
 
     //Refresh token을 추가하기 위한 Cookie 생성
-    private Cookie createCookie(String key, String value) {
-        Cookie cookie = new Cookie(key, value);
+    private Cookie createCookie(String value) {
+        Cookie cookie = new Cookie("Refresh", value);
         cookie.setMaxAge(24*60*60);
 //        cookie.setSecure(true);
         cookie.setPath("/");
@@ -126,8 +125,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         return cookie;
     }
 
-    private void addRefreshEntity(String email, String refresh, Long expiredMs) {
-        Date date = new Date(System.currentTimeMillis() + expiredMs);
+    private void addRefreshEntity(String email, String refresh) {
+        Date date = new Date(System.currentTimeMillis() + 86400000L);
 
         RefreshEntity refreshEntity = new RefreshEntity();
         refreshEntity.setEmail(email);

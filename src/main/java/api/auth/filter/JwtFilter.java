@@ -31,17 +31,15 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        //request에서 Authorization 헤더를 찾음
-        String accessToken = request.getHeader("access");
-        //Access token 확인
-        if (accessToken == null) {
-            System.out.println("Access token is null");
+        String authorizationHeader = request.getHeader("Authorization");
+        System.out.println("Authorization header: " + authorizationHeader);
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            System.out.println("No valid authorization header found");
             filterChain.doFilter(request, response);
             return;
         }
 
-        System.out.println("authorization now");
-
+        String accessToken = authorizationHeader.substring(7);
         try {
             jwtGenerator.isExpired(accessToken);
         } catch (ExpiredJwtException e) {
