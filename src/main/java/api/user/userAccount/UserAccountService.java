@@ -20,6 +20,10 @@ public class UserAccountService {
     public Optional<UserAccount> findUserById(Integer userId) {
         return userAccountRepository.findById(userId);
     }
+    @Transactional(readOnly = true)
+    public Optional<UserAccount> findUserByEmail(String email) {
+        return userAccountRepository.findByEmail(email);
+    }
 
     //    @Transactional
     //    public Optional<UserAccount> updateUserById(Integer userId, UserAccountDto userAccountDto) {
