@@ -24,9 +24,12 @@ public class UserAccountController {
     @GetMapping("/{userId}")
     @ResponseBody
     public ResponseEntity<Object> findUserById(@PathVariable Integer userId) {
-        return userAccountService.findUserById(userId)
-                .map(user -> HttpResponse.successOk("User found", user))
-                .orElseGet(() -> HttpResponse.notFound("User not found", null));
+        UserAccountDto userAccountDto = userAccountService.findUserById(userId);
+        if(userAccountDto == null){
+            return HttpResponse.notFound("User not found", null);
+        }else{
+            return HttpResponse.successOk("User found", userAccountDto);
+        }
     }
 
 //    @PatchMapping("/{userId}")
