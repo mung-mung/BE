@@ -19,7 +19,6 @@ public class UserAccountService {
         List<UserAccountDto> userAccountDtos = new ArrayList<>();
         for(UserAccount userAccount : allUsers){
             UserAccountDto dto = new UserAccountDto(userAccount);
-            dto.setPw(null);
             userAccountDtos.add(dto);
         }
         return userAccountDtos;
@@ -29,7 +28,6 @@ public class UserAccountService {
         Optional<UserAccount> optionalUserAccount = userAccountRepository.findById(userId);
         if(optionalUserAccount.isPresent()){
             UserAccountDto dto  = new UserAccountDto(optionalUserAccount.get());
-            dto.setPw(null);
             return dto;
         }else{
             return null;
