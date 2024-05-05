@@ -66,13 +66,11 @@ public class AuthController {
             String jwtToken = authorizationHeader.substring(7).trim();
 
             String email = jwtGenerator.getEmail(jwtToken);
-            Optional<UserAccount> optionalUserAccount = userAccountService.findUserByEmail(email);
-            if(optionalUserAccount.isPresent()){
-                UserAccount userAccount = optionalUserAccount.get();
-                UserAccountDto userAccountDto = new UserAccountDto(userAccount);
-                return HttpResponse.successOk("Decoding Jwt Token to UserAccount Info finished successfully", userAccountDto);
-            }else{
+            UserAccountDto userAccountDto = userAccountService.findUserByEmail(email);
+            if(userAccountDto == null){
                 return HttpResponse.notFound("User account not found", null);
+            }else{
+                return HttpResponse.successOk("Decoding Jwt Token to UserAccount Info finished successfully", userAccountDto);
             }
         }catch(Exception e){
             return HttpResponse.badRequest(e.getMessage(), null);

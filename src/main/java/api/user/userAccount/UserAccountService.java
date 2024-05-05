@@ -34,8 +34,15 @@ public class UserAccountService {
         }
     }
     @Transactional(readOnly = true)
-    public Optional<UserAccount> findUserByEmail(String email) {
-        return userAccountRepository.findByEmail(email);
+    public UserAccountDto findUserByEmail(String email) {
+        Optional<UserAccount> optionalUserAccount =  userAccountRepository.findByEmail(email);
+        if(optionalUserAccount.isPresent()){
+            UserAccount userAccount = optionalUserAccount.get();
+            UserAccountDto dto  = new UserAccountDto(userAccount);
+            return dto;
+        }else{
+            return null;
+        }
     }
 
     //    @Transactional
