@@ -68,9 +68,9 @@ public class AuthController {
             String email = jwtGenerator.getEmail(jwtToken);
             UserAccountDto userAccountDto = userAccountService.findUserByEmail(email);
             if(userAccountDto == null){
-                return HttpResponse.notFound("User account not found", null);
+                return HttpResponse.notFound("Error: User not found", null);
             }else{
-                return HttpResponse.successOk("Decoding Jwt Token to UserAccount Info finished successfully", userAccountDto);
+                return HttpResponse.successOk("Decoding Jwt token finished successfully", userAccountDto);
             }
         }catch(Exception e){
             return HttpResponse.badRequest(e.getMessage(), null);
