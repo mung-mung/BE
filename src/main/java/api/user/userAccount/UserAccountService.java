@@ -4,6 +4,7 @@ package api.user.userAccount;
 import api.user.dto.UserAccountDto;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,12 +14,26 @@ public class UserAccountService {
         this.userAccountRepository = userAccountRepository;
     }
     @Transactional(readOnly = true)
-    public List<UserAccount> findAllUsers() {
-        return userAccountRepository.findAll();
+    public List<UserAccountDto> findAllUsers() {
+        List<UserAccount> allUsers =  userAccountRepository.findAll();
+        List<UserAccountDto> userAccountDtos = new ArrayList<>();
+        for(UserAccount userAccount : allUsers){
+            UserAccountDto dto = new UserAccountDto(userAccount);
+            dto.setPw(null);
+            userAccountDtos.add(dto);
+        }
+        return userAccountDtos;
     }
     @Transactional(readOnly = true)
-    public Optional<UserAccount> findUserById(Integer userId) {
-        return userAccountRepository.findById(userId);
+    public UserAccountDto findUserById(Integer userId) {
+        Optional<UserAccount> optionalUserAccount = userAccountRepository.findById(userId);
+        if(optionalUserAccount.isPresent()){
+            UserAccountDto dto  = new UserAccountDto(optionalUserAccount.get());
+            dto.setPw(null);
+            return dto;
+        }else{
+            return null;
+        }
     }
     @Transactional(readOnly = true)
     public Optional<UserAccount> findUserByEmail(String email) {

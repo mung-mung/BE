@@ -53,6 +53,7 @@ public abstract class UserAccount {
     @Column(name = "UPDATED_AT", nullable = false)
     private LocalDateTime updatedAt;
 
+
     public UserAccount(String email, Role role, String pw, String contact, Gender gender, LocalDate birthday) {
         this.email = email;
         this.role = role;
