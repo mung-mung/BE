@@ -1,6 +1,7 @@
 package api.user.dto;
 
 import api.user.userAccount.UserAccount;
+import api.user.walker.Walker;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,12 +19,12 @@ public class WalkerDto {
     private String gender;
     private LocalDate birthday;
     // 추후에 Walker 전용 필드 추가 예정
-    public WalkerDto(UserAccount userAccount) {
-        this.email = userAccount.getEmail();
-        this.avatarUrl = userAccount.getAvatarUrl();
+    public WalkerDto(Walker walker) {
+        this.email = walker.getEmail();
+        this.avatarUrl = walker.getAvatarUrl();
         this.pw = null;
-        this.contact = userAccount.getContact();
-        this.gender = userAccount.getGender().toString();
-        this.birthday = userAccount.getBirthday();
+        this.contact = walker.getContact();
+        this.gender = walker.getGender().toString();
+        this.birthday = walker.getBirthday();
     }
 }

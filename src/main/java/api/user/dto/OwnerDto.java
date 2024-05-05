@@ -1,5 +1,6 @@
 package api.user.dto;
 
+import api.user.owner.Owner;
 import api.user.userAccount.UserAccount;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,12 +19,12 @@ public class OwnerDto {
     private String gender;
     private LocalDate birthday;
     // 추후에 Owner 전용 필드 추가 예정
-    public OwnerDto(UserAccount userAccount) {
-        this.email = userAccount.getEmail();
-        this.avatarUrl = userAccount.getAvatarUrl();
+    public OwnerDto(Owner owner) {
+        this.email = owner.getEmail();
+        this.avatarUrl = owner.getAvatarUrl();
         this.pw = null;
-        this.contact = userAccount.getContact();
-        this.gender = userAccount.getGender().toString();
-        this.birthday = userAccount.getBirthday();
+        this.contact = owner.getContact();
+        this.gender = owner.getGender().toString();
+        this.birthday = owner.getBirthday();
     }
 }
