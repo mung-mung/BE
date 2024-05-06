@@ -2,6 +2,7 @@ package api.user.owner;
 
 import api.common.util.http.HttpResponse;
 import api.dog.Dog;
+import api.user.dto.OwnerDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,19 +23,19 @@ public class OwnerController {
     @GetMapping("/")
     @ResponseBody
     public ResponseEntity<Object> findAllOwners() {
-        List<Owner> owners = ownerService.findAllOwners();
-        if (owners.isEmpty()) {
-            return HttpResponse.notFound("No owners found", null);
-        }
+        List<OwnerDto> owners = ownerService.findAllOwners();
         return HttpResponse.successOk("Owners retrieved successfully", owners);
     }
 
     @GetMapping("/{ownerId}")
     @ResponseBody
     public ResponseEntity<Object> findOwnerById(@PathVariable Integer ownerId) {
-        return ownerService.findOwnerById(ownerId)
-                .map(owner -> HttpResponse.successOk("Owner found", owner))
-                .orElseGet(() -> HttpResponse.notFound("Owner not found with id: " + ownerId, null));
+        OwnerDto ownerDto = ownerService.findOwnerById(ownerId);
+        if(ownerDto == null) {
+            return HttpResponse.notFound("Error: Owner not found", null);
+        }else{
+            return HttpResponse.successOk("Owner found successfully", ownerDto);
+        }
     }
 
 //    @PatchMapping("/{ownerId}")
