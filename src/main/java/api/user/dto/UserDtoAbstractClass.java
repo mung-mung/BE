@@ -2,12 +2,13 @@ package api.user.dto;
 
 import api.user.enums.Role;
 import api.user.userAccount.UserAccount;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-
+@AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
