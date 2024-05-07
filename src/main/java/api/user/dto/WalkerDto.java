@@ -1,6 +1,5 @@
 package api.user.dto;
 
-import api.user.owner.Owner;
 import api.user.walker.Walker;
 import lombok.Getter;
 import lombok.Setter;
