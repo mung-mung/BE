@@ -49,8 +49,11 @@ public class AuthController {
     @ResponseBody
     public ResponseEntity<Object> signUp(@RequestBody SignUpDto signUpDto){
         try {
-            SignUpDto signUpResult = authService.signUp(signUpDto);
-            return HttpResponse.successCreated("User signup finished successfully", signUpResult);
+            UserAccountDto userAccountDto = authService.signUp(signUpDto);
+            if(userAccountDto == null){
+                return HttpResponse.internalError("Signup failed", null);
+            }
+            return HttpResponse.successCreated("User signup finished successfully", userAccountDto);
         } catch (Exception e) {
             return HttpResponse.badRequest(e.getMessage(), null);
         }
