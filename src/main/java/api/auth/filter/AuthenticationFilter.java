@@ -77,7 +77,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         response.setStatus(HttpStatus.OK.value());
 
         // Create a response entity with a success message and null data
-        ResponseEntity<Object> responseEntity = HttpResponse.successOk("Signin finished successfully", null);
+        ResponseEntity<Object> responseEntity = HttpResponse.successOk("Signin finished successfully", accessToken);
         response.setStatus(responseEntity.getStatusCode().value());
         response.setContentType("application/json");
         new ObjectMapper().writeValue(response.getWriter(), responseEntity.getBody());
