@@ -1,7 +1,6 @@
 package api.user.owner;
 
 import api.common.util.http.HttpResponse;
-import api.dog.Dog;
 import api.user.dto.OwnerDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +23,7 @@ public class OwnerController {
     @ResponseBody
     public ResponseEntity<Object> findAllOwners() {
         List<OwnerDto> owners = ownerService.findAllOwners();
-        return HttpResponse.successOk("Owners retrieved successfully", owners);
+        return HttpResponse.successOk("All owners found successfully", owners);
     }
 
     @GetMapping("/{ownerId}")

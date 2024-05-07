@@ -1,7 +1,7 @@
 package api.user.walker;
 
 import api.common.util.http.HttpResponse;
-import api.dog.Dog;
+import api.user.dto.WalkerDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,19 +22,19 @@ public class WalkerController {
     @GetMapping({"", "/"})
     @ResponseBody
     public ResponseEntity<Object> findAllWalkers() {
-        List<Walker> walkers = walkerService.findAllWalkers();
-        if (walkers.isEmpty()) {
-            return HttpResponse.notFound("No walkers found", null);
-        }
-        return HttpResponse.successOk("Walkers retrieved successfully", walkers);
+        List<WalkerDto> walkers = walkerService.findAllWalkers();
+        return HttpResponse.successOk("All walkers found successfully", walkers);
     }
 
     @GetMapping("/{walkerId}")
     @ResponseBody
     public ResponseEntity<Object> findWalkerById(@PathVariable Integer walkerId) {
-        return walkerService.findWalkerById(walkerId)
-                .map(walker -> HttpResponse.successOk("Walker found", walker))
-                .orElseGet(() -> HttpResponse.notFound("Walker not found with id: " + walkerId, null));
+        WalkerDto walkerDto = walkerService.findWalkerById(walkerId);
+        if(walkerDto == null) {
+            return HttpResponse.notFound("Error: Walker not found", null);
+        }else{
+            return HttpResponse.successOk("Walker found successfully", walkerDto);
+        }
     }
 
 //    @PatchMapping("/{walkerId}")
