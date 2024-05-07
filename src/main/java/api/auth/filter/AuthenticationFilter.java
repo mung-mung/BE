@@ -125,14 +125,9 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         return cookie;
     }
 
-    private void addRefreshEntity(String email, String refresh) {
-        Date date = new Date(System.currentTimeMillis() + 86400000L);
-
-        RefreshEntity refreshEntity = new RefreshEntity();
-        refreshEntity.setEmail(email);
-        refreshEntity.setRefresh(refresh);
-        refreshEntity.setExpiration(date.toString());
-
+    private void addRefreshEntity(String email, String refreshToken) {
+        LocalDateTime expirationDateTime = LocalDateTime.now(ZoneId.systemDefault()).plusDays(1);
+        RefreshEntity refreshEntity = new RefreshEntity(email, refreshToken, expirationDateTime);
         refreshRepository.save(refreshEntity);
     }
 }
