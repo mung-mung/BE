@@ -7,8 +7,6 @@ import api.auth.refresh.RefreshRepository;
 import api.common.util.http.HttpResponse;
 import api.common.util.jwt.JwtGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
