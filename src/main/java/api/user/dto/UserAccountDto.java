@@ -10,16 +10,16 @@ import java.time.LocalDate;
 @Setter
 @Getter
 public class UserAccountDto {
+    private Integer id;
     private String email;
     private String avatarUrl;
-    private String pw;
     private String contact;
     private String gender;
     private LocalDate birthday;
     public UserAccountDto(UserAccount userAccount) {
+        this.id = userAccount.getId();
         this.email = userAccount.getEmail();
         this.avatarUrl = userAccount.getAvatarUrl();
-        this.pw = null;
         this.contact = userAccount.getContact();
         this.gender = userAccount.getGender().toString();
         this.birthday = userAccount.getBirthday();
