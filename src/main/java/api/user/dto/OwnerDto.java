@@ -12,17 +12,17 @@ import java.time.LocalDate;
 @Setter
 @Getter
 public class OwnerDto {
+    private Integer id;
     private String email;
     private String avatarUrl;
-    private String pw;
     private String contact;
     private String gender;
     private LocalDate birthday;
     // 추후에 Owner 전용 필드 추가 예정
     public OwnerDto(Owner owner) {
+        this.id = owner.getId();
         this.email = owner.getEmail();
         this.avatarUrl = owner.getAvatarUrl();
-        this.pw = null;
         this.contact = owner.getContact();
         this.gender = owner.getGender().toString();
         this.birthday = owner.getBirthday();
