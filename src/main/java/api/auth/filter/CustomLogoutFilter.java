@@ -58,13 +58,13 @@ public class CustomLogoutFilter extends GenericFilterBean {
         try {
             jwtGenerator.isExpired(refresh);
         } catch (ExpiredJwtException e) {
-            sendResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Token expired", null);
+            sendResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Refresh token expired", null);
             return;
         }
 
         String category = jwtGenerator.getCategory(refresh);
         if (!"refresh".equals(category) || !refreshRepository.existsByRefresh(refresh)) {
-            sendResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Invalid token", null);
+            sendResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Invalid refresh token", null);
             return;
         }
 
@@ -74,7 +74,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
         cookie.setPath("/");
         response.addCookie(cookie);
 
-        sendResponse(response, HttpServletResponse.SC_OK, "Successfully logged out", null);
+        sendResponse(response, HttpServletResponse.SC_OK, "Sign out finished successfully", null);
     }
 
     private void sendResponse(HttpServletResponse response, int status, String message, Object data) throws IOException {

@@ -19,6 +19,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Optional;
 
@@ -143,14 +146,9 @@ public class AuthController {
         return cookie;
     }
 
-    private void addRefreshEntity(String email, String refresh, Long expiredMs) {
-        Date date = new Date(System.currentTimeMillis() + expiredMs);
-
-        RefreshEntity refreshEntity = new RefreshEntity();
-        refreshEntity.setEmail(email);
-        refreshEntity.setRefresh(refresh);
-        refreshEntity.setExpiration(date.toString());
-
+    private void addRefreshEntity(String email, String refresh, Long expiredplusMillisecond) {
+        LocalDateTime expirationDateTime = LocalDateTime.ofInstant(Instant.now().plusMillis(expiredplusMillisecond), ZoneId.systemDefault());
+        RefreshEntity refreshEntity = new RefreshEntity(email, refresh, expirationDateTime);
         refreshRepository.save(refreshEntity);
     }
 
