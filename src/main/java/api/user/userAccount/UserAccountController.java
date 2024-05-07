@@ -18,15 +18,18 @@ public class UserAccountController {
     @GetMapping("/")
     @ResponseBody
     public ResponseEntity<Object> findAllUsers() {
-        return HttpResponse.successOk("Users fetched successfully", userAccountService.findAllUsers());
+        return HttpResponse.successOk("All users found successfully", userAccountService.findAllUsers());
     }
 
     @GetMapping("/{userId}")
     @ResponseBody
     public ResponseEntity<Object> findUserById(@PathVariable Integer userId) {
-        return userAccountService.findUserById(userId)
-                .map(user -> HttpResponse.successOk("User found", user))
-                .orElseGet(() -> HttpResponse.notFound("User not found", null));
+        UserAccountDto userAccountDto = userAccountService.findUserById(userId);
+        if(userAccountDto == null){
+            return HttpResponse.notFound("Error: User not found", null);
+        }else{
+            return HttpResponse.successOk("User found successfully", userAccountDto);
+        }
     }
 
 //    @PatchMapping("/{userId}")

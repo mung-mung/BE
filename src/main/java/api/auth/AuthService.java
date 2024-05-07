@@ -86,6 +86,7 @@ public class AuthService {
             Admin admin = new Admin(email, role, hashedPw, contact, gender, birthday);
             adminRepository.save(admin);
         }
+        signUpDto.setPw(null);
         return signUpDto;
     }
 
