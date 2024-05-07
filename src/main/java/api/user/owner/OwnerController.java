@@ -20,7 +20,7 @@ public class OwnerController {
         this.ownerService = ownerService;
     }
 
-    @GetMapping("/")
+    @GetMapping({"", "/"})
     @ResponseBody
     public ResponseEntity<Object> findAllOwners() {
         List<OwnerDto> owners = ownerService.findAllOwners();
