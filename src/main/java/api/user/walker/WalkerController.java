@@ -19,7 +19,7 @@ public class WalkerController {
         this.walkerService = walkerService;
     }
 
-    @GetMapping("/")
+    @GetMapping({"", "/"})
     @ResponseBody
     public ResponseEntity<Object> findAllWalkers() {
         List<Walker> walkers = walkerService.findAllWalkers();
