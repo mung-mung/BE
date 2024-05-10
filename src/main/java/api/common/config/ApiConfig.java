@@ -48,8 +48,8 @@ public class ApiConfig {
     }
 
     @Bean
-    public DogService dogService(DogRepository dogRepository){
-        return new DogService(dogRepository);
+    public DogService dogService(DogRepository dogRepository, OwnerRepository ownerRepository){
+        return new DogService(dogRepository, ownerRepository);
     }
 
     @Bean
