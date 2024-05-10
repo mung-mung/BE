@@ -17,7 +17,7 @@ public class DogController {
     }
 
 
-    @GetMapping("/")
+    @GetMapping({"/", ""})
     @ResponseBody
     public ResponseEntity<Object> findAllDogs() {
         try {
