@@ -92,7 +92,7 @@ public class AuthController {
         Cookie[] cookies = request.getCookies();
 
         for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("refresh")) {
+            if (cookie.getName().equals("Refresh")) {
                 refresh = cookie.getValue();
             }
         }
@@ -131,7 +131,7 @@ public class AuthController {
         addRefreshEntity(email, newRefresh, 86400000L);
 
         response.setHeader("access", newAccess);
-        response.addCookie(createCookie("refresh", newRefresh));
+        response.addCookie(createCookie("Refresh", newRefresh));
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
