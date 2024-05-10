@@ -6,6 +6,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,18 +18,23 @@ public class DogService {
     }
     @Transactional(readOnly = true)
     public List<DogDto> findAllDogs() {
-        return dogRepository.findAll().stream().map(this::entityToDto).collect(Collectors.toList());
+        List<Dog> dogs = dogRepository.findAll();
+        List<DogDto> dogDtos = new ArrayList<>();
+        for(Dog dog : dogs){
+            dogDtos.add(new DogDto(dog));
+        }
+        return dogDtos;
     }
     @Transactional
     public DogDto createDog(DogDto dogDto) {
-        Dog dog = new Dog(dogDto.getName(), dogDto.getBirthday(), dogDto.getBreed(), dogDto.getWeight(), dogDto.getSex());
+        Dog dog = new Dog(dogDto.getName(), dogDto.getBirthday(), dogDto.getBreed(), dogDto.getWeight(), Sex.valueOf(dogDto.getSex().toUpperCase()));
         Dog savedDog = dogRepository.save(dog);
-        return entityToDto(savedDog);
+        return new DogDto(savedDog);
     }
     @Transactional(readOnly = true)
     public DogDto findDogById(Integer dogId) {
         Dog dog = dogRepository.findById(dogId).orElseThrow(() -> new EntityNotFoundException("Dog not found with ID: " + dogId));
-        return entityToDto(dog);
+        return new DogDto(dog);
     }
 //    @Transactional
 //    public DogDto updateDogById(Integer dogId, DogDto dogDto) {
@@ -42,7 +48,4 @@ public class DogService {
         dogRepository.deleteById(dogId);
     }
 
-    private DogDto entityToDto(Dog dog) {
-        return new DogDto(dog.getId(), dog.getName(), dog.getBirthday(), dog.getBreed(), dog.getWeight(), dog.getSex());
-    }
 }
