@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RequestMapping("/api/dog")
 @Controller
 public class DogController {
@@ -31,8 +33,8 @@ public class DogController {
     @ResponseBody
     public ResponseEntity<Object> createDog(@RequestBody DogDto dogDto) {
         try {
-            DogDto addedDog = dogService.createDog(dogDto);
-            return HttpResponse.successCreated("Dog successfully created.", addedDog);
+            Map<String, Object> createDogResDtos = dogService.createDog(dogDto);
+            return HttpResponse.successCreated("Dog successfully created.", createDogResDtos);
         } catch (Exception e) {
             return HttpResponse.badRequest("Error creating dog: " + e.getMessage(), null);
         }

@@ -5,6 +5,7 @@ import api.dog.dto.DogDto;
 import api.dog.enums.Sex;
 import api.owning.Owning;
 import api.owning.OwningRepository;
+import api.owning.dto.OwningDto;
 import api.user.dto.UserAccountDto;
 import api.user.enums.Role;
 import api.user.owner.Owner;
@@ -15,9 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class DogService {
@@ -40,7 +39,7 @@ public class DogService {
         return dogDtos;
     }
     @Transactional
-    public DogDto createDog(DogDto dogDto) throws AccessDeniedException {
+    public Map<String, Object> createDog(DogDto dogDto) throws AccessDeniedException {
         Dog dog = new Dog(dogDto.getName(), dogDto.getBirthday(), dogDto.getBreed(), dogDto.getWeight(), Sex.valueOf(dogDto.getSex().toUpperCase()));
         Dog savedDog = dogRepository.save(dog);
         UserAccountDto loggedInUserAccountDto = LoggedInUser.getLoggedInUserAccountDto();
@@ -54,7 +53,10 @@ public class DogService {
         Owner owner = optionalOwner.get();
         Owning owning  = new Owning(owner, dog);
         Owning savedOwining = owningRepository.save(owning);
-        return new DogDto(savedDog);
+        Map<String, Object> res = new HashMap<>();
+        res.put("dogDto", new DogDto(savedDog));
+        res.put("owningDto", new OwningDto(savedOwining));
+        return res;
     }
 
     @Transactional(readOnly = true)
