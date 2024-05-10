@@ -27,7 +27,7 @@ public class DogController {
         }
     }
 
-    @PostMapping("/")
+    @PostMapping({"/", ""})
     @ResponseBody
     public ResponseEntity<Object> createDog(@RequestBody DogDto dogDto) {
         try {
