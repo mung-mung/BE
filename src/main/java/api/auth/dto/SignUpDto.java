@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @Setter
 public class SignUpDto {
     private String email;
+    private String userName;
     private Role role;
     private String pw;
     private String contact;
@@ -19,8 +20,9 @@ public class SignUpDto {
     private LocalDate birthday;
     private String avatarUrl = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
 
-    public SignUpDto(String email, Role role, String pw, String avatarUrl, String contact, Gender gender, LocalDate birthday){
+    public SignUpDto(String email, String userName, Role role, String pw, String avatarUrl, String contact, Gender gender, LocalDate birthday){
         this.email = email;
+        this.userName = userName;
         this.role = role;
         this.pw = pw;
         setAvatarUrl(avatarUrl);

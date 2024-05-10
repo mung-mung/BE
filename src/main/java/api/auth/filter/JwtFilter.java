@@ -69,13 +69,13 @@ public class JwtFilter extends OncePerRequestFilter {
 
         //userEntity를 생성하여 값 set
         if (role.equals("OWNER")){
-            user = new Owner(email, Role.OWNER, "testpassword", "1234", Gender.MALE, LocalDate.of(1990, 1, 1)); //test values
+            user = new Owner(email, "test userName", Role.OWNER, "testpassword", "1234", Gender.MALE, LocalDate.of(1990, 1, 1)); //test values
         }
         else if (role.equals("WALKER")) { //ADMIN 유저 생성 시 수정 필요
-            user = new Walker(email, Role.WALKER, "testpassword", "1234", Gender.MALE, LocalDate.of(1990, 1, 1)); //test values
+            user = new Walker(email, "test userName",Role.WALKER, "testpassword", "1234", Gender.MALE, LocalDate.of(1990, 1, 1)); //test values
         }
         else if (role.equals("ADMIN")) {
-            user = new Admin(email, Role.ADMIN, "testpassword", "1234", Gender.MALE, LocalDate.of(1990, 1, 1)); //test values
+            user = new Admin(email,"test userName", Role.ADMIN, "testpassword", "1234", Gender.MALE, LocalDate.of(1990, 1, 1)); //test values
         }
 
         //UserDetails에 회원 정보 객체 담기
