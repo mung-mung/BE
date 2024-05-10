@@ -1,21 +1,34 @@
 package api.dog;
 
+import api.common.util.auth.loggedInUser.LoggedInUser;
 import api.dog.dto.DogDto;
 import api.dog.enums.Sex;
 import api.owning.Owning;
+import api.owning.OwningRepository;
+import api.user.dto.UserAccountDto;
+import api.user.enums.Role;
+import api.user.owner.Owner;
+import api.user.owner.OwnerRepository;
+import api.user.userAccount.UserAccount;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class DogService {
     private final DogRepository dogRepository;
+    private final OwnerRepository ownerRepository;
+    private final OwningRepository owningRepository;
 
-    public DogService(DogRepository dogRepository) {
+    public DogService(DogRepository dogRepository, OwnerRepository ownerRepository, OwningRepository owningRepository) {
         this.dogRepository = dogRepository;
+        this.ownerRepository = ownerRepository;
+        this.owningRepository = owningRepository;
     }
     @Transactional(readOnly = true)
     public List<DogDto> findAllDogs() {
@@ -27,10 +40,20 @@ public class DogService {
         return dogDtos;
     }
     @Transactional
-    public DogDto createDog(DogDto dogDto) {
+    public DogDto createDog(DogDto dogDto) throws AccessDeniedException {
         Dog dog = new Dog(dogDto.getName(), dogDto.getBirthday(), dogDto.getBreed(), dogDto.getWeight(), Sex.valueOf(dogDto.getSex().toUpperCase()));
         Dog savedDog = dogRepository.save(dog);
-        Owning owning
+        UserAccountDto loggedInUserAccountDto = LoggedInUser.getLoggedInUserAccountDto();
+        if (loggedInUserAccountDto == null || !Role.OWNER.equals(loggedInUserAccountDto.getRole())) {
+            throw new AccessDeniedException("Only owners can create dogs.");
+        }
+        Optional<Owner> optionalOwner = ownerRepository.findByEmail(loggedInUserAccountDto.getEmail());
+        if (optionalOwner.isEmpty()) {
+            throw new AccessDeniedException("Owner not found for the logged in user.");
+        }
+        Owner owner = optionalOwner.get();
+        Owning owning  = new Owning(owner, dog);
+        Owning savedOwining = owningRepository.save(owning);
         return new DogDto(savedDog);
     }
 
