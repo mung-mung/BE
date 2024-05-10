@@ -2,6 +2,7 @@ package api.dog;
 
 import api.dog.dto.DogDto;
 import api.dog.enums.Sex;
+import api.owning.Owning;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,8 +30,10 @@ public class DogService {
     public DogDto createDog(DogDto dogDto) {
         Dog dog = new Dog(dogDto.getName(), dogDto.getBirthday(), dogDto.getBreed(), dogDto.getWeight(), Sex.valueOf(dogDto.getSex().toUpperCase()));
         Dog savedDog = dogRepository.save(dog);
+        Owning owning
         return new DogDto(savedDog);
     }
+
     @Transactional(readOnly = true)
     public DogDto findDogById(Integer dogId) {
         Dog dog = dogRepository.findById(dogId).orElseThrow(() -> new EntityNotFoundException("Dog not found with ID: " + dogId));

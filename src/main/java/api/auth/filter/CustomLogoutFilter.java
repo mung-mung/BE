@@ -1,7 +1,7 @@
 package api.auth.filter;
 
 import api.auth.refresh.RefreshRepository;
-import api.common.util.jwt.JwtGenerator;
+import api.common.util.auth.jwt.JwtGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper; // JSON 변환을 위한 Jackson 라이브러리
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;

@@ -1,7 +1,7 @@
 package api.auth.filter;
 
 import api.auth.dto.AuthUserDetails;
-import api.common.util.jwt.JwtGenerator;
+import api.common.util.auth.jwt.JwtGenerator;
 import api.user.admin.Admin;
 import api.user.enums.Gender;
 import api.user.enums.Role;
