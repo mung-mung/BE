@@ -43,11 +43,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        String username = obtainUsername(request);
+        String email = obtainUsername(request);
         String password = obtainPassword(request);
 
-        //Spring Security에서 username, password를 검증하기 위해 token에 담음
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password, null);
+        //Spring Security에서 email, password를 검증하기 위해 token에 담음
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(email, password, null);
 
         //token에 담은 검증을 위한 AuthenticationManager로 전달
         System.out.println("login attempt");
