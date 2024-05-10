@@ -5,9 +5,8 @@ import api.auth.dto.SignUpDto;
 import api.auth.refresh.RefreshEntity;
 import api.auth.refresh.RefreshRepository;
 import api.common.util.http.HttpResponse;
-import api.common.util.jwt.JwtGenerator;
+import api.common.util.auth.jwt.JwtGenerator;
 import api.user.dto.UserAccountDto;
-import api.user.userAccount.UserAccount;
 import api.user.userAccount.UserAccountService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
@@ -22,8 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.Optional;
 
 
 @RequestMapping("/api/auth")

@@ -3,7 +3,7 @@ package api.auth.filter;
 import api.auth.refresh.RefreshEntity;
 import api.auth.refresh.RefreshRepository;
 import api.common.util.http.HttpResponse;
-import api.common.util.jwt.JwtGenerator;
+import api.common.util.auth.jwt.JwtGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.Cookie;
@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
