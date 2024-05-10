@@ -20,7 +20,7 @@ public class LoggedInUser {
         LoggedInUser.userAccountRepository = userAccountRepository;
     }
 
-    private static String getCurrentUserEmail() {
+    private static String getLoggedInUserEmail() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.isAuthenticated()) {
@@ -38,8 +38,8 @@ public class LoggedInUser {
         return null;
     }
 
-    public static UserAccountDto getCurrentUserDto() {
-        String email = getCurrentUserEmail();
+    public static UserAccountDto getLoggedInUserAccountDto() {
+        String email = getLoggedInUserEmail();
         if (email != null) {
             UserAccount userAccount = userAccountRepository.findByEmail(email).orElse(null);
             if (userAccount != null) {
