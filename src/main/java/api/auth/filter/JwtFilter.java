@@ -37,6 +37,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String authorizationHeader = request.getHeader("Authorization");
         System.out.println("Authorization header: " + authorizationHeader);
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response);
             sendErrorResponse(response, HttpResponse.unauthorized("No valid authorization header found", null));
             return;
         }
@@ -92,10 +93,10 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     private void sendErrorResponse(HttpServletResponse response, ResponseEntity<Object> responseEntity) throws IOException {
-        response.setStatus(responseEntity.getStatusCode().value());
-        response.setContentType("application/json");
-        PrintWriter writer = response.getWriter();
-        new ObjectMapper().writeValue(writer, responseEntity.getBody());
-        writer.flush();
+        if (!response.isCommitted()) {
+            response.setStatus(responseEntity.getStatusCode().value());
+            response.setContentType("application/json");
+            new ObjectMapper().writeValue(response.getWriter(), responseEntity.getBody());
+        }
     }
 }
