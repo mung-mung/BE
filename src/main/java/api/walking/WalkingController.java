@@ -1,11 +1,13 @@
 package api.walking;
 
 import api.common.util.http.HttpResponse;
+import api.walking.dto.CreateWalkingDto;
 import api.walking.dto.WalkingDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RequestMapping("/api/walking")
@@ -15,7 +17,7 @@ public class WalkingController {
     public WalkingController(WalkingService walkingService){
         this.walkingService = walkingService;
     }
-    @GetMapping("/")
+    @GetMapping({"/", ""})
     public ResponseEntity<Object> findWalkings(
             @RequestParam(value = "id", required = false) Integer id,
             @RequestParam(value = "walkerId", required = false) Integer walkerId,
@@ -28,15 +30,17 @@ public class WalkingController {
         }
     }
 
-    @PostMapping("/")
-    public ResponseEntity<Object> createWalking(@RequestBody WalkingDto walkingDto) {
+    @PostMapping({"/", ""})
+    public ResponseEntity<Object> createWalking(@RequestBody CreateWalkingDto createWalkingDto) {
         try {
-            Walking walking = walkingService.createWalking(walkingDto);
-            return HttpResponse.successCreated("Walking created successfully", walking);
+            WalkingDto walkingDto = walkingService.createWalking(createWalkingDto);
+            return HttpResponse.successCreated("Walking created successfully", walkingDto);
+        } catch (AccessDeniedException e) {
+            return HttpResponse.forbidden(e.getMessage(), null);
         } catch (IllegalArgumentException e) {
-            return HttpResponse.badRequest("Invalid walker ID or dog ID", null);
+            return HttpResponse.badRequest(e.getMessage(), null);
         } catch (Exception e) {
-            return HttpResponse.internalError("Error creating walking", null);
+            return HttpResponse.internalError("Error creating walking: " + e.getMessage(), null);
         }
     }
 
