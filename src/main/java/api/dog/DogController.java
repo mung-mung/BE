@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.Map;
 
 @RequestMapping("/api/dog")
@@ -71,6 +72,8 @@ public class DogController {
             return HttpResponse.successOk("Dog deleted successfully", null);
         } catch (EntityNotFoundException e) {
             return HttpResponse.notFound(e.getMessage(), null);
+        } catch (AccessDeniedException e) {
+            return HttpResponse.forbidden(e.getMessage(), null);
         } catch (Exception e) {
             return HttpResponse.internalError("Error deleting dog: " + e.getMessage(), null);
         }

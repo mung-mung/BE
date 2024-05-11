@@ -69,11 +69,34 @@ public class DogService {
 //
 //    }
     @Transactional
-    public void deleteDogById(Integer dogId) {
+    public void deleteDogById(Integer dogId) throws AccessDeniedException {
+        // 현재 로그인된 사용자 정보 가져오기
+        UserAccountDto loggedInUserAccountDto = LoggedInUser.getLoggedInUserAccountDto();
+
+        // 사용자 정보가 없거나 Role이 OWNER가 아니면 AccessDeniedException 발생
+        if (loggedInUserAccountDto == null || !Role.OWNER.equals(loggedInUserAccountDto.getRole())) {
+            throw new AccessDeniedException("Only owners can delete dogs.");
+        }
+
+        // Dog 존재 여부 확인
         if (!dogRepository.existsById(dogId)) {
             throw new EntityNotFoundException("Dog not found with ID: " + dogId);
         }
+
+        // UserAccountDto에서 Owner 객체 조회
+        Optional<Owner> optionalOwner = ownerRepository.findByEmail(loggedInUserAccountDto.getEmail());
+        if (optionalOwner.isEmpty()) {
+            throw new AccessDeniedException("Owner not found for the logged in user.");
+        }
+        Owner owner = optionalOwner.get();
+
+        // Dog와 Owning 관계 확인
+        Optional<Owning> owningOptional = owningRepository.findByOwnerAndDogId(owner, dogId);
+        if (owningOptional.isEmpty()) {
+            throw new AccessDeniedException("The logged-in user is not the owner of this dog.");
+        }
+
+        // Dog 삭제
         dogRepository.deleteById(dogId);
     }
-
 }
