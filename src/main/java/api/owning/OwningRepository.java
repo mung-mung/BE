@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface OwningRepository extends JpaRepository<Owning, Integer> {
     List<Owning> findByOwnerId(Integer ownerId);
     List<Owning> findByDogId(Integer dogId);
-    Optional<Owning> findByOwnerAndDogId(Owner owner, Integer dogId);
+    Optional<Owning> findByOwnerIdAndDogId(Integer ownerId, Integer dogId);
 }
 
 
