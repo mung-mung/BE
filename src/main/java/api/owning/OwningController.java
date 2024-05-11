@@ -15,7 +15,7 @@ public class OwningController {
         this.owningService = owningService;
     }
     @GetMapping("/")
-    public ResponseEntity<Object> findOwnings(
+    public ResponseEntity<Object> findAllOwnings(
             @RequestParam(value = "id", required = false) Integer id,
             @RequestParam(value = "ownerId", required = false) Integer ownerId,
             @RequestParam(value = "dogId", required = false) Integer dogId) {
