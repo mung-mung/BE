@@ -23,11 +23,11 @@ public class WalkingController {
             @RequestParam(value = "id", required = false) Integer id,
             @RequestParam(value = "walkerId", required = false) Integer walkerId,
             @RequestParam(value = "dogId", required = false) Integer dogId) {
-        List<Walking> walkings = walkingService.findWalkings(id, walkerId, dogId);
-        if (walkings.isEmpty()) {
+        List<WalkingDto> walkingDtos = walkingService.findWalkings(id, walkerId, dogId);
+        if (walkingDtos.isEmpty()) {
             return HttpResponse.notFound("No walkings found matching criteria", null);
         } else {
-            return HttpResponse.successOk("Walkings found", walkings);
+            return HttpResponse.successOk("Walkings found successfully", walkingDtos);
         }
     }
 
