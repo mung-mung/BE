@@ -2,11 +2,13 @@ package api.owning;
 
 import api.common.util.http.HttpResponse;
 import api.owning.dto.OwningDto;
-import api.walking.dto.WalkingDto;
+import api.owning.dto.OwningDto;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RequestMapping("/api/owning")
@@ -29,5 +31,17 @@ public class OwningController {
         }
     }
 
-
+    @DeleteMapping("/{owningId}")
+    public ResponseEntity<Object> deleteOwning(@PathVariable Integer owningId) {
+        try {
+            owningService.deleteOwningById(owningId);
+            return HttpResponse.successOk("Owning deleted successfully", null);
+        } catch (EntityNotFoundException e) {
+            return HttpResponse.notFound(e.getMessage(), null);
+        } catch (AccessDeniedException e) {
+            return HttpResponse.forbidden(e.getMessage(), null);
+        } catch (Exception e) {
+            return HttpResponse.internalError("Error deleting owning: " + e.getMessage(), null);
+        }
+    }
 }

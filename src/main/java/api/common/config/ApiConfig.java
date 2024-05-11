@@ -63,8 +63,8 @@ public class ApiConfig {
     }
 
     @Bean
-    public OwningService owningService(OwningRepository owningRepository){
-        return new OwningService(owningRepository);
+    public OwningService owningService(OwningRepository owningRepository, OwnerRepository ownerRepository){
+        return new OwningService(owningRepository, ownerRepository);
     }
 
     @Bean
