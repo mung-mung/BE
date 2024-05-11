@@ -15,11 +15,11 @@ public class OwningController {
         this.owningService = owningService;
     }
     @GetMapping("/")
-    public ResponseEntity<Object> findAllOwnings(
+    public ResponseEntity<Object> findOwnings(
             @RequestParam(value = "id", required = false) Integer id,
             @RequestParam(value = "ownerId", required = false) Integer ownerId,
             @RequestParam(value = "dogId", required = false) Integer dogId) {
-        List<Owning> ownings = owningService.findAllOwnings(id, ownerId, dogId);
+        List<Owning> ownings = owningService.findOwnings(id, ownerId, dogId);
         if (ownings.isEmpty()) {
             return HttpResponse.notFound("No ownings found matching criteria", null);
         } else {
