@@ -3,6 +3,7 @@ package api.walking;
 import api.common.util.http.HttpResponse;
 import api.walking.dto.CreateWalkingDto;
 import api.walking.dto.WalkingDto;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -49,10 +50,12 @@ public class WalkingController {
         try {
             walkingService.deleteWalkingById(walkingId);
             return HttpResponse.successOk("Walking deleted successfully", null);
-        } catch (IllegalArgumentException e) {
-            return HttpResponse.notFound("Walking not found", null);
+        } catch (EntityNotFoundException e) {
+            return HttpResponse.notFound(e.getMessage(), null);
+        } catch (AccessDeniedException e) {
+            return HttpResponse.forbidden(e.getMessage(), null);
         } catch (Exception e) {
-            return HttpResponse.internalError("Error deleting walking", null);
+            return HttpResponse.internalError("Error deleting walking: " + e.getMessage(), null);
         }
     }
 }
