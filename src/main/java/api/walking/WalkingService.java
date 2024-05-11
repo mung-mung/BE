@@ -29,38 +29,21 @@ public class WalkingService {
         this.walkerRepository = walkerRepository;
     }
     @Transactional(readOnly = true)
-    public List<Walking> findWalkings(Integer id, Integer walkerId, Integer dogId) {
+    public List<WalkingDto> findWalkings(Integer id, Integer walkerId, Integer dogId) {
+        List<Walking> walkings;
         if (id != null) {
-            return walkingRepository.findById(id)
-                    .map(List::of)
-                    .orElseGet(ArrayList::new);
-        }
-
-        List<Walking> results = new ArrayList<>();
-
-        // walkerId와 dogId가 모두 null이 아닌 경우
-        if (walkerId != null && dogId != null) {
-            List<Walking> walkerResults = walkingRepository.findByWalkerId(walkerId);
-            List<Walking> dogResults = walkingRepository.findByDogId(dogId);
-            results = walkerResults.stream()
-                    .filter(dogResults::contains)
-                    .collect(Collectors.toList());
-            return results;
-        }
-
-        // walkerId 또는 dogId 중 하나만 null인 경우
-        if (walkerId != null) {
-            results.addAll(walkingRepository.findByWalkerId(walkerId));
+            Optional<Walking> walking = walkingRepository.findById(id);
+            walkings = walking.map(List::of).orElse(List.of());
+        } else if (walkerId != null && dogId != null) {
+            walkings = walkingRepository.findByWalkerIdAndDogId(walkerId, dogId);
+        } else if (walkerId != null) {
+            walkings = walkingRepository.findByWalkerId(walkerId);
         } else if (dogId != null) {
-            results.addAll(walkingRepository.findByDogId(dogId));
+            walkings = walkingRepository.findByDogId(dogId);
+        } else {
+            walkings = walkingRepository.findAll();
         }
-
-        // 모든 인자가 null인 경우
-        if (walkerId == null && dogId == null) {
-            results.addAll(walkingRepository.findAll());
-        }
-
-        return results;
+        return walkings.stream().map(WalkingDto::new).collect(Collectors.toList());
     }
 
     @Transactional
