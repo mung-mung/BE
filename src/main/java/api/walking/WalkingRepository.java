@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface WalkingRepository extends JpaRepository<Walking, Integer> {
     List<Walking> findByWalkerId(Integer walkerId);
     List<Walking> findByDogId(Integer dogId);
-    List<Walking> findByWalkerIdAndDogId(Integer walkerId, Integer dogId);
+    Optional<Walking> findByWalkerIdAndDogId(Integer walkerId, Integer dogId);
 }
 
 

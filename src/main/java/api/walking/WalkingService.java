@@ -4,6 +4,8 @@ package api.walking;
 import api.common.util.auth.loggedInUser.LoggedInUser;
 import api.dog.Dog;
 import api.dog.DogRepository;
+import api.walking.Walking;
+import api.walking.dto.WalkingDto;
 import api.user.dto.UserAccountDto;
 import api.user.enums.Role;
 import api.user.walker.Walker;
@@ -29,13 +31,15 @@ public class WalkingService {
         this.walkerRepository = walkerRepository;
     }
     @Transactional(readOnly = true)
-    public List<WalkingDto> findWalkings(Integer id, Integer walkerId, Integer dogId) {
-        List<Walking> walkings;
+    public List<WalkingDto> findWalkings(Integer id, Integer walkerId, Integer dogId){
+        List<Walking> walkings = new ArrayList<>();
         if (id != null) {
             Optional<Walking> walking = walkingRepository.findById(id);
             walkings = walking.map(List::of).orElse(List.of());
         } else if (walkerId != null && dogId != null) {
-            walkings = walkingRepository.findByWalkerIdAndDogId(walkerId, dogId);
+            Optional<Walking> optionalWalking = walkingRepository.findByWalkerIdAndDogId(walkerId, dogId);
+            Walking walking = optionalWalking.get();
+            walkings.add(walking);
         } else if (walkerId != null) {
             walkings = walkingRepository.findByWalkerId(walkerId);
         } else if (dogId != null) {
@@ -101,7 +105,7 @@ public class WalkingService {
 
         // Walker와 Walking 관계 확인
         if (!walking.getWalker().equals(walker)) {
-            throw new AccessDeniedException("The logged-in user is not the owner of this walking record.");
+            throw new AccessDeniedException("The logged-in user is not the walker of this walking record.");
         }
 
         // Walking 삭제
