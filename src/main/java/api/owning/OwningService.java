@@ -1,10 +1,13 @@
 package api.owning;
 
 
+import api.owning.Owning;
+import api.owning.dto.OwningDto;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class OwningService {
@@ -13,38 +16,23 @@ public class OwningService {
         this.owningRepository = owningRepository;
     }
     @Transactional(readOnly = true)
-    public List<Owning> findOwnings(Integer id, Integer ownerId, Integer dogId) {
+    public List<OwningDto> findOwnings(Integer id, Integer ownerId, Integer dogId){
+        List<Owning> ownings = new ArrayList<>();
         if (id != null) {
-            return owningRepository.findById(id)
-                    .map(List::of)
-                    .orElseGet(ArrayList::new);
-        }
-
-        List<Owning> results = new ArrayList<>();
-
-        // ownerId와 dogId가 모두 null이 아닌 경우
-        if (ownerId != null && dogId != null) {
-            List<Owning> ownerResults = owningRepository.findByOwnerId(ownerId);
-            List<Owning> dogResults = owningRepository.findByDogId(dogId);
-            results = ownerResults.stream()
-                    .filter(dogResults::contains)
-                    .collect(Collectors.toList());
-            return results;
-        }
-
-        // ownerId 또는 dogId 중 하나만 null인 경우
-        if (ownerId != null) {
-            results.addAll(owningRepository.findByOwnerId(ownerId));
+            Optional<Owning> owning = owningRepository.findById(id);
+            ownings = owning.map(List::of).orElse(List.of());
+        } else if (ownerId != null && dogId != null) {
+            Optional<Owning> optionalOwning = owningRepository.findByOwnerIdAndDogId(ownerId, dogId);
+            Owning owning = optionalOwning.get();
+            ownings.add(owning);
+        } else if (ownerId != null) {
+            ownings = owningRepository.findByOwnerId(ownerId);
         } else if (dogId != null) {
-            results.addAll(owningRepository.findByDogId(dogId));
+            ownings = owningRepository.findByDogId(dogId);
+        } else {
+            ownings = owningRepository.findAll();
         }
-
-        // 모든 인자가 null인 경우
-        if (ownerId == null && dogId == null) {
-            results.addAll(owningRepository.findAll());
-        }
-
-        return results;
+        return ownings.stream().map(OwningDto::new).collect(Collectors.toList());
     }
 
 }

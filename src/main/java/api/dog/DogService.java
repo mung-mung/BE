@@ -91,7 +91,7 @@ public class DogService {
         Owner owner = optionalOwner.get();
 
         // Dog와 Owning 관계 확인
-        Optional<Owning> owningOptional = owningRepository.findByOwnerAndDogId(owner, dogId);
+        Optional<Owning> owningOptional = owningRepository.findByOwnerIdAndDogId(owner.getId(), dogId);
         if (owningOptional.isEmpty()) {
             throw new AccessDeniedException("The logged-in user is not the owner of this dog.");
         }
