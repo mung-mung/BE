@@ -23,7 +23,7 @@ public class DogController {
     @ResponseBody
     public ResponseEntity<Object> findAllDogs() {
         try {
-            return HttpResponse.successOk("All dogs fetched successfully.", dogService.findAllDogs());
+            return HttpResponse.successOk("All dogs found successfully", dogService.findAllDogs());
         } catch (Exception e) {
             return HttpResponse.internalError("Failed to fetch dogs: " + e.getMessage(), null);
         }
@@ -48,7 +48,7 @@ public class DogController {
         try {
             DogDto foundDog = dogService.findDogById(dogId);
             if (foundDog != null) {
-                return HttpResponse.successOk("Dog successfully found.", foundDog);
+                return HttpResponse.successOk("Dog found successfully", foundDog);
             } else {
                 return HttpResponse.notFound("Dog not found with ID: " + dogId, null);
             }
@@ -68,7 +68,7 @@ public class DogController {
     public ResponseEntity<Object> deleteDogById(@PathVariable Integer dogId) {
         try {
             dogService.deleteDogById(dogId);
-            return HttpResponse.successOk("Dog successfully deleted.", null);
+            return HttpResponse.successOk("Dog deleted successfully", null);
         } catch (EntityNotFoundException e) {
             return HttpResponse.notFound(e.getMessage(), null);
         } catch (Exception e) {
