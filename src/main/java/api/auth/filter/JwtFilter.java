@@ -2,17 +2,20 @@ package api.auth.filter;
 
 import api.auth.dto.AuthUserDetails;
 import api.common.util.auth.jwt.JwtGenerator;
+import api.common.util.http.HttpResponse;
 import api.user.admin.Admin;
 import api.user.enums.Gender;
 import api.user.enums.Role;
 import api.user.owner.Owner;
 import api.user.userAccount.UserAccount;
 import api.user.walker.Walker;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,8 +37,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String authorizationHeader = request.getHeader("Authorization");
         System.out.println("Authorization header: " + authorizationHeader);
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            System.out.println("No valid authorization header found");
-            filterChain.doFilter(request, response);
+            sendErrorResponse(response, HttpResponse.unauthorized("No valid authorization header found", null));
             return;
         }
 
@@ -43,21 +45,16 @@ public class JwtFilter extends OncePerRequestFilter {
         try {
             jwtGenerator.isExpired(accessToken);
         } catch (ExpiredJwtException e) {
-            //Access token이 만료되었을 경우 클라이언트에게 알림
-            PrintWriter writer = response.getWriter();
-            writer.print("Access token expired");
-
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            sendErrorResponse(response, HttpResponse.unauthorized("Access token expired", null));
+            return;
+        } catch (Exception e) {
+            sendErrorResponse(response, HttpResponse.badRequest("Invalid access token", null));
             return;
         }
 
         String category = jwtGenerator.getCategory(accessToken);
-        //Access token이 아닌 경우
         if (!category.equals("access")) {
-            PrintWriter writer = response.getWriter();
-            writer.print("Invalid access token");
-
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            sendErrorResponse(response, HttpResponse.unauthorized("Invalid access token", null));
             return;
         }
 
@@ -65,7 +62,15 @@ public class JwtFilter extends OncePerRequestFilter {
         String email = jwtGenerator.getEmail(accessToken);
         String role = jwtGenerator.getRole(accessToken);
 
-        UserAccount user = new Owner();
+        Authentication authToken = getAuthentication(role, email);
+        //세션에 사용자 등록
+        SecurityContextHolder.getContext().setAuthentication(authToken);
+
+        filterChain.doFilter(request, response);
+    }
+
+    private static Authentication getAuthentication(String role, String email) {
+        UserAccount user = null;
 
         //userEntity를 생성하여 값 set
         if (role.equals("OWNER")){
@@ -83,9 +88,14 @@ public class JwtFilter extends OncePerRequestFilter {
 
         //스프링 시큐리티 인증 토큰 생성
         Authentication authToken = new UsernamePasswordAuthenticationToken(authUserDetails, null, authUserDetails.getAuthorities());
-        //세션에 사용자 등록
-        SecurityContextHolder.getContext().setAuthentication(authToken);
+        return authToken;
+    }
 
-        filterChain.doFilter(request, response);
+    private void sendErrorResponse(HttpServletResponse response, ResponseEntity<Object> responseEntity) throws IOException {
+        response.setStatus(responseEntity.getStatusCode().value());
+        response.setContentType("application/json");
+        PrintWriter writer = response.getWriter();
+        new ObjectMapper().writeValue(writer, responseEntity.getBody());
+        writer.flush();
     }
 }
