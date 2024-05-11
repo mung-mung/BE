@@ -1,15 +1,21 @@
 package api.walking;
 
 
+import api.common.util.auth.loggedInUser.LoggedInUser;
 import api.dog.Dog;
 import api.dog.DogRepository;
+import api.user.dto.UserAccountDto;
+import api.user.enums.Role;
 import api.user.walker.Walker;
 import api.user.walker.WalkerRepository;
+import api.walking.dto.CreateWalkingDto;
 import api.walking.dto.WalkingDto;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class WalkingService {
@@ -57,11 +63,32 @@ public class WalkingService {
     }
 
     @Transactional
-    public Walking createWalking(WalkingDto walkingDto) {
-        Dog dog = dogRepository.findById(walkingDto.getDogId()).orElseThrow(() -> new IllegalArgumentException("Invalid dog ID"));
-        Walker walker = walkerRepository.findById(walkingDto.getWalkerId()).orElseThrow(() -> new IllegalArgumentException("Invalid walker ID"));
+    public WalkingDto createWalking(CreateWalkingDto createWalkingDto) throws AccessDeniedException {
+        UserAccountDto loggedInUserAccountDto = LoggedInUser.getLoggedInUserAccountDto();
+
+        // 사용자 정보가 없거나 Role이 WALKER가 아니면 AccessDeniedException 발생
+        if (loggedInUserAccountDto == null || !Role.WALKER.equals(loggedInUserAccountDto.getRole())) {
+            throw new AccessDeniedException("Only walkers can create walking records.");
+        }
+
+        // UserAccountDto에서 Walker 객체 조회
+        Optional<Walker> optionalWalker = walkerRepository.findByEmail(loggedInUserAccountDto.getEmail());
+        if (optionalWalker.isEmpty()) {
+            throw new AccessDeniedException("Walker not found for the logged in user.");
+        }
+        Walker walker = optionalWalker.get();
+
+        // Dog 객체 조회
+        Optional<Dog> optionalDog = dogRepository.findById(createWalkingDto.getDogId());
+        if(optionalDog.isEmpty()){
+            throw new IllegalArgumentException("Invalid dog ID");
+        }
+        Dog dog = optionalDog.get();
+
         Walking walking = new Walking(walker, dog);
-        return walkingRepository.save(walking);
+        Walking savedWalking = walkingRepository.save(walking);
+        WalkingDto walkingDto = new WalkingDto(savedWalking);
+        return walkingDto;
     }
 
     @Transactional
