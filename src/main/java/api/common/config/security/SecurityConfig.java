@@ -7,6 +7,7 @@ import api.auth.refresh.RefreshRepository;
 import api.common.util.http.HttpResponse;
 import api.common.util.auth.jwt.JwtGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,8 @@ public class SecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration;
     private final JwtGenerator jwtGenerator;
     private final RefreshRepository refreshRepository;
+    @Value("${frontend.origin}")
+    private String frontendOrigin;
 
     public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JwtGenerator jwtGenerator, RefreshRepository refreshRepository) {
         this.authenticationConfiguration = authenticationConfiguration;
@@ -54,7 +57,7 @@ public class SecurityConfig {
         // CORS 설정
         http.cors((cors) -> cors.configurationSource(request -> {
             CorsConfiguration configuration = new CorsConfiguration();
-            configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+            configuration.setAllowedOrigins(Collections.singletonList(frontendOrigin));
             configuration.setAllowedMethods(Collections.singletonList("*"));
             configuration.setAllowCredentials(true);
             configuration.setAllowedHeaders(Collections.singletonList("*"));
