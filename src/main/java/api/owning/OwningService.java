@@ -13,7 +13,7 @@ public class OwningService {
         this.owningRepository = owningRepository;
     }
     @Transactional(readOnly = true)
-    public List<Owning> findAllOwnings(Integer id, Integer ownerId, Integer dogId) {
+    public List<Owning> findOwnings(Integer id, Integer ownerId, Integer dogId) {
         if (id != null) {
             return owningRepository.findById(id)
                     .map(List::of)
