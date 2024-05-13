@@ -15,6 +15,7 @@ import java.time.LocalDate;
 public abstract class UserDtoAbstractClass {
     private Integer id;
     private String email;
+    private String userName;
     private Role role;
     private String avatarUrl;
     private String contact;
@@ -23,6 +24,7 @@ public abstract class UserDtoAbstractClass {
     public UserDtoAbstractClass(UserAccount userAccount) {
         this.id = userAccount.getId();
         this.email = userAccount.getEmail();
+        this.userName = userAccount.getUserName();
         this.role = userAccount.getRole();
         this.avatarUrl = userAccount.getAvatarUrl();
         this.contact = userAccount.getContact();

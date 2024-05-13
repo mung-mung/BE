@@ -33,6 +33,7 @@ public class Dog {
     private Float weight;
 
     @Column(name = "SEX", nullable = false, length = 20)
+    @Enumerated(EnumType.STRING)
     private Sex sex;
 
     @Column(name = "PHOTO_URL", nullable = false)
