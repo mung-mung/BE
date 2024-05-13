@@ -3,7 +3,7 @@ package api.auth.filter;
 import api.auth.refresh.RefreshEntity;
 import api.auth.refresh.RefreshRepository;
 import api.common.util.http.HttpResponse;
-import api.common.util.jwt.JwtGenerator;
+import api.common.util.auth.jwt.JwtGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.Cookie;
@@ -23,7 +23,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collection;
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
@@ -41,11 +42,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        String username = obtainUsername(request);
+        String email = obtainUsername(request);
         String password = obtainPassword(request);
 
-        //Spring Security에서 username, password를 검증하기 위해 token에 담음
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password, null);
+        //Spring Security에서 email, password를 검증하기 위해 token에 담음
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(email, password, null);
 
         //token에 담은 검증을 위한 AuthenticationManager로 전달
         System.out.println("login attempt");
@@ -76,8 +77,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         response.addCookie(createCookie(refreshToken));
         response.setStatus(HttpStatus.OK.value());
 
-        // Create a response entity with a success message and null data
-        ResponseEntity<Object> responseEntity = HttpResponse.successOk("Signin finished successfully", accessToken);
+        Map<String, Object> tokenMap = new HashMap<>();
+        tokenMap.put("accessToken", accessToken);
+        tokenMap.put("refreshToken", refreshToken);
+
+        ResponseEntity<Object> responseEntity = HttpResponse.successOk("Signin finished successfully", tokenMap);
         response.setStatus(responseEntity.getStatusCode().value());
         response.setContentType("application/json");
         new ObjectMapper().writeValue(response.getWriter(), responseEntity.getBody());
