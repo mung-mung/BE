@@ -27,6 +27,9 @@ public abstract class UserAccount {
     @Column(name = "EMAIL", nullable = false, unique = true)
     private String email;
 
+    @Column(name = "USERNAME", nullable = false, unique = true)
+    private String userName;
+
     @Column(name = "ROLE", nullable = false, insertable = false, updatable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -53,8 +56,10 @@ public abstract class UserAccount {
     @Column(name = "UPDATED_AT", nullable = false)
     private LocalDateTime updatedAt;
 
-    public UserAccount(String email, Role role, String pw, String contact, Gender gender, LocalDate birthday) {
+
+    public UserAccount(String email, String userName, Role role, String pw, String contact, Gender gender, LocalDate birthday) {
         this.email = email;
+        this.userName = userName;
         this.role = role;
         this.pw = pw;
         this.contact = contact;

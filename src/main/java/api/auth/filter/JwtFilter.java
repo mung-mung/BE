@@ -1,18 +1,21 @@
 package api.auth.filter;
 
 import api.auth.dto.AuthUserDetails;
-import api.common.util.jwt.JwtGenerator;
+import api.common.util.auth.jwt.JwtGenerator;
+import api.common.util.http.HttpResponse;
 import api.user.admin.Admin;
 import api.user.enums.Gender;
 import api.user.enums.Role;
 import api.user.owner.Owner;
 import api.user.userAccount.UserAccount;
 import api.user.walker.Walker;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,35 +34,28 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        //request에서 Authorization 헤더를 찾음
-        String accessToken = request.getHeader("access");
-        //Access token 확인
-        if (accessToken == null) {
-            System.out.println("Access token is null");
+        String authorizationHeader = request.getHeader("Authorization");
+        System.out.println("Authorization header: " + authorizationHeader);
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
+            sendErrorResponse(response, HttpResponse.unauthorized("No valid authorization header found", null));
             return;
         }
 
-        System.out.println("authorization now");
-
+        String accessToken = authorizationHeader.substring(7);
         try {
             jwtGenerator.isExpired(accessToken);
         } catch (ExpiredJwtException e) {
-            //Access token이 만료되었을 경우 클라이언트에게 알림
-            PrintWriter writer = response.getWriter();
-            writer.print("Access token expired");
-
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            sendErrorResponse(response, HttpResponse.unauthorized("Access token expired", null));
+            return;
+        } catch (Exception e) {
+            sendErrorResponse(response, HttpResponse.badRequest("Invalid access token", null));
             return;
         }
 
         String category = jwtGenerator.getCategory(accessToken);
-        //Access token이 아닌 경우
         if (!category.equals("access")) {
-            PrintWriter writer = response.getWriter();
-            writer.print("Invalid access token");
-
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            sendErrorResponse(response, HttpResponse.unauthorized("Invalid access token", null));
             return;
         }
 
@@ -67,17 +63,25 @@ public class JwtFilter extends OncePerRequestFilter {
         String email = jwtGenerator.getEmail(accessToken);
         String role = jwtGenerator.getRole(accessToken);
 
-        UserAccount user = new Owner();
+        Authentication authToken = getAuthentication(role, email);
+        //세션에 사용자 등록
+        SecurityContextHolder.getContext().setAuthentication(authToken);
+
+        filterChain.doFilter(request, response);
+    }
+
+    private static Authentication getAuthentication(String role, String email) {
+        UserAccount user = null;
 
         //userEntity를 생성하여 값 set
         if (role.equals("OWNER")){
-            user = new Owner(email, Role.OWNER, "testpassword", "1234", Gender.MALE, LocalDate.of(1990, 1, 1)); //test values
+            user = new Owner(email, "test userName", Role.OWNER, "testpassword", "1234", Gender.MALE, LocalDate.of(1990, 1, 1)); //test values
         }
         else if (role.equals("WALKER")) { //ADMIN 유저 생성 시 수정 필요
-            user = new Walker(email, Role.WALKER, "testpassword", "1234", Gender.MALE, LocalDate.of(1990, 1, 1)); //test values
+            user = new Walker(email, "test userName",Role.WALKER, "testpassword", "1234", Gender.MALE, LocalDate.of(1990, 1, 1)); //test values
         }
         else if (role.equals("ADMIN")) {
-            user = new Admin(email, Role.ADMIN, "testpassword", "1234", Gender.MALE, LocalDate.of(1990, 1, 1)); //test values
+            user = new Admin(email,"test userName", Role.ADMIN, "testpassword", "1234", Gender.MALE, LocalDate.of(1990, 1, 1)); //test values
         }
 
         //UserDetails에 회원 정보 객체 담기
@@ -85,9 +89,14 @@ public class JwtFilter extends OncePerRequestFilter {
 
         //스프링 시큐리티 인증 토큰 생성
         Authentication authToken = new UsernamePasswordAuthenticationToken(authUserDetails, null, authUserDetails.getAuthorities());
-        //세션에 사용자 등록
-        SecurityContextHolder.getContext().setAuthentication(authToken);
+        return authToken;
+    }
 
-        filterChain.doFilter(request, response);
+    private void sendErrorResponse(HttpServletResponse response, ResponseEntity<Object> responseEntity) throws IOException {
+        if (!response.isCommitted()) {
+            response.setStatus(responseEntity.getStatusCode().value());
+            response.setContentType("application/json");
+            new ObjectMapper().writeValue(response.getWriter(), responseEntity.getBody());
+        }
     }
 }

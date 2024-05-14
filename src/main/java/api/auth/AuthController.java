@@ -5,7 +5,9 @@ import api.auth.dto.SignUpDto;
 import api.auth.refresh.RefreshEntity;
 import api.auth.refresh.RefreshRepository;
 import api.common.util.http.HttpResponse;
-import api.common.util.jwt.JwtGenerator;
+import api.common.util.auth.jwt.JwtGenerator;
+import api.user.dto.UserAccountDto;
+import api.user.userAccount.UserAccountService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,20 +18,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 
 @RequestMapping("/api/auth")
 @Controller
 public class AuthController {
     private final AuthService authService;
+    private final UserAccountService userAccountService;
     private final JwtGenerator jwtGenerator;
     private final RefreshRepository refreshRepository;
 
     @Autowired
-    public AuthController(AuthService authService, JwtGenerator jwtGenerator, RefreshRepository refreshRepository){
-
+    public AuthController(AuthService authService, UserAccountService userAccountService, JwtGenerator jwtGenerator, RefreshRepository refreshRepository){
         this.authService = authService;
+        this.userAccountService = userAccountService;
         this.jwtGenerator = jwtGenerator;
         this.refreshRepository = refreshRepository;
     }
@@ -41,25 +46,55 @@ public class AuthController {
     }
 
     @PostMapping("/sign-up")
+    @ResponseBody
     public ResponseEntity<Object> signUp(@RequestBody SignUpDto signUpDto){
         try {
-            SignUpDto signUpResult = authService.signUp(signUpDto);
-            return HttpResponse.successCreated("User signup finished successfully", signUpResult);
+            UserAccountDto userAccountDto = authService.signUp(signUpDto);
+            if(userAccountDto == null){
+                return HttpResponse.internalError("Signup failed", null);
+            }
+            return HttpResponse.successCreated("User signup finished successfully", userAccountDto);
         } catch (Exception e) {
             return HttpResponse.badRequest(e.getMessage(), null);
         }
     }
 
+    @GetMapping("/decode-jwt")
+    @ResponseBody
+    public ResponseEntity<Object> decodeJwt(@RequestHeader("Authorization") String authorizationHeader){
+        try{
+            if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+                return HttpResponse.badRequest("Invalid JWT token format.", null);
+            }
+            String jwtToken = authorizationHeader.substring(7).trim();
+
+            String email = jwtGenerator.getEmail(jwtToken);
+            UserAccountDto userAccountDto = userAccountService.findUserByEmail(email);
+            if(userAccountDto == null){
+                return HttpResponse.notFound("Error: User not found", null);
+            }else{
+                return HttpResponse.successOk("Decoding Jwt token finished successfully", userAccountDto);
+            }
+        }catch(Exception e){
+            return HttpResponse.badRequest(e.getMessage(), null);
+        }
+    }
+
+
+
     @PostMapping("/reissue")
     public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response) {
         //Get refresh token
         String refresh = null;
-        Cookie[] cookies = request.getCookies();
-
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("refresh")) {
-                refresh = cookie.getValue();
+        try {
+            Cookie[] cookies = request.getCookies();
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("Refresh")) {
+                    refresh = cookie.getValue();
+                }
             }
+        }catch(Exception e){
+            return HttpResponse.internalError(e.getMessage(), null);
         }
 
 
@@ -96,7 +131,7 @@ public class AuthController {
         addRefreshEntity(email, newRefresh, 86400000L);
 
         response.setHeader("access", newAccess);
-        response.addCookie(createCookie("refresh", newRefresh));
+        response.addCookie(createCookie("Refresh", newRefresh));
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -111,14 +146,9 @@ public class AuthController {
         return cookie;
     }
 
-    private void addRefreshEntity(String email, String refresh, Long expiredMs) {
-        Date date = new Date(System.currentTimeMillis() + expiredMs);
-
-        RefreshEntity refreshEntity = new RefreshEntity();
-        refreshEntity.setEmail(email);
-        refreshEntity.setRefresh(refresh);
-        refreshEntity.setExpiration(date.toString());
-
+    private void addRefreshEntity(String email, String refresh, Long expiredplusMillisecond) {
+        LocalDateTime expirationDateTime = LocalDateTime.ofInstant(Instant.now().plusMillis(expiredplusMillisecond), ZoneId.systemDefault());
+        RefreshEntity refreshEntity = new RefreshEntity(email, refresh, expirationDateTime);
         refreshRepository.save(refreshEntity);
     }
 
