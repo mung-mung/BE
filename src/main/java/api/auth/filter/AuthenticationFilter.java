@@ -3,7 +3,7 @@ package api.auth.filter;
 import api.auth.refresh.RefreshEntity;
 import api.auth.refresh.RefreshRepository;
 import api.common.util.http.HttpResponse;
-import api.common.util.jwt.JwtGenerator;
+import api.common.util.auth.jwt.JwtGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.Cookie;
@@ -20,9 +20,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import api.auth.dto.AuthUserDetails;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
@@ -40,11 +42,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        String username = obtainUsername(request);
+        String email = obtainUsername(request);
         String password = obtainPassword(request);
 
-        //Spring Security에서 username, password를 검증하기 위해 token에 담음
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password, null);
+        //Spring Security에서 email, password를 검증하기 위해 token에 담음
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(email, password, null);
 
         //token에 담은 검증을 위한 AuthenticationManager로 전달
         System.out.println("login attempt");
@@ -64,31 +66,25 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         String role = auth.getAuthority();
 
         // Create access token and request token
-        String access = jwtGenerator.createJwt("access", email, role, 60 * 10000L);
-        String refresh = jwtGenerator.createJwt("refresh", email, role, 86400000L); //24h
+        String accessToken = jwtGenerator.createJwt("access", email, role, 60 * 10000L);
+        String refreshToken = jwtGenerator.createJwt("refresh", email, role, 86400000L); //24h
 
         //서버에 Refresh 토큰 저장
-        addRefreshEntity(email, refresh, 86400000L);
+        addRefreshEntity(email, refreshToken);
 
         //Add access token to header and request token to cookie
-        response.addHeader("access", access);
-        response.addCookie(createCookie("refresh", refresh));
+        response.addHeader("Authorization", "Bearer " + accessToken);
+        response.addCookie(createCookie(refreshToken));
         response.setStatus(HttpStatus.OK.value());
 
-        // Create a response entity with a success message and null data
-        ResponseEntity<Object> responseEntity = HttpResponse.successOk("Login successful", null);
+        Map<String, Object> tokenMap = new HashMap<>();
+        tokenMap.put("accessToken", accessToken);
+        tokenMap.put("refreshToken", refreshToken);
 
-        // Convert the response entity to JSON and write it to the response body
+        ResponseEntity<Object> responseEntity = HttpResponse.successOk("Signin finished successfully", tokenMap);
         response.setStatus(responseEntity.getStatusCode().value());
         response.setContentType("application/json");
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            response.getWriter().write(objectMapper.writeValueAsString(responseEntity.getBody()));
-        } catch (IOException e) {
-            // Log the exception or handle it as necessary
-            e.printStackTrace();
-            // Optionally, you might want to re-throw the exception or handle it differently
-        }
+        new ObjectMapper().writeValue(response.getWriter(), responseEntity.getBody());
         System.out.println("Login success");
     }
 
@@ -96,44 +92,25 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     //로그인 실패시 실행하는 메소드
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException {
-        // 로그인 실패 메시지
-        String errorMessage = "Authentication failed";
-
-        // HttpResponse 유틸리티 클래스를 사용하여 401 Unauthorized 응답 생성
-        ResponseEntity<Object> responseEntity = HttpResponse.unauthorized(errorMessage, null);
-
-        // 응답 설정
-        response.setStatus(responseEntity.getStatusCodeValue());
+        ResponseEntity<Object> responseEntity = HttpResponse.unauthorized("SignIn failed", null);
+        response.setStatus(responseEntity.getStatusCode().value());
         response.setContentType("application/json");
-
-        // ObjectMapper를 사용하여 JSON으로 변환 후 응답 본문에 쓰기
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            response.getWriter().write(objectMapper.writeValueAsString(responseEntity.getBody()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        new ObjectMapper().writeValue(response.getWriter(), responseEntity.getBody());
     }
 
     //Refresh token을 추가하기 위한 Cookie 생성
-    private Cookie createCookie(String key, String value) {
-        Cookie cookie = new Cookie(key, value);
+    private Cookie createCookie(String value) {
+        Cookie cookie = new Cookie("Refresh", value);
         cookie.setMaxAge(24*60*60);
 //        cookie.setSecure(true);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
-
         return cookie;
     }
 
-    private void addRefreshEntity(String email, String refresh, Long expiredMs) {
-        Date date = new Date(System.currentTimeMillis() + expiredMs);
-
-        RefreshEntity refreshEntity = new RefreshEntity();
-        refreshEntity.setEmail(email);
-        refreshEntity.setRefresh(refresh);
-        refreshEntity.setExpiration(date.toString());
-
+    private void addRefreshEntity(String email, String refreshToken) {
+        LocalDateTime expirationDateTime = LocalDateTime.now(ZoneId.systemDefault()).plusDays(1);
+        RefreshEntity refreshEntity = new RefreshEntity(email, refreshToken, expirationDateTime);
         refreshRepository.save(refreshEntity);
     }
 }

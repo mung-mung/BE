@@ -48,8 +48,8 @@ public class ApiConfig {
     }
 
     @Bean
-    public DogService dogService(DogRepository dogRepository){
-        return new DogService(dogRepository);
+    public DogService dogService(DogRepository dogRepository, OwnerRepository ownerRepository, OwningRepository owningRepository){
+        return new DogService(dogRepository, ownerRepository, owningRepository);
     }
 
     @Bean
@@ -63,8 +63,8 @@ public class ApiConfig {
     }
 
     @Bean
-    public OwningService owningService(OwningRepository owningRepository){
-        return new OwningService(owningRepository);
+    public OwningService owningService(OwningRepository owningRepository, OwnerRepository ownerRepository){
+        return new OwningService(owningRepository, ownerRepository);
     }
 
     @Bean

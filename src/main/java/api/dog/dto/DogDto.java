@@ -1,5 +1,6 @@
 package api.dog.dto;
 
+import api.dog.Dog;
 import api.dog.enums.Sex;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,13 +17,13 @@ public class DogDto {
     private LocalDate birthday;
     private String breed;
     private Float weight;
-    private Sex sex;
-    public DogDto(Integer id, String name, LocalDate birthday, String breed, Float weight, Sex sex) {
-        this.id = id;
-        this.name = name;
-        this.birthday = birthday;
-        this.breed = breed;
-        this.weight = weight;
-        this.sex = sex;
+    private String sex;
+    public DogDto(Dog dog) {
+        this.id = dog.getId();
+        this.name = dog.getName();
+        this.birthday = dog.getBirthday();
+        this.breed = dog.getBreed();
+        this.weight = dog.getWeight();
+        this.sex = dog.getSex().toString();
     }
 }

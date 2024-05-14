@@ -7,6 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
+import java.util.Map;
+
 @RequestMapping("/api/dog")
 @Controller
 public class DogController {
@@ -17,22 +20,22 @@ public class DogController {
     }
 
 
-    @GetMapping("/")
+    @GetMapping({"/", ""})
     @ResponseBody
     public ResponseEntity<Object> findAllDogs() {
         try {
-            return HttpResponse.successOk("All dogs fetched successfully.", dogService.findAllDogs());
+            return HttpResponse.successOk("All dogs found successfully", dogService.findAllDogs());
         } catch (Exception e) {
             return HttpResponse.internalError("Failed to fetch dogs: " + e.getMessage(), null);
         }
     }
 
-    @PostMapping("/")
+    @PostMapping({"/", ""})
     @ResponseBody
     public ResponseEntity<Object> createDog(@RequestBody DogDto dogDto) {
         try {
-            DogDto addedDog = dogService.createDog(dogDto);
-            return HttpResponse.successCreated("Dog successfully created.", addedDog);
+            Map<String, Object> createDogResDtos = dogService.createDog(dogDto);
+            return HttpResponse.successCreated("Dog successfully created.", createDogResDtos);
         } catch (Exception e) {
             return HttpResponse.badRequest("Error creating dog: " + e.getMessage(), null);
         }
@@ -46,7 +49,7 @@ public class DogController {
         try {
             DogDto foundDog = dogService.findDogById(dogId);
             if (foundDog != null) {
-                return HttpResponse.successOk("Dog successfully found.", foundDog);
+                return HttpResponse.successOk("Dog found successfully", foundDog);
             } else {
                 return HttpResponse.notFound("Dog not found with ID: " + dogId, null);
             }
@@ -66,9 +69,11 @@ public class DogController {
     public ResponseEntity<Object> deleteDogById(@PathVariable Integer dogId) {
         try {
             dogService.deleteDogById(dogId);
-            return HttpResponse.successOk("Dog successfully deleted.", null);
+            return HttpResponse.successOk("Dog deleted successfully", null);
         } catch (EntityNotFoundException e) {
             return HttpResponse.notFound(e.getMessage(), null);
+        } catch (AccessDeniedException e) {
+            return HttpResponse.forbidden(e.getMessage(), null);
         } catch (Exception e) {
             return HttpResponse.internalError("Error deleting dog: " + e.getMessage(), null);
         }
