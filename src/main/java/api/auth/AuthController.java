@@ -86,12 +86,15 @@ public class AuthController {
     public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response) {
         //Get refresh token
         String refresh = null;
-        Cookie[] cookies = request.getCookies();
-
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("Refresh")) {
-                refresh = cookie.getValue();
+        try {
+            Cookie[] cookies = request.getCookies();
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("Refresh")) {
+                    refresh = cookie.getValue();
+                }
             }
+        }catch(Exception e){
+            return HttpResponse.internalError(e.getMessage(), null);
         }
 
 
