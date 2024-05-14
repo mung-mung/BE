@@ -1,7 +1,7 @@
 package api.auth.filter;
 
 import api.auth.refresh.RefreshRepository;
-import api.common.util.jwt.JwtGenerator;
+import api.common.util.auth.jwt.JwtGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper; // JSON 변환을 위한 Jackson 라이브러리
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
@@ -44,7 +44,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if ("refresh".equals(cookie.getName())) {
+                if ("Refresh".equals(cookie.getName())) {
                     refresh = cookie.getValue();
                 }
             }
@@ -69,7 +69,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
         }
 
         refreshRepository.deleteByRefresh(refresh);
-        Cookie cookie = new Cookie("refresh", null);
+        Cookie cookie = new Cookie("Refresh", null);
         cookie.setMaxAge(0);
         cookie.setPath("/");
         response.addCookie(cookie);
