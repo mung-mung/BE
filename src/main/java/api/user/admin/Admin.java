@@ -21,7 +21,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name="admin")
 public class Admin extends UserAccount {
-    public Admin(String email, Role role, String pw, String contact, Gender gender, LocalDate birthday) {
-        super(email, role, pw, contact, gender, birthday);
+    public Admin(String email,String userName, Role role, String pw, String contact, Gender gender, LocalDate birthday) {
+        super(email, userName, role, pw, contact, gender, birthday);
     }
 }

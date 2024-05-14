@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name="owner")
 public class Owner extends UserAccount{
-    public Owner(String email, Role role, String pw, String contact, Gender gender, LocalDate birthday) {
-        super(email, role, pw, contact, gender, birthday);
+    public Owner(String email, String userName, Role role, String pw, String contact, Gender gender, LocalDate birthday) {
+        super(email, userName, role, pw, contact, gender, birthday);
     }
 }

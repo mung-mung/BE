@@ -5,9 +5,8 @@ import api.auth.dto.SignUpDto;
 import api.auth.refresh.RefreshEntity;
 import api.auth.refresh.RefreshRepository;
 import api.common.util.http.HttpResponse;
-import api.common.util.jwt.JwtGenerator;
+import api.common.util.auth.jwt.JwtGenerator;
 import api.user.dto.UserAccountDto;
-import api.user.userAccount.UserAccount;
 import api.user.userAccount.UserAccountService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
@@ -22,8 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.Optional;
 
 
 @RequestMapping("/api/auth")
@@ -89,12 +86,15 @@ public class AuthController {
     public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response) {
         //Get refresh token
         String refresh = null;
-        Cookie[] cookies = request.getCookies();
-
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("refresh")) {
-                refresh = cookie.getValue();
+        try {
+            Cookie[] cookies = request.getCookies();
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("Refresh")) {
+                    refresh = cookie.getValue();
+                }
             }
+        }catch(Exception e){
+            return HttpResponse.internalError(e.getMessage(), null);
         }
 
 
@@ -131,7 +131,7 @@ public class AuthController {
         addRefreshEntity(email, newRefresh, 86400000L);
 
         response.setHeader("access", newAccess);
-        response.addCookie(createCookie("refresh", newRefresh));
+        response.addCookie(createCookie("Refresh", newRefresh));
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

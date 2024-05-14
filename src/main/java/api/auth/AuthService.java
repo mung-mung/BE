@@ -64,6 +64,10 @@ public class AuthService {
         if (userAccountRepository.findByEmail(email).isPresent()) {
             throw new IllegalStateException("duplicated email");
         }
+        String userName = signUpDto.getUserName();
+        if(userAccountRepository.findByUserName(userName).isPresent()){
+            throw new IllegalStateException("duplicated user name");
+        }
         Role role = signUpDto.getRole();
         String pw = signUpDto.getPw();
         String avatarUrl = signUpDto.getAvatarUrl();
@@ -77,15 +81,14 @@ public class AuthService {
         if (!isValidPw(pw)) {
             throw new IllegalArgumentException("Invalid pw format");
         }
-        signUpDto.setPw(hashedPw);
         if (role == Role.OWNER) {
-            Owner owner = new Owner(email, role, hashedPw, contact, gender, birthday);
+            Owner owner = new Owner(email, userName, role, hashedPw, contact, gender, birthday);
             ownerRepository.save(owner);
         } else if (role == Role.WALKER) {
-            Walker walker = new Walker(email, role, hashedPw, contact, gender, birthday);
+            Walker walker = new Walker(email, userName, role, hashedPw, contact, gender, birthday);
             walkerRepository.save(walker);
         } else if (role == Role.ADMIN) {
-            Admin admin = new Admin(email, role, hashedPw, contact, gender, birthday);
+            Admin admin = new Admin(email, userName, role, hashedPw, contact, gender, birthday);
             adminRepository.save(admin);
         }
         Optional<UserAccount> optionalUserAccount = userAccountRepository.findByEmail(email);
