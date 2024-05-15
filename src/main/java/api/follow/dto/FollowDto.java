@@ -12,13 +12,14 @@ public class FollowDto{
     private Integer followerId;
     private Integer followeeId;
 
-    public FollowDto(Integer id, Integer followerId, Integer followeeId){
-        this.id = id;
-        this.followerId = followerId;
-        this.followeeId = followeeId;
+    public FollowDto(Follow follow) {
+        this.id = follow.getId();
+        this.followerId = follow.getFollowerId();
+        this.followeeId = follow.getFolloweeId();
     }
 
     public FollowDto(Integer followerId, Integer followeeId){
         this.id = null;
     }
+    
 }

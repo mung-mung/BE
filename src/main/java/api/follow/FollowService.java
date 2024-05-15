@@ -12,6 +12,7 @@ import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class FollowService {
@@ -28,15 +29,26 @@ public class FollowService {
         return followRepository.save(follow);
     }
 
+    //id or followerid or followeeid로 검색
     @Transactional(readOnly = true)
-    public List<FollowDto> findAllFollows() {
-        List<Follow> allfollows = followRepository.findAll();
-        List<FollowDto> followDtos = new ArrayList<>();
-        for (Follow follow : allfollows) {
-            FollowDto followDto = new FollowDto(follow.getFollowerId(), follow.getFolloweeId());
-            followDtos.add(followDto);
+    public List<FollowDto> findFollows(Integer id, Integer followerId, Integer followeeId) {
+        List<Follow> follows = new ArrayList<>();
+
+        if(id != null){
+            Optional<Follow> follow = followRepository.findById(id);
+            follows = follow.map(List::of).orElse(List.of());
+        } else if(followerId != null && followeeId != null){
+            Optional<Follow> optionalFollow = followRepository.findByFollowerIdAndFolloweeId(followerId, followeeId);
+            Follow follow = optionalFollow.get();
+            follows.add(follow);
+        } else if(followerId != null){
+            follows = followRepository.findByFollowerId(followerId);
+        } else if(followeeId != null){
+            follows = followRepository.findByFolloweeId(followeeId);
+        } else{
+            follows = followRepository.findAll();
         }
-        return followDtos;
+        return follows.stream().map(FollowDto::new).collect(Collectors.toList());
     }
 
 
