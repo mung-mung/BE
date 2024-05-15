@@ -1,7 +1,6 @@
 package api.follow.dto;
 
 import api.follow.Follow;
-import api.user.dto.UserDtoAbstractClass;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,5 +20,5 @@ public class FollowDto{
     public FollowDto(Integer followerId, Integer followeeId){
         this.id = null;
     }
-    
+
 }
