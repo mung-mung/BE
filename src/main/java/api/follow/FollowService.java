@@ -17,12 +17,10 @@ import java.util.Optional;
 @Service
 public class FollowService {
     private final FollowRepository followRepository;
-    private final LoggedInUser loggedInUser;
 
     @Autowired
-    public FollowService(FollowRepository followRepository, DogRepository dogRepository, LoggedInUser loggedInUser) {
+    public FollowService(FollowRepository followRepository) {
         this.followRepository = followRepository;
-        this.loggedInUser = loggedInUser;
     }
 
     @Transactional
