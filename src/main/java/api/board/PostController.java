@@ -19,7 +19,7 @@ public class PostController {
     }
 
     @GetMapping("/")
-    public List<Post> getAllPost() {
+    public List<post> getAllPost() {
         return postService.getAllPost();
     }
 
@@ -29,13 +29,13 @@ public class PostController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Post> createPost(@RequestBody PostRegisterDto postDto) {
-        Post post = postService.createPost(postDto);
+    public ResponseEntity<post> createPost(@RequestBody PostRegisterDto postDto) {
+        post post = postService.createPost(postDto);
         return ResponseEntity.ok(post);
     }
 
     @PutMapping("/{id}")
-    public Post updatePost(@PathVariable Integer id, @RequestBody PostRegisterDto updatedPost) {
+    public post updatePost(@PathVariable Integer id, @RequestBody PostRegisterDto updatedPost) {
         return postService.updatePost(id, updatedPost);
     }
 
