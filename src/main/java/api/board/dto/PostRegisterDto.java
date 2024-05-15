@@ -1,7 +1,7 @@
 package api.board.dto;
 
 import lombok.*;
-import api.board.Post;
+import api.board.post;
 import api.user.userAccount.UserAccount;
 
 @Getter
@@ -14,7 +14,7 @@ public class PostRegisterDto {
     private String content;
     private Integer writerId;
 
-    public Post toEntity(UserAccount writer) {
-        return new Post(title, content, writer);
+    public post toEntity(UserAccount writer) {
+        return new post(title, content, writer);
     }
 }

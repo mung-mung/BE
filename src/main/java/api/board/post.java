@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @Table(name = "post")
-public class Post {
+public class post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -34,16 +34,15 @@ public class Post {
     @Column(name = "UPDATED_AT", nullable = false)
     private LocalDateTime updatedAt;
 
-    public Post(String title, String content, UserAccount writer){
+    public post(String title, String content, UserAccount writer){
         this.title = title;
         this.content = content;
         this.writer = writer;
     }
 
-    public void Update(String title, String content, UserAccount writer){
+    public void update(String title, String content){
         this.title = title;
         this.content = content;
-        this.writer = writer;
     }
 
     @PrePersist

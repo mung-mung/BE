@@ -21,34 +21,34 @@ public class PostService {
     }
 
     @Transactional
-    public List<Post> getAllPost() {
+    public List<post> getAllPost() {
         return postRepository.findAll();
     }
 
     @Transactional
     public PostResponseDto getPostById(Integer id) {
-        Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("invalid post ID"));
+        post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("invalid post ID"));
         return new PostResponseDto(post);
     }
 
     @Transactional
-    public Post createPost(PostRegisterDto post) {
+    public post createPost(PostRegisterDto post) {
         if (post.getWriterId() == null) {
             throw new IllegalArgumentException("writer ID must not be null");
         }
 
         UserAccount writer = userAccountRepository.findById(post.getWriterId())
                 .orElseThrow(() -> new IllegalArgumentException("user is not found"));
-        Post newPost = new Post(post.getTitle(), post.getContent(), writer);
+        api.board.post newPost = new post(post.getTitle(), post.getContent(), writer);
         postRepository.save(newPost);
 
         return postRepository.save(post.toEntity(writer));
     }
 
     @Transactional
-    public Post updatePost(Integer id, PostRegisterDto updatedPost) {
-        Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid post ID"));
-        post.Update(updatedPost.getTitle(), updatedPost.getContent(), post.getWriter());
+    public post updatePost(Integer id, PostRegisterDto updatedPost) {
+        post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid post ID"));
+        post.update(updatedPost.getTitle(), updatedPost.getContent());
 
         return postRepository.save(post);
     }
