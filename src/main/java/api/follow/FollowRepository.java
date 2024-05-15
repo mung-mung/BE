@@ -2,6 +2,11 @@ package api.follow;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface FollowRepository extends JpaRepository<Follow, Integer> {
+import java.util.List;
+import java.util.Optional;
 
+public interface FollowRepository extends JpaRepository<Follow, Integer> {
+    List<Follow> findByFollowerId(Integer followerId);
+    List<Follow> findByFolloweeId(Integer followeeId);
+    Optional<Follow> findByFollowerIdAndFolloweeId(Integer followerId, Integer followeeId);
 }
