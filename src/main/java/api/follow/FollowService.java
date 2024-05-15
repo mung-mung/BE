@@ -1,12 +1,15 @@
 package api.follow;
 
+import api.common.util.auth.loggedInUser.LoggedInUser;
 import api.dog.DogRepository;
 import api.follow.dto.FollowDto;
+import api.user.dto.UserAccountDto;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -14,12 +17,12 @@ import java.util.Optional;
 @Service
 public class FollowService {
     private final FollowRepository followRepository;
-    private final DogRepository dogRepository;
+    private final LoggedInUser loggedInUser;
 
     @Autowired
-    public FollowService(FollowRepository followRepository, DogRepository dogRepository) {
+    public FollowService(FollowRepository followRepository, DogRepository dogRepository, LoggedInUser loggedInUser) {
         this.followRepository = followRepository;
-        this.dogRepository = dogRepository;
+        this.loggedInUser = loggedInUser;
     }
 
     @Transactional
@@ -39,35 +42,23 @@ public class FollowService {
         return followDtos;
     }
 
-    @Transactional(readOnly = true)
-    public FollowDto findByfollowerId(Integer followerid) {
-        Optional<Follow> optionalFollow = followRepository.findById(followerid);
-        if (optionalFollow.isPresent()) {
-            Follow follow = optionalFollow.get();
-            FollowDto followDto = new FollowDto(follow.getFollowerId(), follow.getFolloweeId());
-            return followDto;
-        }else{
-            return null;
-        }
-    }
-
-    @Transactional(readOnly = true)
-    public FollowDto findByfolloweeId(Integer followeeid) {
-        Optional<Follow> optionalFollow = followRepository.findById(followeeid);
-        if (optionalFollow.isPresent()) {
-            Follow follow = optionalFollow.get();
-            FollowDto followDto = new FollowDto(follow.getFollowerId(), follow.getFolloweeId());
-            return followDto;
-        }else{
-            return null;
-        }
-    }
 
     @Transactional
-    public void deleteFollowById(Integer id) {
+    public void deleteFollowById(Integer id) throws AccessDeniedException {
+        //현재 로그인된 사용자 정보
+        UserAccountDto loggedInUserAccountDto = LoggedInUser.getLoggedInUserAccountDto();
+
+        //사용자 정보 없을 경우 AccessDeniedException
+        if(loggedInUserAccountDto != null) {
+            throw new AccessDeniedException("You are not logged in");
+        }
+
+        //id로 조회
         if(!followRepository.existsById(id)) {
             throw new EntityNotFoundException("Follow not found with ID: " + id);
         }
-        dogRepository.deleteById(id);
+
+        //Follow 삭제
+        followRepository.deleteById(id);
     }
 }
