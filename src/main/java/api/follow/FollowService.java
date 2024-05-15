@@ -1,7 +1,6 @@
 package api.follow;
 
 import api.common.util.auth.loggedInUser.LoggedInUser;
-import api.dog.DogRepository;
 import api.follow.dto.FollowDto;
 import api.user.dto.UserAccountDto;
 import jakarta.persistence.EntityNotFoundException;
