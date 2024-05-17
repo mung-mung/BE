@@ -22,6 +22,9 @@ public class HttpResponse {
     public static ResponseEntity<Object> notFound(String message, Object data) {
         return buildResponse(HttpStatus.NOT_FOUND, message, data);
     }
+    public static ResponseEntity<Object> forbidden(String message, Object data) {  // 추가된 메소드
+        return buildResponse(HttpStatus.FORBIDDEN, message, data);
+    }
 
     public static ResponseEntity<Object> badRequest(String message, Object data) {
         return buildResponse(HttpStatus.BAD_REQUEST, message, data);

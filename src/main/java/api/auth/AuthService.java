@@ -4,6 +4,7 @@ import api.auth.dto.SignInDto;
 import api.auth.dto.SignUpDto;
 import api.user.admin.Admin;
 import api.user.admin.AdminRepository;
+import api.user.dto.UserAccountDto;
 import api.user.owner.Owner;
 import api.user.owner.OwnerRepository;
 import api.user.userAccount.UserAccount;
@@ -16,6 +17,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -57,36 +59,47 @@ public class AuthService {
         return matcher.matches();
     }
 
-    public SignUpDto signUp(SignUpDto signUpDto){
+    public UserAccountDto signUp(SignUpDto signUpDto) {
         String email = signUpDto.getEmail();
         if (userAccountRepository.findByEmail(email).isPresent()) {
             throw new IllegalStateException("duplicated email");
+        }
+        String userName = signUpDto.getUserName();
+        if(userAccountRepository.findByUserName(userName).isPresent()){
+            throw new IllegalStateException("duplicated user name");
         }
         Role role = signUpDto.getRole();
         String pw = signUpDto.getPw();
         String avatarUrl = signUpDto.getAvatarUrl();
         String contact = signUpDto.getContact();
-        Gender gender= signUpDto.getGender() ;
+        Gender gender = signUpDto.getGender();
         LocalDate birthday = signUpDto.getBirthday();
         String hashedPw = passwordEncoder.encode(pw);
-        if(!isValidEmail(email)){
+        if (!isValidEmail(email)) {
             throw new IllegalArgumentException("Invalid email format");
         }
-        if(!isValidPw(pw)){
+        if (!isValidPw(pw)) {
             throw new IllegalArgumentException("Invalid pw format");
         }
-            signUpDto.setPw(hashedPw);
-        if(role == Role.OWNER){
-            Owner owner = new Owner(email, role, hashedPw, contact, gender, birthday);
+        if (role == Role.OWNER) {
+            Owner owner = new Owner(email, userName, role, hashedPw, contact, gender, birthday);
             ownerRepository.save(owner);
-        }else if(role == Role.WALKER){
-            Walker walker = new Walker(email, role, hashedPw, contact, gender, birthday);
+        } else if (role == Role.WALKER) {
+            Walker walker = new Walker(email, userName, role, hashedPw, contact, gender, birthday);
             walkerRepository.save(walker);
-        }else if(role == Role.ADMIN){
-            Admin admin = new Admin(email, role, hashedPw, contact, gender, birthday);
+        } else if (role == Role.ADMIN) {
+            Admin admin = new Admin(email, userName, role, hashedPw, contact, gender, birthday);
             adminRepository.save(admin);
         }
-        return signUpDto;
+        Optional<UserAccount> optionalUserAccount = userAccountRepository.findByEmail(email);
+        UserAccount userAccount;
+        if (optionalUserAccount.isPresent()) {
+            userAccount = optionalUserAccount.get();
+        } else {
+            throw new RuntimeException("Signup failed with the email " + email);
+        }
+        UserAccountDto userAccountDto = new UserAccountDto(userAccount);
+        return userAccountDto;
     }
 
 }
