@@ -38,10 +38,12 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         //OAuth 서비스 ID
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
 
+        //Social login 정보 받아오기
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, originAttributes);
 
         String email = attributes.getEmail();
-
+        
+        //Admin | User (owner, walker) Authority
         List<GrantedAuthority> authorities = customAuthorityUtils.createAuthorities(email);
 
         return new OAuth2CustomUser(registrationId, originAttributes, authorities, email);
