@@ -37,8 +37,8 @@ public class JwtFilter extends OncePerRequestFilter {
         String authorizationHeader = request.getHeader("Authorization");
         System.out.println("Authorization header: " + authorizationHeader);
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            sendErrorResponse(response, HttpResponse.unauthorized("No valid authorization header found", null));
             filterChain.doFilter(request, response);
+            sendErrorResponse(response, HttpResponse.unauthorized("No valid authorization header found", null));
             return;
         }
 
