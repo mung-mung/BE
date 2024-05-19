@@ -15,7 +15,7 @@ public class UserAccountController {
     public UserAccountController(UserAccountService userAccountService){
         this.userAccountService = userAccountService;
     }
-    @GetMapping("/")
+    @GetMapping({"/", ""})
     @ResponseBody
     public ResponseEntity<Object> findAllUsers() {
         return HttpResponse.successOk("All users found successfully", userAccountService.findAllUsers());
