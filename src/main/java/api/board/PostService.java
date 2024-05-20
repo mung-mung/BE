@@ -3,6 +3,9 @@ package api.board;
 import api.board.dto.PostRegisterDto;
 import api.board.dto.PostResponseDto;
 import api.user.userAccount.*;
+import api.common.util.auth.loggedInUser.LoggedInUser;
+import api.user.dto.UserAccountDto;
+
 
 
 import jakarta.transaction.Transactional;
