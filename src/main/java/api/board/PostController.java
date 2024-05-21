@@ -1,13 +1,10 @@
 package api.board;
 
-import api.board.dto.PostRegisterDto;
-import api.board.dto.PostResponseDto;
+import api.board.dto.PostDto;
 import api.common.util.http.HttpResponse;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.nio.file.AccessDeniedException;
 
 
 @RestController
@@ -32,9 +29,9 @@ public class PostController {
 
     @PostMapping("/")
     @ResponseBody
-    public ResponseEntity<Object> createPost(@RequestBody PostRegisterDto postDto) {
+    public ResponseEntity<Object> createPost(@RequestBody PostDto postDto) {
         try {
-            post post = postService.createPost(postDto);
+            PostDto post = postService.createPost(postDto);
             return HttpResponse.successCreated("Post successfully created.", post);
         } catch (Exception e) {
             return HttpResponse.badRequest("Error creating dog: " + e.getMessage(), null);
@@ -45,7 +42,7 @@ public class PostController {
     @ResponseBody
         public ResponseEntity<Object> getPostById(@PathVariable Integer postId) {
         try {
-            PostResponseDto foundPost = postService.getPostById(postId);
+            PostDto foundPost = postService.getPostById(postId);
 
             if (foundPost != null) {
                 return HttpResponse.successOk("Post found successfully", foundPost);
@@ -59,12 +56,12 @@ public class PostController {
 
     @PutMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<Object> updatePost(@PathVariable Integer id, @RequestBody PostRegisterDto updatedPost) {
-        post post = postService.updatePost(id, updatedPost);
-        if (post != null) {
-            return ResponseEntity.ok(post);
+    public ResponseEntity<Object> updatePost(@PathVariable Integer id, @RequestBody PostDto updatedPost) {
+        PostDto postDto = postService.updatePost(id, updatedPost);
+        if (postDto != null) {
+            return HttpResponse.successOk("Post successfully updated", postDto);
         } else {
-            return ResponseEntity.notFound().build();
+            return HttpResponse.notFound("Post not found", null);
         }
     }
 
