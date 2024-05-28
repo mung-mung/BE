@@ -18,8 +18,4 @@ public class FollowDto{
         this.followee = follow.getFollowee();
     }
 
-    public FollowDto(Integer followerId, Integer followeeId){
-        this.id = null;
-    }
-
 }
