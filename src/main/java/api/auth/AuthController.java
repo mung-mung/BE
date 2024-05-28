@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RequestMapping("/api/auth")
@@ -133,7 +135,10 @@ public class AuthController {
         response.setHeader("access", newAccess);
         response.addCookie(createCookie("Refresh", newRefresh));
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        Map<String, Object> tokenMap = new HashMap<>();
+        tokenMap.put("accessToken", newAccess);
+        tokenMap.put("refreshToken", newRefresh);
+        return HttpResponse.successOk("Reissue finished successfully", tokenMap);
     }
 
     private Cookie createCookie(String key, String value) {
