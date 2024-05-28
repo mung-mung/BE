@@ -1,5 +1,6 @@
 package api.follow;
 
+import api.user.userAccount.UserAccount;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.Id;
@@ -21,8 +22,8 @@ public class Follow {
     @JoinColumn(name = "FOLLOWEE_ID", nullable = false)
     private Integer followeeId;
 
-    public Follow(Integer followerId, Integer followeeId){
-        this.followerId = followerId;
-        this.followeeId = followeeId;
+    public Follow(UserAccount follower, UserAccount followee){
+        this.followerId = follower.getId();
+        this.followeeId = followee.getId();
     }
 }
