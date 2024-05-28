@@ -3,6 +3,7 @@ package api.follow;
 import api.user.userAccount.UserAccount;
 import jakarta.persistence.*;
 import lombok.*;
+import org.apache.catalina.User;
 import org.springframework.data.annotation.Id;
 
 @EqualsAndHashCode
@@ -16,14 +17,14 @@ public class Follow {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FOLLOWER_ID", nullable = false)
-    private Integer followerId;
+    private UserAccount follower;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FOLLOWEE_ID", nullable = false)
-    private Integer followeeId;
+    private UserAccount followee;
 
     public Follow(UserAccount follower, UserAccount followee){
-        this.followerId = follower.getId();
-        this.followeeId = followee.getId();
+        this.follower = follower;
+        this.followee = followee;
     }
 }
