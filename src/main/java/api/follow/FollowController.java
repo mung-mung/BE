@@ -27,7 +27,7 @@ public class FollowController {
             Follow createfollowDto = followService.createFollow(followDto);
             return HttpResponse.successOk("Follow created", createfollowDto);
         }catch (Exception e){
-            return HttpResponse.badRequest("Error creating follow: "+ e.getMessage(), null);
+            return HttpResponse.internalError("Error creating follow: "+ e.getMessage(), null);
         }
     }
 

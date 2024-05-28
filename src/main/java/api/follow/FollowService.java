@@ -3,6 +3,9 @@ package api.follow;
 import api.common.util.auth.loggedInUser.LoggedInUser;
 import api.follow.dto.FollowDto;
 import api.user.dto.UserAccountDto;
+import api.user.userAccount.UserAccount;
+import api.user.userAccount.UserAccountRepository;
+import api.user.userAccount.UserAccountService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,15 +20,21 @@ import java.util.stream.Collectors;
 @Service
 public class FollowService {
     private final FollowRepository followRepository;
+    private final UserAccountRepository userAccountRepository;
 
     @Autowired
-    public FollowService(FollowRepository followRepository) {
+    public FollowService(FollowRepository followRepository, UserAccountRepository userAccountRepository) {
         this.followRepository = followRepository;
+        this.userAccountRepository = userAccountRepository;
     }
 
     @Transactional
     public Follow createFollow(FollowDto followDto) {
-        Follow follow = new Follow(followDto.getFollowerId(), followDto.getFolloweeId());
+        UserAccount follower = userAccountRepository.findById(followDto.getFollowerId())
+                .orElseThrow(() -> new EntityNotFoundException("Follower not found with ID: " + followDto.getFollowerId()));
+        UserAccount followee = userAccountRepository.findById(followDto.getFolloweeId())
+                .orElseThrow(() -> new EntityNotFoundException("Followee not found with ID: " + followDto.getFolloweeId()));
+        Follow follow = new Follow(follower, followee);
         return followRepository.save(follow);
     }
 
