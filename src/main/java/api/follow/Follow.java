@@ -3,7 +3,6 @@ package api.follow;
 import api.user.userAccount.UserAccount;
 import jakarta.persistence.*;
 import lombok.*;
-import org.apache.catalina.User;
 import org.springframework.data.annotation.Id;
 
 @EqualsAndHashCode
