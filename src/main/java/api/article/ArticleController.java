@@ -23,7 +23,7 @@ public class ArticleController {
     @ResponseBody
     public ResponseEntity<Object> getAllArticle(){
         try {
-            return HttpResponse.successOk("All articles found successfully", articleService.getAllPost());
+            return HttpResponse.successOk("All articles found successfully", articleService.getAllArticle());
         } catch (Exception e) {
             return HttpResponse.internalError("Failed to fetch articles: " + e.getMessage(), null);
         }
@@ -42,9 +42,9 @@ public class ArticleController {
 
     @GetMapping("/{articleId}")
     @ResponseBody
-        public ResponseEntity<Object> getPostById(@PathVariable Integer articleId) {
+        public ResponseEntity<Object> getArticleById(@PathVariable Integer articleId) {
         try {
-            ArticleDto foundArticle = articleService.getPostById(articleId);
+            ArticleDto foundArticle = articleService.getArticleById(articleId);
 
             if (foundArticle != null) {
                 return HttpResponse.successOk("Article found successfully", foundArticle);
@@ -59,7 +59,7 @@ public class ArticleController {
     @PatchMapping("/{articleId}")
     @ResponseBody
     public ResponseEntity<Object> updateArticle(@PathVariable Integer articleId, @RequestBody ArticleDto uewArticleDto) {
-        ArticleDto updatedArticleDto = articleService.updatePost(articleId, uewArticleDto);
+        ArticleDto updatedArticleDto = articleService.updateArticle(articleId, uewArticleDto);
         if (updatedArticleDto != null) {
             return HttpResponse.successOk("Article successfully updated", updatedArticleDto);
         } else {
@@ -69,7 +69,7 @@ public class ArticleController {
 
     @DeleteMapping("/{articleId}")
     @ResponseBody
-    public ResponseEntity<Object> deletePost(@PathVariable Integer articleId) {
+    public ResponseEntity<Object> deleteArticle(@PathVariable Integer articleId) {
         try {
             articleService.deleteArticle(articleId);
             return HttpResponse.successOk("Article deleted successfully", null);

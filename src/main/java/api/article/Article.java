@@ -21,12 +21,12 @@ public class Article {
     @Column(name = "TITLE", nullable = false)
     private String title;
 
-    @Column(name = "CONTENT", nullable = false)
-    private String content;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "OWNER_ID")
+    private UserAccount owner;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "WRITER_ID", nullable = true)
-    private UserAccount writer;
+    @Embedded
+    private ArticleContractDetail articleContractDetail;
 
     @Column(name = "CREATED_AT", nullable = false)
     private LocalDateTime createdAt;
@@ -34,15 +34,17 @@ public class Article {
     @Column(name = "UPDATED_AT", nullable = false)
     private LocalDateTime updatedAt;
 
-    public Article(String title, String content, UserAccount writer){
+
+    public Article(String title, UserAccount owner, ArticleContractDetail articleContractDetail) {
         this.title = title;
-        this.content = content;
-        this.writer = writer;
+        this.owner = owner;
+        this.articleContractDetail = articleContractDetail;
     }
 
-    public void update(String title, String content){
+    public Article update(String title, ArticleContractDetail articleContractDetail){
         this.title = title;
-        this.content = content;
+        this.articleContractDetail = articleContractDetail;
+        return this;
     }
 
     @PrePersist
