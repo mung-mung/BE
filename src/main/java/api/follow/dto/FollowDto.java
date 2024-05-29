@@ -9,13 +9,13 @@ import lombok.Setter;
 @Getter
 public class FollowDto{
     private Integer id;
-    private UserAccount follower;
-    private UserAccount followee;
+    private Integer followerId;
+    private Integer followeeId;
 
     public FollowDto(Follow follow) {
         this.id = follow.getId();
-        this.follower = follow.getFollower();
-        this.followee = follow.getFollowee();
+        this.followerId = follow.getFollower().getId();
+        this.followeeId = follow.getFollowee().getId();
     }
 
 }
