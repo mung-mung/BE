@@ -1,4 +1,4 @@
-package api.board;
+package api.article;
 
 import api.user.userAccount.UserAccount;
 import jakarta.persistence.*;
@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Entity
-@Table(name = "post")
-public class Post {
+@Table(name = "article")
+public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -34,7 +34,7 @@ public class Post {
     @Column(name = "UPDATED_AT", nullable = false)
     private LocalDateTime updatedAt;
 
-    public Post(String title, String content, UserAccount writer){
+    public Article(String title, String content, UserAccount writer){
         this.title = title;
         this.content = content;
         this.writer = writer;
