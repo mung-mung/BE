@@ -29,10 +29,10 @@ public class FollowService {
 
     @Transactional
     public Follow createFollow(FollowDto followDto) {
-        UserAccount follower = userAccountRepository.findById(followDto.getFollower().getId())
-                .orElseThrow(() -> new EntityNotFoundException("Follower not found with ID: " + followDto.getFollower().getId()));
-        UserAccount followee = userAccountRepository.findById(followDto.getFollowee().getId())
-                .orElseThrow(() -> new EntityNotFoundException("Followee not found with ID: " + followDto.getFollowee().getId()));
+        UserAccount follower = userAccountRepository.findById(followDto.getFollowerId())
+                .orElseThrow(() -> new EntityNotFoundException("Follower not found with ID: " + followDto.getFollowerId()));
+        UserAccount followee = userAccountRepository.findById(followDto.getFolloweeId())
+                .orElseThrow(() -> new EntityNotFoundException("Followee not found with ID: " + followDto.getFolloweeId()));
         Follow follow = new Follow(follower, followee);
         return followRepository.save(follow);
     }
