@@ -1,6 +1,6 @@
-package api.board.dto;
+package api.article.dto;
 
-import api.board.Post;
+import api.article.Article;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,27 +8,27 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class PostDto {
+public class ArticleDto {
     private Integer id;
     private String title;
     private String content;
     private Integer writerId;
 
     // Constructor for creation and update
-    public PostDto(String title, String content) {
+    public ArticleDto(String title, String content) {
         this.title = title;
         this.content = content;
     }
 
-    public PostDto(Post post){
-        this.id = post.getId();
-        this.title = post.getTitle();
-        this.content = post.getContent();
-        this.writerId = post.getWriter().getId();
+    public ArticleDto(Article article){
+        this.id = article.getId();
+        this.title = article.getTitle();
+        this.content = article.getContent();
+        this.writerId = article.getWriter().getId();
     }
 
     // Constructor for registration
-    public PostDto(String title, String content, Integer writerId) {
+    public ArticleDto(String title, String content, Integer writerId) {
         this.title = title;
         this.content = content;
         this.writerId = writerId;
