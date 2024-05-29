@@ -45,7 +45,6 @@ public class ArticleController {
         public ResponseEntity<Object> getArticleById(@PathVariable Integer articleId) {
         try {
             ArticleDto foundArticle = articleService.getArticleById(articleId);
-
             if (foundArticle != null) {
                 return HttpResponse.successOk("Article found successfully", foundArticle);
             } else {
@@ -59,13 +58,22 @@ public class ArticleController {
     @PatchMapping("/{articleId}")
     @ResponseBody
     public ResponseEntity<Object> updateArticle(@PathVariable Integer articleId, @RequestBody ArticleDto uewArticleDto) {
-        ArticleDto updatedArticleDto = articleService.updateArticle(articleId, uewArticleDto);
-        if (updatedArticleDto != null) {
-            return HttpResponse.successOk("Article successfully updated", updatedArticleDto);
-        } else {
-            return HttpResponse.notFound("Article not found", null);
+        try {
+            ArticleDto updatedArticleDto = articleService.updateArticle(articleId, uewArticleDto);
+            if (updatedArticleDto != null) {
+                return HttpResponse.successOk("Article successfully updated", updatedArticleDto);
+            } else {
+                return HttpResponse.notFound("Article not found", null);
+            }
+        } catch (AccessDeniedException e) {
+            return HttpResponse.forbidden(e.getMessage(), null);
+        } catch (IllegalArgumentException e) {
+            return HttpResponse.badRequest(e.getMessage(), null);
+        } catch (Exception e) {
+            return HttpResponse.internalError("Error updating Article: " + e.getMessage(), null);
         }
     }
+
 
     @DeleteMapping("/{articleId}")
     @ResponseBody
@@ -79,4 +87,5 @@ public class ArticleController {
             return HttpResponse.internalError("Error deleting article: " + e.getMessage(), null);
         }
     }
+
 }
