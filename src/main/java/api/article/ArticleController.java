@@ -19,7 +19,7 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-    @GetMapping("/")
+    @GetMapping({"", "/"})
     @ResponseBody
     public ResponseEntity<Object> getAllArticle(){
         try {
@@ -29,7 +29,7 @@ public class ArticleController {
         }
     }
 
-    @PostMapping("/")
+    @PostMapping({"", "/"})
     @ResponseBody
     public ResponseEntity<Object> createArticle(@RequestBody ArticleDto articleDto) {
         try {
