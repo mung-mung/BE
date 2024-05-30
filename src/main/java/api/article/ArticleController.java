@@ -21,9 +21,9 @@ public class ArticleController {
 
     @GetMapping({"", "/"})
     @ResponseBody
-    public ResponseEntity<Object> getAllArticle(){
+    public ResponseEntity<Object> getAllArticles(){
         try {
-            return HttpResponse.successOk("All articles found successfully", articleService.getAllArticle());
+            return HttpResponse.successOk("All articles found successfully", articleService.getAllArticles());
         } catch (Exception e) {
             return HttpResponse.internalError("Failed to fetch articles: " + e.getMessage(), null);
         }

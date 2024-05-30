@@ -2,6 +2,8 @@ package api.article;
 
 import api.article.dto.ArticleDto;
 import api.common.util.auth.loggedInUser.LoggedInUser;
+import api.dog.Dog;
+import api.dog.dto.DogDto;
 import api.user.dto.UserAccountDto;
 import api.user.enums.Role;
 import api.user.owner.Owner;
@@ -9,10 +11,12 @@ import api.user.owner.OwnerRepository;
 import api.user.userAccount.*;
 
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,13 +32,18 @@ public class ArticleService {
     }
 
     @Transactional
-    public List<Article> getAllArticle() {
-        return articleRepository.findAll();
+    public List<ArticleDto> getAllArticles() {
+        List<Article> articles = articleRepository.findAll();
+        List<ArticleDto> articleDtos = new ArrayList<>();
+        for(Article article : articles){
+            articleDtos.add(new ArticleDto(article));
+        }
+        return articleDtos;
     }
 
     @Transactional
-    public ArticleDto getArticleById(Integer id) {
-        Article article = articleRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("invalid article ID"));
+    public ArticleDto getArticleById(Integer articleId) {
+        Article article = articleRepository.findById(articleId).orElseThrow(() -> new EntityNotFoundException("Article not found with ID: " + articleId));
         return new ArticleDto(article);
     }
 
