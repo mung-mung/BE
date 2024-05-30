@@ -10,7 +10,7 @@ import java.nio.file.AccessDeniedException;
 
 
 @RestController
-@RequestMapping("/api/board")
+@RequestMapping("/api/article")
 public class ArticleController {
 
     private final ArticleService articleService;

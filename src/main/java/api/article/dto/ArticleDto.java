@@ -11,13 +11,11 @@ import lombok.Setter;
 @Setter
 public class ArticleDto {
     private Integer id;
-    private String title;
     private ArticleContractDetail articleContractDetail;
     private Integer ownerId;
 
     public ArticleDto(Article article){
         this.id = article.getId();
-        this.title = article.getTitle();
         this.articleContractDetail = article.getArticleContractDetail();
         this.ownerId = article.getOwner().getId();
     }
