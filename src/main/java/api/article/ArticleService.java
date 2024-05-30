@@ -1,19 +1,19 @@
 package api.article;
 
 import api.article.dto.ArticleDto;
+import api.article.dto.CreateContractDto;
 import api.common.util.auth.loggedInUser.LoggedInUser;
-import api.dog.Dog;
-import api.dog.dto.DogDto;
+import api.owning.Owning;
+import api.owning.OwningRepository;
 import api.user.dto.UserAccountDto;
 import api.user.enums.Role;
 import api.user.owner.Owner;
 import api.user.owner.OwnerRepository;
-import api.user.userAccount.*;
 
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
@@ -25,13 +25,15 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
     private final OwnerRepository ownerRepository;
+    private final OwningRepository owningRepository;
 
-    public ArticleService(ArticleRepository articleRepository, OwnerRepository ownerRepository) {
+    public ArticleService(ArticleRepository articleRepository, OwnerRepository ownerRepository, OwningRepository owningRepository) {
         this.articleRepository = articleRepository;
         this.ownerRepository = ownerRepository;
+        this.owningRepository = owningRepository;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<ArticleDto> getAllArticles() {
         List<Article> articles = articleRepository.findAll();
         List<ArticleDto> articleDtos = new ArrayList<>();
@@ -41,14 +43,14 @@ public class ArticleService {
         return articleDtos;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public ArticleDto getArticleById(Integer articleId) {
         Article article = articleRepository.findById(articleId).orElseThrow(() -> new EntityNotFoundException("Article not found with ID: " + articleId));
         return new ArticleDto(article);
     }
 
     @Transactional
-    public ArticleDto createArticle(ArticleDto articleDto) throws AccessDeniedException {
+    public ArticleDto createArticle(CreateContractDto createContractDto) throws AccessDeniedException {
         UserAccountDto loggedInUserAccountDto = LoggedInUser.getLoggedInUserAccountDto();
         if (loggedInUserAccountDto == null || !Role.OWNER.equals(loggedInUserAccountDto.getRole())) {
             throw new AccessDeniedException("Only owners can create article.");
@@ -57,11 +59,14 @@ public class ArticleService {
         if (optionalOwner.isEmpty()) {
             throw new AccessDeniedException("Owner not found for the logged in user.");
         }
-        if (articleDto.getOwnerId() == null) {
-            throw new IllegalArgumentException("Owner ID must not be null");
-        }
         Owner owner = optionalOwner.get();
-        Article newArticle = new Article(owner, articleDto.getArticleContractDetail());
+        Optional<Owning> optionalOwning = owningRepository.findByOwnerIdAndDogId(owner.getId(), createContractDto.getDogId());
+        if (optionalOwning.isEmpty()) {
+            throw new AccessDeniedException("Only owner of the dog can create article.");
+        }
+        Owning owning = optionalOwning.get();
+
+        Article newArticle = new Article(owning, createContractDto.getArticleContractDetail());
         Article savedArticle = articleRepository.save(newArticle);
 
         return new ArticleDto(savedArticle);
@@ -69,7 +74,7 @@ public class ArticleService {
 
 
     @Transactional
-    public ArticleDto updateArticle(Integer id, ArticleDto articleDto) throws AccessDeniedException {
+    public ArticleDto updateArticleContractDetail(Integer articleId, ArticleContractDetail articleContractDetail) throws AccessDeniedException {
         UserAccountDto loggedInUserAccountDto = LoggedInUser.getLoggedInUserAccountDto();
         if (loggedInUserAccountDto == null || !Role.OWNER.equals(loggedInUserAccountDto.getRole())) {
             throw new AccessDeniedException("Only owners can update article.");
@@ -80,24 +85,19 @@ public class ArticleService {
             throw new AccessDeniedException("Owner not found for the logged in user.");
         }
 
-        if (articleDto.getOwnerId() == null) {
-            throw new IllegalArgumentException("Owner ID must not be null");
-        }
-
         Owner owner = optionalOwner.get();
-        Article article = articleRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid article ID"));
+        Article article = articleRepository.findById(articleId).orElseThrow(() -> new IllegalArgumentException("Invalid article ID"));
 
-        if (!article.getOwner().equals(owner)) {
-            throw new AccessDeniedException("Only the author can update their own post.");
+        if (!article.getOwning().getOwner().equals(owner)) {
+            throw new AccessDeniedException("Only the author can update their own article.");
         }
-
-        Article updatedArticle = article.update(articleDto.getArticleContractDetail());
+        Article updatedArticle = article.update(articleContractDetail);
         Article savedArticle = articleRepository.save(updatedArticle);
         return new ArticleDto(savedArticle);
     }
 
     @Transactional
-    public void deleteArticle(Integer id) throws AccessDeniedException {
+    public void deleteArticle(Integer articleId) throws AccessDeniedException {
         UserAccountDto loggedInUserAccountDto = LoggedInUser.getLoggedInUserAccountDto();
         if (loggedInUserAccountDto == null || !Role.OWNER.equals(loggedInUserAccountDto.getRole())) {
             throw new AccessDeniedException("Only owners can update article.");
@@ -109,12 +109,12 @@ public class ArticleService {
         }
 
         Owner owner = optionalOwner.get();
-        Article article = articleRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid article ID"));
+        Article article = articleRepository.findById(articleId).orElseThrow(() -> new IllegalArgumentException("Invalid article ID"));
 
-        if (!article.getOwner().equals(owner)) {
-            throw new AccessDeniedException("Only the author can delete their own post.");
+        if (!article.getOwning().getOwner().equals(owner)) {
+            throw new AccessDeniedException("Only the author can delete their own article.");
         }
-        articleRepository.deleteById(id);
+        articleRepository.deleteById(articleId);
     }
 
 }
