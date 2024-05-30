@@ -1,32 +1,29 @@
-package api.board;
+package api.follow;
 
 import api.user.userAccount.UserAccount;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
+@EqualsAndHashCode
 @ToString
 @NoArgsConstructor
 @Getter
 @Entity
-@Table(name = "post")
-public class Post {
+@Table(name="follow")
+public class Follow {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "FOLLOWER_ID", nullable = false)
+    private UserAccount follower;
 
-    @Column(name = "TITLE", nullable = false)
-    private String title;
-
-    @Column(name = "CONTENT", nullable = false)
-    private String content;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "WRITER_ID", nullable = true)
-    private UserAccount writer;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "FOLLOWEE_ID", nullable = false)
+    private UserAccount followee;
 
     @Column(name = "CREATED_AT", nullable = false)
     private LocalDateTime createdAt;
@@ -34,17 +31,10 @@ public class Post {
     @Column(name = "UPDATED_AT", nullable = false)
     private LocalDateTime updatedAt;
 
-    public Post(String title, String content, UserAccount writer){
-        this.title = title;
-        this.content = content;
-        this.writer = writer;
+    public Follow(UserAccount follower, UserAccount followee){
+        this.follower = follower;
+        this.followee = followee;
     }
-
-    public void update(String title, String content){
-        this.title = title;
-        this.content = content;
-    }
-
     @PrePersist
     protected void onCreate() {
         LocalDateTime now = LocalDateTime.now();
