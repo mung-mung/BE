@@ -18,9 +18,6 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "TITLE", nullable = false)
-    private String title;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "OWNER_ID")
     private UserAccount owner;
@@ -35,14 +32,12 @@ public class Article {
     private LocalDateTime updatedAt;
 
 
-    public Article(String title, UserAccount owner, ArticleContractDetail articleContractDetail) {
-        this.title = title;
+    public Article(UserAccount owner, ArticleContractDetail articleContractDetail) {
         this.owner = owner;
         this.articleContractDetail = articleContractDetail;
     }
 
-    public Article update(String title, ArticleContractDetail articleContractDetail){
-        this.title = title;
+    public Article update(ArticleContractDetail articleContractDetail){
         this.articleContractDetail = articleContractDetail;
         return this;
     }

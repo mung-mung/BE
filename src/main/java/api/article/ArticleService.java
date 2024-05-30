@@ -52,7 +52,7 @@ public class ArticleService {
             throw new IllegalArgumentException("Owner ID must not be null");
         }
         Owner owner = optionalOwner.get();
-        Article newArticle = new Article(articleDto.getTitle(), owner, articleDto.getArticleContractDetail());
+        Article newArticle = new Article(owner, articleDto.getArticleContractDetail());
         Article savedArticle = articleRepository.save(newArticle);
 
         return new ArticleDto(savedArticle);
@@ -82,7 +82,7 @@ public class ArticleService {
             throw new AccessDeniedException("Only the author can update their own post.");
         }
 
-        Article updatedArticle = article.update(articleDto.getTitle(), articleDto.getArticleContractDetail());
+        Article updatedArticle = article.update(articleDto.getArticleContractDetail());
         Article savedArticle = articleRepository.save(updatedArticle);
         return new ArticleDto(savedArticle);
     }

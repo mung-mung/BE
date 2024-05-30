@@ -2,7 +2,6 @@ DROP TABLE IF EXISTS article CASCADE;
 
 CREATE TABLE article (
                          ID SERIAL PRIMARY KEY,
-                         TITLE VARCHAR(256) NOT NULL,
                          OWNER_ID INT NOT NULL,
                          WALKING_LOCATION VARCHAR(256) NOT NULL,
                          WALKING_DATE DATE NOT NULL,
