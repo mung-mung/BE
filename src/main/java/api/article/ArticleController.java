@@ -31,31 +31,6 @@ public class ArticleController {
     }
 
 
-    @GetMapping("/{articleId}")
-    @ResponseBody
-        public ResponseEntity<Object> getArticleById(@PathVariable Integer articleId) {
-        try {
-            ArticleDto foundArticle = articleService.getArticleById(articleId);
-            if (foundArticle != null) {
-                return HttpResponse.successOk("Article found successfully", foundArticle);
-            } else {
-                return HttpResponse.notFound("Article not found with ID: " + articleId, null);
-            }
-        } catch (Exception e) {
-            return HttpResponse.internalError("Error finding Article: " + e.getMessage(), null);
-        }
-    }
-
-    @PostMapping({"", "/"})
-    @ResponseBody
-    public ResponseEntity<Object> createArticle(@RequestBody CreateContractDto createContractDto) {
-        try {
-            ArticleDto createdArticleDto = articleService.createArticle(createContractDto);
-            return HttpResponse.successCreated("Article successfully created.", createdArticleDto);
-        } catch (Exception e) {
-            return HttpResponse.badRequest("Error creating article: " + e.getMessage(), null);
-        }
-    }
 
     @PatchMapping("/{articleId}")
     @ResponseBody
@@ -75,7 +50,16 @@ public class ArticleController {
             return HttpResponse.internalError("Error updating Article: " + e.getMessage(), null);
         }
     }
-
+    @PostMapping({"", "/"})
+    @ResponseBody
+    public ResponseEntity<Object> createArticle(@RequestBody CreateContractDto createContractDto) {
+        try {
+            ArticleDto createdArticleDto = articleService.createArticle(createContractDto);
+            return HttpResponse.successCreated("Article successfully created.", createdArticleDto);
+        } catch (Exception e) {
+            return HttpResponse.badRequest("Error creating article: " + e.getMessage(), null);
+        }
+    }
 
     @DeleteMapping("/{articleId}")
     @ResponseBody

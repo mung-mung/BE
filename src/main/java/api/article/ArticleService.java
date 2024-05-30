@@ -43,24 +43,10 @@ public class ArticleService {
         return articleDtos;
     }
 
-    @Transactional(readOnly = true)
-    public ArticleDto getArticleById(Integer articleId) {
-        Article article = articleRepository.findById(articleId).orElseThrow(() -> new EntityNotFoundException("Article not found with ID: " + articleId));
-        return new ArticleDto(article);
-    }
-
     @Transactional
     public ArticleDto createArticle(CreateContractDto createContractDto) throws AccessDeniedException {
-        UserAccountDto loggedInUserAccountDto = LoggedInUser.getLoggedInUserAccountDto();
-        if (loggedInUserAccountDto == null || !Role.OWNER.equals(loggedInUserAccountDto.getRole())) {
-            throw new AccessDeniedException("Only owners can create article.");
-        }
-        Optional<Owner> optionalOwner = ownerRepository.findByEmail(loggedInUserAccountDto.getEmail());
-        if (optionalOwner.isEmpty()) {
-            throw new AccessDeniedException("Owner not found for the logged in user.");
-        }
-        Owner owner = optionalOwner.get();
-        Optional<Owning> optionalOwning = owningRepository.findByOwnerIdAndDogId(owner.getId(), createContractDto.getDogId());
+        Owner loggedInOwner = loggedInOwner();
+        Optional<Owning> optionalOwning = owningRepository.findByOwnerIdAndDogId(loggedInOwner.getId(), createContractDto.getDogId());
         if (optionalOwning.isEmpty()) {
             throw new AccessDeniedException("Only owner of the dog can create article.");
         }
@@ -75,20 +61,13 @@ public class ArticleService {
 
     @Transactional
     public ArticleDto updateArticleContractDetail(Integer articleId, ArticleContractDetail articleContractDetail) throws AccessDeniedException {
-        UserAccountDto loggedInUserAccountDto = LoggedInUser.getLoggedInUserAccountDto();
-        if (loggedInUserAccountDto == null || !Role.OWNER.equals(loggedInUserAccountDto.getRole())) {
-            throw new AccessDeniedException("Only owners can update article.");
+        Owner loggedInOwner = loggedInOwner();
+        Optional<Article> optionalArticle = articleRepository.findById(articleId);
+        if (optionalArticle.isEmpty()) {
+            throw new EntityNotFoundException("Article not found with ID: " + articleId);
         }
-
-        Optional<Owner> optionalOwner = ownerRepository.findByEmail(loggedInUserAccountDto.getEmail());
-        if (optionalOwner.isEmpty()) {
-            throw new AccessDeniedException("Owner not found for the logged in user.");
-        }
-
-        Owner owner = optionalOwner.get();
-        Article article = articleRepository.findById(articleId).orElseThrow(() -> new IllegalArgumentException("Invalid article ID"));
-
-        if (!article.getOwning().getOwner().equals(owner)) {
+        Article article = optionalArticle.get();
+        if (!article.getOwning().getOwner().equals(loggedInOwner)) {
             throw new AccessDeniedException("Only the author can update their own article.");
         }
         Article updatedArticle = article.update(articleContractDetail);
@@ -98,6 +77,19 @@ public class ArticleService {
 
     @Transactional
     public void deleteArticle(Integer articleId) throws AccessDeniedException {
+        Owner loggedInOwner = loggedInOwner();
+        Optional<Article> optionalArticle = articleRepository.findById(articleId);
+        if (optionalArticle.isEmpty()) {
+            throw new EntityNotFoundException("Article not found with ID: " + articleId);
+        }
+        Article article = optionalArticle.get();
+        if (!article.getOwning().getOwner().equals(loggedInOwner)) {
+            throw new AccessDeniedException("Only the author can delete their own article.");
+        }
+        articleRepository.deleteById(articleId);
+    }
+
+    private Owner loggedInOwner() throws AccessDeniedException {
         UserAccountDto loggedInUserAccountDto = LoggedInUser.getLoggedInUserAccountDto();
         if (loggedInUserAccountDto == null || !Role.OWNER.equals(loggedInUserAccountDto.getRole())) {
             throw new AccessDeniedException("Only owners can update article.");
@@ -105,16 +97,10 @@ public class ArticleService {
 
         Optional<Owner> optionalOwner = ownerRepository.findByEmail(loggedInUserAccountDto.getEmail());
         if (optionalOwner.isEmpty()) {
-            throw new AccessDeniedException("Owner not found for the logged in user.");
+            throw new AccessDeniedException("Invalid owner account");
         }
 
-        Owner owner = optionalOwner.get();
-        Article article = articleRepository.findById(articleId).orElseThrow(() -> new IllegalArgumentException("Invalid article ID"));
-
-        if (!article.getOwning().getOwner().equals(owner)) {
-            throw new AccessDeniedException("Only the author can delete their own article.");
-        }
-        articleRepository.deleteById(articleId);
+        return optionalOwner.get();
     }
 
 }
