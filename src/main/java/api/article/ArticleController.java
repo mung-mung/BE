@@ -1,6 +1,7 @@
 package api.article;
 
 import api.article.dto.ArticleDto;
+import api.article.dto.CreateContractDto;
 import api.common.util.http.HttpResponse;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
@@ -29,16 +30,6 @@ public class ArticleController {
         }
     }
 
-    @PostMapping({"", "/"})
-    @ResponseBody
-    public ResponseEntity<Object> createArticle(@RequestBody ArticleDto articleDto) {
-        try {
-            ArticleDto createdArticleDto = articleService.createArticle(articleDto);
-            return HttpResponse.successCreated("Article successfully created.", createdArticleDto);
-        } catch (Exception e) {
-            return HttpResponse.badRequest("Error creating article: " + e.getMessage(), null);
-        }
-    }
 
     @GetMapping("/{articleId}")
     @ResponseBody
@@ -55,11 +46,22 @@ public class ArticleController {
         }
     }
 
+    @PostMapping({"", "/"})
+    @ResponseBody
+    public ResponseEntity<Object> createArticle(@RequestBody CreateContractDto createContractDto) {
+        try {
+            ArticleDto createdArticleDto = articleService.createArticle(createContractDto);
+            return HttpResponse.successCreated("Article successfully created.", createdArticleDto);
+        } catch (Exception e) {
+            return HttpResponse.badRequest("Error creating article: " + e.getMessage(), null);
+        }
+    }
+
     @PatchMapping("/{articleId}")
     @ResponseBody
-    public ResponseEntity<Object> updateArticle(@PathVariable Integer articleId, @RequestBody ArticleDto uewArticleDto) {
+    public ResponseEntity<Object> updateArticleContractDetail(@PathVariable Integer articleId, @RequestBody ArticleContractDetail articleContractDetail) {
         try {
-            ArticleDto updatedArticleDto = articleService.updateArticle(articleId, uewArticleDto);
+            ArticleDto updatedArticleDto = articleService.updateArticleContractDetail(articleId, articleContractDetail);
             if (updatedArticleDto != null) {
                 return HttpResponse.successOk("Article successfully updated", updatedArticleDto);
             } else {

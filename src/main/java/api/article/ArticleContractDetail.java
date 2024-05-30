@@ -14,18 +14,20 @@ import java.time.LocalDateTime;
 @Getter
 @Embeddable
 public class ArticleContractDetail {
+
     @Column(name = "WALKING_LOCATION", nullable = false)
     private String walkingLocation;
 
     @Column(name = "WALKING_DATETIME", nullable = false)
-    private LocalDateTime walkingStartTime;
+    private LocalDateTime walkingDateTime;
 
-    @Column(name = "WALKING_DURATION", nullable = false)
-    private Duration walkingDuration;
+    @Column(name = "WALKING_MIN", nullable = false)
+    private Integer walkingMinutes;
 
     @Column(name = "HOURLY_RATE", nullable = false)
     private Integer hourlyRate;
 
     @Column(name = "ADDITIONAL_REQUIREMENTS", nullable = true)
     private String additionalRequirements;
+
 }

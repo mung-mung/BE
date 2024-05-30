@@ -1,6 +1,6 @@
 package api.article;
 
-import api.user.userAccount.UserAccount;
+import api.owning.Owning;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,8 +19,8 @@ public class Article {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "OWNER_ID")
-    private UserAccount owner;
+    @JoinColumn(name = "OWNING_ID")
+    private Owning owning;
 
     @Embedded
     private ArticleContractDetail articleContractDetail;
@@ -32,8 +32,8 @@ public class Article {
     private LocalDateTime updatedAt;
 
 
-    public Article(UserAccount owner, ArticleContractDetail articleContractDetail) {
-        this.owner = owner;
+    public Article(Owning owning, ArticleContractDetail articleContractDetail) {
+        this.owning = owning;
         this.articleContractDetail = articleContractDetail;
     }
 

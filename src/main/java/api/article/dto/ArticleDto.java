@@ -13,13 +13,12 @@ public class ArticleDto {
     private Integer id;
     private ArticleContractDetail articleContractDetail;
     private Integer ownerId;
+    private Integer dogId;
 
     public ArticleDto(Article article){
         this.id = article.getId();
         this.articleContractDetail = article.getArticleContractDetail();
-        this.ownerId = article.getOwner().getId();
+        this.ownerId = article.getOwning().getOwner().getId();
+        this.dogId = article.getOwning().getDog().getId();
     }
-
-
-
 }
