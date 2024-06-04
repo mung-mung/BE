@@ -17,4 +17,9 @@ public class OwningDto {
         this.ownerId = owning.getOwner().getId();
         this.dogId = owning.getDog().getId();
     }
+    public OwningDto(Integer id, Integer ownerId, Integer dogId) {
+        this.id = id;
+        this.ownerId = ownerId;
+        this.dogId = dogId;
+    }
 }
