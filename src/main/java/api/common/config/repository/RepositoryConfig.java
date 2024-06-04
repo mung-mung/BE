@@ -1,5 +1,6 @@
 package api.common.config.repository;
 
+import api.user.userAccount.repository.UserAccountRepositoryCustomImpl;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.context.annotation.Bean;
@@ -17,5 +18,9 @@ public class RepositoryConfig {
     @Bean
     public JPAQueryFactory jpaQueryFactory() {
         return new JPAQueryFactory(em);
+    }
+    @Bean
+    public UserAccountRepositoryCustomImpl userAccountRepositoryCustom(JPAQueryFactory queryFactory) {
+        return new UserAccountRepositoryCustomImpl(queryFactory);
     }
 }

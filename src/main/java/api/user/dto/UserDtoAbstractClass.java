@@ -1,11 +1,9 @@
 package api.user.dto;
 
+import api.user.enums.Gender;
 import api.user.enums.Role;
 import api.user.userAccount.UserAccount;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 @AllArgsConstructor
@@ -13,14 +11,14 @@ import java.time.LocalDate;
 @Setter
 @Getter
 public abstract class UserDtoAbstractClass {
-    private Integer id;
-    private String email;
-    private String userName;
-    private Role role;
-    private String avatarUrl;
-    private String contact;
-    private String gender;
-    private LocalDate birthday;
+    protected Integer id;
+    protected String email;
+    protected String userName;
+    protected Role role;
+    protected String avatarUrl;
+    protected String contact;
+    protected Gender gender;
+    protected LocalDate birthday;
     public UserDtoAbstractClass(UserAccount userAccount) {
         this.id = userAccount.getId();
         this.email = userAccount.getEmail();
@@ -28,7 +26,7 @@ public abstract class UserDtoAbstractClass {
         this.role = userAccount.getRole();
         this.avatarUrl = userAccount.getAvatarUrl();
         this.contact = userAccount.getContact();
-        this.gender = userAccount.getGender().toString();
+        this.gender = userAccount.getGender();
         this.birthday = userAccount.getBirthday();
     }
 }
