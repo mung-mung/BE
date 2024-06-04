@@ -12,12 +12,13 @@ import api.owning.OwningService;
 import api.user.admin.AdminRepository;
 import api.user.owner.OwnerRepository;
 import api.user.owner.OwnerService;
-import api.user.userAccount.UserAccountRepository;
+import api.user.userAccount.repository.UserAccountRepository;
 import api.user.userAccount.UserAccountService;
 import api.user.walker.WalkerRepository;
 import api.user.walker.WalkerService;
 import api.walking.WalkingRepository;
 import api.walking.WalkingService;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,41 +37,5 @@ public class ApiConfig {
         this.em = em;
         this.passwordEncoder = passwordEncoder;
     }
-
-    @Bean
-    public UserAccountService userService(UserAccountRepository userAccountRepository){
-        return new UserAccountService(userAccountRepository);
-    }
-
-    @Bean
-    public AuthService authService(UserAccountRepository userAccountRepository, OwnerRepository ownerRepository, WalkerRepository walkerRepository, AdminRepository adminRepository){
-        return new AuthService(userAccountRepository, ownerRepository, walkerRepository, adminRepository, passwordEncoder);
-    }
-
-    @Bean
-    public DogService dogService(DogRepository dogRepository, OwnerRepository ownerRepository, OwningRepository owningRepository){
-        return new DogService(dogRepository, ownerRepository, owningRepository);
-    }
-
-    @Bean
-    public OwnerService ownerService(OwnerRepository ownerRepository){
-        return new OwnerService(ownerRepository);
-    }
-
-    @Bean
-    public WalkerService walkerService(WalkerRepository walkerRepository){
-        return new WalkerService(walkerRepository);
-    }
-
-    @Bean
-    public OwningService owningService(OwningRepository owningRepository, OwnerRepository ownerRepository){
-        return new OwningService(owningRepository, ownerRepository);
-    }
-
-    @Bean
-    public WalkingService walkingService(WalkingRepository walkingRepository, DogRepository dogRepository, WalkerRepository walkerRepository){
-        return new WalkingService(walkingRepository, dogRepository, walkerRepository);
-    }
-
 }
 
