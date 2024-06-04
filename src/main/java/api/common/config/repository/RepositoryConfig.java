@@ -2,6 +2,7 @@ package api.common.config.repository;
 
 import api.article.jobPostingArticle.repository.JobPostingArticleRepositoryCustomImpl;
 import api.dog.repository.DogRepositoryCustomImpl;
+import api.owning.repository.OwningRepositoryCustomImpl;
 import api.user.owner.repository.OwnerRepositoryCustomImpl;
 import api.user.userAccount.repository.UserAccountRepositoryCustomImpl;
 import api.user.walker.repository.WalkerRepositoryCustomImpl;
@@ -42,5 +43,9 @@ public class RepositoryConfig {
     @Bean
     public JobPostingArticleRepositoryCustomImpl jobPostingArticleRepositoryCustom (JPAQueryFactory queryFactory) {
         return new JobPostingArticleRepositoryCustomImpl(queryFactory);
+    }
+    @Bean
+    public OwningRepositoryCustomImpl owningRepositoryCustom (JPAQueryFactory queryFactory) {
+        return new OwningRepositoryCustomImpl(queryFactory);
     }
 }

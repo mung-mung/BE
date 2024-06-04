@@ -5,7 +5,7 @@ import api.dog.dto.DogDto;
 import api.dog.enums.Sex;
 import api.dog.repository.DogRepository;
 import api.owning.Owning;
-import api.owning.OwningRepository;
+import api.owning.repository.OwningRepository;
 import api.owning.dto.OwningDto;
 import api.user.dto.UserAccountDto;
 import api.user.enums.Role;

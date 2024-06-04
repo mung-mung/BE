@@ -6,7 +6,7 @@ import api.article.jobPostingArticle.dto.JobPostingArticleDto;
 import api.article.jobPostingArticle.repository.JobPostingArticleRepository;
 import api.common.util.auth.loggedInUser.LoggedInUser;
 import api.owning.Owning;
-import api.owning.OwningRepository;
+import api.owning.repository.OwningRepository;
 import api.user.dto.UserAccountDto;
 import api.user.enums.Role;
 import api.user.owner.Owner;
@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

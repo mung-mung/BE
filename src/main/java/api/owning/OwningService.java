@@ -3,6 +3,7 @@ package api.owning;
 
 import api.common.util.auth.loggedInUser.LoggedInUser;
 import api.owning.dto.OwningDto;
+import api.owning.repository.OwningRepository;
 import api.user.dto.UserAccountDto;
 import api.user.enums.Role;
 import api.user.owner.Owner;

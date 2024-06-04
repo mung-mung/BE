@@ -1,8 +1,7 @@
-package api.owning;
+package api.owning.repository;
 
 
-import api.dog.Dog;
-import api.user.owner.Owner;
+import api.owning.Owning;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
