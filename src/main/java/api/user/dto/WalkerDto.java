@@ -9,6 +9,7 @@ import lombok.Setter;
 @Getter
 public class WalkerDto extends UserDtoAbstractClass {
     // 추후에 Walker 전용 필드 추가 예정
+    public WalkerDto() {}
     public WalkerDto(Walker walker) {
         super(walker);
     }

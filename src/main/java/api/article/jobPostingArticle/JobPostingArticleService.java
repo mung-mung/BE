@@ -3,13 +3,14 @@ package api.article.jobPostingArticle;
 import api.article.jobPostingArticle.dto.CreateJobPostingDto;
 import api.article.jobPostingArticle.dto.JobDetailDto;
 import api.article.jobPostingArticle.dto.JobPostingArticleDto;
+import api.article.jobPostingArticle.repository.JobPostingArticleRepository;
 import api.common.util.auth.loggedInUser.LoggedInUser;
 import api.owning.Owning;
-import api.owning.OwningRepository;
+import api.owning.repository.OwningRepository;
 import api.user.dto.UserAccountDto;
 import api.user.enums.Role;
 import api.user.owner.Owner;
-import api.user.owner.OwnerRepository;
+import api.user.owner.repository.OwnerRepository;
 
 
 import jakarta.persistence.EntityNotFoundException;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.file.AccessDeniedException;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,13 +36,8 @@ public class JobPostingArticleService {
     }
 
     @Transactional(readOnly = true)
-    public List<JobPostingArticleDto> getAllArticles() {
-        List<JobPostingArticle> jobPostingArticles = jobPostingArticleRepository.findAll();
-        List<JobPostingArticleDto> jobPostingArticleDtos = new ArrayList<>();
-        for(JobPostingArticle article : jobPostingArticles){
-            jobPostingArticleDtos.add(new JobPostingArticleDto(article));
-        }
-        return jobPostingArticleDtos;
+    public List<JobPostingArticleDto> findJobPostingArticlesByAllCriteria(Integer id, Integer writerId, Integer ownerId, Integer dogId, String walkingLocation, LocalDateTime walkingDateTime, Integer walkingMinutes, Integer hourlyRate) {
+        return jobPostingArticleRepository.findJobPostingArticlesByAllCriteria(id, writerId, ownerId, dogId, walkingLocation, walkingDateTime, walkingMinutes, hourlyRate);
     }
 
     @Transactional

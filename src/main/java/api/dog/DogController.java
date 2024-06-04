@@ -2,12 +2,14 @@ package api.dog;
 
 import api.common.util.http.HttpResponse;
 import api.dog.dto.DogDto;
+import api.dog.enums.Sex;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
+import java.time.LocalDate;
 import java.util.Map;
 
 @RequestMapping("/api/dog")
@@ -22,9 +24,16 @@ public class DogController {
 
     @GetMapping({"/", ""})
     @ResponseBody
-    public ResponseEntity<Object> findAllDogs() {
+    public ResponseEntity<Object> findAllDogs(
+            @RequestParam(value = "id", required = false) Integer id,
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "birthday", required = false) LocalDate birthday,
+            @RequestParam(value = "breed", required = false) String breed,
+            @RequestParam(value = "weight", required = false) Float weight,
+            @RequestParam(value = "sex", required = false) Sex sex
+    ) {
         try {
-            return HttpResponse.successOk("All dogs found successfully", dogService.findAllDogs());
+            return HttpResponse.successOk("All dogs found successfully", dogService.findDogsByAllCriteria(id, name, birthday, breed, weight, sex));
         } catch (Exception e) {
             return HttpResponse.internalError("Failed to fetch dogs: " + e.getMessage(), null);
         }
@@ -41,22 +50,6 @@ public class DogController {
         }
     }
 
-
-
-    @GetMapping("/{dogId}")
-    @ResponseBody
-    public ResponseEntity<Object> findDogById(@PathVariable Integer dogId) {
-        try {
-            DogDto foundDog = dogService.findDogById(dogId);
-            if (foundDog != null) {
-                return HttpResponse.successOk("Dog found successfully", foundDog);
-            } else {
-                return HttpResponse.notFound("Dog not found with ID: " + dogId, null);
-            }
-        } catch (Exception e) {
-            return HttpResponse.internalError("Error finding dog: " + e.getMessage(), null);
-        }
-    }
 
 //    @PatchMapping("/{dogId}")
 //    @ResponseBody

@@ -3,21 +3,20 @@ package api.dog;
 import api.common.util.auth.loggedInUser.LoggedInUser;
 import api.dog.dto.DogDto;
 import api.dog.enums.Sex;
+import api.dog.repository.DogRepository;
 import api.owning.Owning;
-import api.owning.OwningRepository;
+import api.owning.repository.OwningRepository;
 import api.owning.dto.OwningDto;
 import api.user.dto.UserAccountDto;
 import api.user.enums.Role;
 import api.user.owner.Owner;
-import api.user.owner.OwnerRepository;
-import api.user.userAccount.UserAccount;
+import api.user.owner.repository.OwnerRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class DogService {
     private final DogRepository dogRepository;
@@ -30,17 +29,12 @@ public class DogService {
         this.owningRepository = owningRepository;
     }
     @Transactional(readOnly = true)
-    public List<DogDto> findAllDogs() {
-        List<Dog> dogs = dogRepository.findAll();
-        List<DogDto> dogDtos = new ArrayList<>();
-        for(Dog dog : dogs){
-            dogDtos.add(new DogDto(dog));
-        }
-        return dogDtos;
+    public List<DogDto> findDogsByAllCriteria(Integer id, String name, LocalDate birthday, String breed, Float weight, Sex sex) {
+        return dogRepository.findDogsByAllCriteria(id, name, birthday, breed, weight, sex);
     }
     @Transactional
     public Map<String, Object> createDog(DogDto dogDto) throws AccessDeniedException {
-        Dog dog = new Dog(dogDto.getName(), dogDto.getBirthday(), dogDto.getBreed(), dogDto.getWeight(), Sex.valueOf(dogDto.getSex().toUpperCase()));
+        Dog dog = new Dog(dogDto.getName(), dogDto.getBirthday(), dogDto.getBreed(), dogDto.getWeight(), dogDto.getSex());
         Dog savedDog = dogRepository.save(dog);
         UserAccountDto loggedInUserAccountDto = LoggedInUser.getLoggedInUserAccountDto();
         if (loggedInUserAccountDto == null || !Role.OWNER.equals(loggedInUserAccountDto.getRole())) {

@@ -1,14 +1,13 @@
 package api.user.owner;
 
-import api.dog.DogRepository;
-import api.owning.OwningRepository;
 import api.user.dto.OwnerDto;
-import api.user.dto.UserAccountDto;
-import api.user.userAccount.UserAccount;
+import api.user.enums.Gender;
+import api.user.owner.repository.OwnerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,14 +24,8 @@ public class OwnerService {
     }
 
     @Transactional(readOnly = true)
-    public List<OwnerDto> findAllOwners() {
-        List<Owner> allOwners =  ownerRepository.findAll();
-        List<OwnerDto> ownerDtos = new ArrayList<>();
-        for(Owner owner : allOwners){
-            OwnerDto ownerDto = new OwnerDto(owner);
-            ownerDtos.add(ownerDto);
-        }
-        return ownerDtos;
+    public List<OwnerDto> findWalkersByAllCriteria(Integer id, String email, String userName, String contact, Gender gender, LocalDate birthday) {
+        return ownerRepository.findOwnersByAllCriteria(id, email, userName, contact, gender, birthday);
     }
 
     @Transactional(readOnly = true)
