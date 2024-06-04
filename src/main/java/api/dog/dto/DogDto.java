@@ -17,13 +17,13 @@ public class DogDto {
     private LocalDate birthday;
     private String breed;
     private Float weight;
-    private String sex;
+    private Sex sex;
     public DogDto(Dog dog) {
         this.id = dog.getId();
         this.name = dog.getName();
         this.birthday = dog.getBirthday();
         this.breed = dog.getBreed();
         this.weight = dog.getWeight();
-        this.sex = dog.getSex().toString();
+        this.sex = dog.getSex();
     }
 }

@@ -1,18 +1,17 @@
 package api.auth;
 
-import api.auth.dto.SignInDto;
 import api.auth.dto.SignUpDto;
 import api.user.admin.Admin;
 import api.user.admin.AdminRepository;
 import api.user.dto.UserAccountDto;
 import api.user.owner.Owner;
-import api.user.owner.OwnerRepository;
+import api.user.owner.repository.OwnerRepository;
 import api.user.userAccount.UserAccount;
-import api.user.userAccount.UserAccountRepository;
+import api.user.userAccount.repository.UserAccountRepository;
 import api.user.enums.Gender;
 import api.user.enums.Role;
 import api.user.walker.Walker;
-import api.user.walker.WalkerRepository;
+import api.user.walker.repository.WalkerRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
