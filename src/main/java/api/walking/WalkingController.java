@@ -23,12 +23,17 @@ public class WalkingController {
             @RequestParam(value = "id", required = false) Integer id,
             @RequestParam(value = "walkerId", required = false) Integer walkerId,
             @RequestParam(value = "dogId", required = false) Integer dogId) {
-        List<WalkingDto> walkingDtos = walkingService.findWalkings(id, walkerId, dogId);
-        if (walkingDtos.isEmpty()) {
-            return HttpResponse.notFound("No walkings found matching criteria", null);
-        } else {
-            return HttpResponse.successOk("Walkings found successfully", walkingDtos);
+        try{
+            List<WalkingDto> walkingDtos = walkingService.findOwningsByAllCriteria(id, walkerId, dogId);
+            if (walkingDtos.isEmpty()) {
+                return HttpResponse.notFound("No walkings found matching criteria", null);
+            } else {
+                return HttpResponse.successOk("Walkings found successfully", walkingDtos);
+            }
+        }catch(Exception e){
+            return HttpResponse.internalError(e.getMessage(), null);
         }
+
     }
 
     @PostMapping({"/", ""})
