@@ -9,15 +9,12 @@ import api.owning.dto.OwningDto;
 import api.user.dto.UserAccountDto;
 import api.user.enums.Role;
 import api.user.owner.Owner;
-import api.user.owner.OwnerRepository;
-import api.user.userAccount.UserAccount;
+import api.user.owner.repository.OwnerRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.file.AccessDeniedException;
-import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class DogService {
     private final DogRepository dogRepository;

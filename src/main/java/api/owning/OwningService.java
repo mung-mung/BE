@@ -6,7 +6,7 @@ import api.owning.dto.OwningDto;
 import api.user.dto.UserAccountDto;
 import api.user.enums.Role;
 import api.user.owner.Owner;
-import api.user.owner.OwnerRepository;
+import api.user.owner.repository.OwnerRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 

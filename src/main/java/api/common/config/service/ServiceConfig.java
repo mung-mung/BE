@@ -6,7 +6,7 @@ import api.dog.DogService;
 import api.owning.OwningRepository;
 import api.owning.OwningService;
 import api.user.admin.AdminRepository;
-import api.user.owner.OwnerRepository;
+import api.user.owner.repository.OwnerRepository;
 import api.user.owner.OwnerService;
 import api.user.userAccount.repository.UserAccountRepository;
 import api.user.userAccount.UserAccountService;
