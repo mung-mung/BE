@@ -22,14 +22,14 @@ public class UserAccountController {
     }
     @GetMapping({"/", ""})
     @ResponseBody
-    public ResponseEntity<Object> findAllUsers(@RequestParam(value = "userId", required = false) Integer userId,
+    public ResponseEntity<Object> findAllUsers(@RequestParam(value = "id", required = false) Integer id,
                                                @RequestParam(value = "email", required = false) String email,
                                                @RequestParam(value = "userName", required = false) String userName,
                                                @RequestParam(value = "role", required = false) Role role,
                                                @RequestParam(value = "contact", required = false) String contact,
                                                @RequestParam(value = "gender", required = false) Gender gender,
                                                @RequestParam(value = "birthday", required = false) LocalDate birthday) {
-        return HttpResponse.successOk("All users found successfully", userAccountService.findUsersByAllCriteria(userId, email, userName, role, contact, gender, birthday));
+        return HttpResponse.successOk("All users found successfully", userAccountService.findUsersByAllCriteria(id, email, userName, role, contact, gender, birthday));
     }
 
 
