@@ -1,5 +1,6 @@
 package api.common.config.repository;
 
+import api.article.jobPostingArticle.repository.JobPostingArticleRepositoryCustomImpl;
 import api.dog.repository.DogRepositoryCustomImpl;
 import api.user.owner.repository.OwnerRepositoryCustomImpl;
 import api.user.userAccount.repository.UserAccountRepositoryCustomImpl;
@@ -37,5 +38,9 @@ public class RepositoryConfig {
     @Bean
     public DogRepositoryCustomImpl dogRepositoryCustom(JPAQueryFactory queryFactory) {
         return new DogRepositoryCustomImpl(queryFactory);
+    }
+    @Bean
+    public JobPostingArticleRepositoryCustomImpl jobPostingArticleRepositoryCustom (JPAQueryFactory queryFactory) {
+        return new JobPostingArticleRepositoryCustomImpl(queryFactory);
     }
 }

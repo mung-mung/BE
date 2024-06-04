@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
+import java.time.LocalDateTime;
+import java.util.List;
 
 
 @RestController
@@ -23,9 +25,19 @@ public class JobPostingArticleController {
 
     @GetMapping({"", "/"})
     @ResponseBody
-    public ResponseEntity<Object> getAllJobPostingArticles(){
+    public ResponseEntity<Object> getAllJobPostingArticles(
+            @RequestParam(value = "id", required = false) Integer id,
+            @RequestParam(value = "writerId", required = false) Integer writerId,
+            @RequestParam(value = "ownerId", required = false) Integer ownerId,
+            @RequestParam(value = "dogId", required = false) Integer dogId,
+            @RequestParam(value = "walkingLocation", required = false) String walkingLocation,
+            @RequestParam(value = "walkingDateTime", required = false) LocalDateTime walkingDateTime,
+            @RequestParam(value = "walkingMinutes", required = false) Integer walkingMinutes,
+            @RequestParam(value = "hourlyRate", required = false) Integer hourlyRate
+    ){
         try {
-            return HttpResponse.successOk("All job posting articles found successfully", jobPostingArticleService.getAllArticles());
+            List<JobPostingArticleDto> jobPostingArticleDtos = jobPostingArticleService.findJobPostingArticlesByAllCriteria(id, writerId, ownerId, dogId, walkingLocation, walkingDateTime, walkingMinutes, hourlyRate);
+            return HttpResponse.successOk("All job posting articles found successfully", jobPostingArticleDtos);
         } catch (Exception e) {
             return HttpResponse.internalError("Failed to find job posting articles: " + e.getMessage(), null);
         }
