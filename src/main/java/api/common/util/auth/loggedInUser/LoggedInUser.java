@@ -2,7 +2,7 @@ package api.common.util.auth.loggedInUser;
 
 import api.user.dto.UserAccountDto;
 import api.user.userAccount.UserAccount;
-import api.user.userAccount.UserAccountRepository;
+import api.user.userAccount.repository.UserAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
