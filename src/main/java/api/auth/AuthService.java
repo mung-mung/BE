@@ -5,7 +5,7 @@ import api.user.admin.Admin;
 import api.user.admin.AdminRepository;
 import api.user.dto.UserAccountDto;
 import api.user.owner.Owner;
-import api.user.owner.OwnerRepository;
+import api.user.owner.repository.OwnerRepository;
 import api.user.userAccount.UserAccount;
 import api.user.userAccount.repository.UserAccountRepository;
 import api.user.enums.Gender;

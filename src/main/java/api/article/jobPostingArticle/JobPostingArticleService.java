@@ -9,7 +9,7 @@ import api.owning.OwningRepository;
 import api.user.dto.UserAccountDto;
 import api.user.enums.Role;
 import api.user.owner.Owner;
-import api.user.owner.OwnerRepository;
+import api.user.owner.repository.OwnerRepository;
 
 
 import jakarta.persistence.EntityNotFoundException;

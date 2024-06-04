@@ -2,7 +2,6 @@ package api.user.walker.repository;
 
 import api.user.dto.WalkerDto;
 import api.user.enums.Gender;
-import api.user.enums.Role;
 
 import java.time.LocalDate;
 import java.util.List;

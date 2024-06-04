@@ -1,5 +1,6 @@
 package api.common.config.repository;
 
+import api.user.owner.repository.OwnerRepositoryCustomImpl;
 import api.user.userAccount.repository.UserAccountRepositoryCustomImpl;
 import api.user.walker.repository.WalkerRepositoryCustomImpl;
 import com.querydsl.jpa.impl.JPAQueryFactory;
