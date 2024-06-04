@@ -23,12 +23,17 @@ public class OwningController {
             @RequestParam(value = "id", required = false) Integer id,
             @RequestParam(value = "owner_id", required = false) Integer ownerId,
             @RequestParam(value = "dogId", required = false) Integer dogId) {
-        List<OwningDto> owningDtos = owningService.findOwningsByAllCriteria(id, ownerId, dogId);
-        if (owningDtos.isEmpty()) {
-            return HttpResponse.notFound("No ownings found matching criteria", null);
-        } else {
-            return HttpResponse.successOk("Ownings found successfully", owningDtos);
+        try{
+            List<OwningDto> owningDtos = owningService.findOwningsByAllCriteria(id, ownerId, dogId);
+            if (owningDtos.isEmpty()) {
+                return HttpResponse.notFound("No ownings found matching criteria", null);
+            } else {
+                return HttpResponse.successOk("Ownings found successfully", owningDtos);
+            }
+        }catch(Exception e){
+            return HttpResponse.internalError(e.getMessage(), null);
         }
+
     }
 
     @DeleteMapping("/{owningId}")

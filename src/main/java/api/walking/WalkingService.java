@@ -4,12 +4,14 @@ package api.walking;
 import api.common.util.auth.loggedInUser.LoggedInUser;
 import api.dog.Dog;
 import api.dog.repository.DogRepository;
+import api.owning.dto.OwningDto;
 import api.walking.dto.WalkingDto;
 import api.user.dto.UserAccountDto;
 import api.user.enums.Role;
 import api.user.walker.Walker;
 import api.user.walker.repository.WalkerRepository;
 import api.walking.dto.CreateWalkingDto;
+import api.walking.repository.WalkingRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,23 +31,8 @@ public class WalkingService {
         this.walkerRepository = walkerRepository;
     }
     @Transactional(readOnly = true)
-    public List<WalkingDto> findWalkings(Integer id, Integer walkerId, Integer dogId){
-        List<Walking> walkings = new ArrayList<>();
-        if (id != null) {
-            Optional<Walking> walking = walkingRepository.findById(id);
-            walkings = walking.map(List::of).orElse(List.of());
-        } else if (walkerId != null && dogId != null) {
-            Optional<Walking> optionalWalking = walkingRepository.findByWalkerIdAndDogId(walkerId, dogId);
-            Walking walking = optionalWalking.get();
-            walkings.add(walking);
-        } else if (walkerId != null) {
-            walkings = walkingRepository.findByWalkerId(walkerId);
-        } else if (dogId != null) {
-            walkings = walkingRepository.findByDogId(dogId);
-        } else {
-            walkings = walkingRepository.findAll();
-        }
-        return walkings.stream().map(WalkingDto::new).collect(Collectors.toList());
+    public List<WalkingDto> findOwningsByAllCriteria(Integer id, Integer walkerId, Integer dogId){
+        return walkingRepository.findWalkingsByAllCriteria(id, walkerId, dogId);
     }
 
     @Transactional
