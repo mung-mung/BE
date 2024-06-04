@@ -12,7 +12,7 @@ import api.user.userAccount.repository.UserAccountRepository;
 import api.user.userAccount.UserAccountService;
 import api.user.walker.repository.WalkerRepository;
 import api.user.walker.WalkerService;
-import api.walking.WalkingRepository;
+import api.walking.repository.WalkingRepository;
 import api.walking.WalkingService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -8,7 +8,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import java.util.Optional;
 
-import static com.querydsl.core.types.Projections.fields;
+import static com.querydsl.core.types.Projections.constructor;
 
 
 public class OwningRepositoryCustomImpl implements OwningRepositoryCustom {
@@ -23,7 +23,7 @@ public class OwningRepositoryCustomImpl implements OwningRepositoryCustom {
         Optional.ofNullable(id).ifPresent(value -> whereClause.and(owning.id.eq(value)));
         Optional.ofNullable(ownerId).ifPresent(value -> whereClause.and(owning.owner.id.eq(value)));
         Optional.ofNullable(dogId).ifPresent(value -> whereClause.and(owning.dog.id.eq(value)));
-        return queryFactory.select(fields(OwningDto.class,
+        return queryFactory.select(constructor(OwningDto.class,
                         owning.id,
                         owning.owner.id,
                         owning.dog.id))
