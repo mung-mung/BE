@@ -28,8 +28,6 @@ public class DogRepositoryCustomImpl implements DogRepositoryCustom{
         Optional.ofNullable(breed).ifPresent(value -> whereClause.and(dog.breed.eq(value)));
         Optional.ofNullable(weight).ifPresent(value -> whereClause.and(dog.weight.eq(value)));
         Optional.ofNullable(sex).ifPresent(value -> whereClause.and(dog.sex.eq(value)));
-
-
         return queryFactory.select(fields(DogDto.class,
                         dog.id,
                         dog.name,
