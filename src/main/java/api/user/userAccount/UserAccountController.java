@@ -2,10 +2,15 @@ package api.user.userAccount;
 
 import api.common.util.http.HttpResponse;
 import api.user.dto.UserAccountDto;
+import api.user.enums.Gender;
+import api.user.enums.Role;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RequestMapping("/api/user/account")
 @Controller
@@ -17,20 +22,16 @@ public class UserAccountController {
     }
     @GetMapping({"/", ""})
     @ResponseBody
-    public ResponseEntity<Object> findAllUsers() {
-        return HttpResponse.successOk("All users found successfully", userAccountService.findAllUsers());
+    public ResponseEntity<Object> findAllUsers(@RequestParam(value = "id", required = false) Integer id,
+                                               @RequestParam(value = "email", required = false) String email,
+                                               @RequestParam(value = "userName", required = false) String userName,
+                                               @RequestParam(value = "role", required = false) Role role,
+                                               @RequestParam(value = "contact", required = false) String contact,
+                                               @RequestParam(value = "gender", required = false) Gender gender,
+                                               @RequestParam(value = "birthday", required = false) LocalDate birthday) {
+        return HttpResponse.successOk("All users found successfully", userAccountService.findUsersByAllCriteria(id, email, userName, role, contact, gender, birthday));
     }
 
-    @GetMapping("/{userId}")
-    @ResponseBody
-    public ResponseEntity<Object> findUserById(@PathVariable Integer userId) {
-        UserAccountDto userAccountDto = userAccountService.findUserById(userId);
-        if(userAccountDto == null){
-            return HttpResponse.notFound("Error: User not found", null);
-        }else{
-            return HttpResponse.successOk("User found successfully", userAccountDto);
-        }
-    }
 
 //    @PatchMapping("/{userId}")
 //    @ResponseBody
