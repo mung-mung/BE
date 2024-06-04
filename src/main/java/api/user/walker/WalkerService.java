@@ -1,15 +1,14 @@
 package api.user.walker;
 
-import api.dog.DogRepository;
-import api.owning.OwningRepository;
 import api.user.dto.WalkerDto;
-import api.user.dto.UserAccountDto;
-import api.user.userAccount.UserAccount;
+import api.user.enums.Gender;
+import api.user.enums.Role;
+import api.user.walker.repository.WalkerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,27 +24,10 @@ public class WalkerService {
     }
 
     @Transactional(readOnly = true)
-    public List<WalkerDto> findAllWalkers() {
-        List<Walker> allWalkers =  walkerRepository.findAll();
-        List<WalkerDto> walkerDtos = new ArrayList<>();
-        for(Walker walker : allWalkers){
-            WalkerDto walkerDto = new WalkerDto(walker);
-            walkerDtos.add(walkerDto);
-        }
-        return walkerDtos;
+    public List<WalkerDto> findWalkersByAllCriteria(Integer id, String email, String userName, String contact, Gender gender, LocalDate birthday) {
+        return walkerRepository.findWalkersByAllCriteria(id, email, userName, contact, gender, birthday);
     }
 
-    @Transactional(readOnly = true)
-    public WalkerDto findWalkerById(Integer id) {
-        Optional<Walker> optionalWalker =  walkerRepository.findById(id);
-        if (optionalWalker.isPresent()) {
-            Walker walker = optionalWalker.get();
-            WalkerDto walkerDto = new WalkerDto(walker);
-            return walkerDto;
-        }else{
-            return null;
-        }
-    }
 
     // @Transactional
     // updateWalkerById 구현
