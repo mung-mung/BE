@@ -1,7 +1,7 @@
 package api.common.config.service;
 
 import api.auth.AuthService;
-import api.dog.DogRepository;
+import api.dog.repository.DogRepository;
 import api.dog.DogService;
 import api.owning.OwningRepository;
 import api.owning.OwningService;

@@ -3,7 +3,7 @@ package api.walking;
 
 import api.common.util.auth.loggedInUser.LoggedInUser;
 import api.dog.Dog;
-import api.dog.DogRepository;
+import api.dog.repository.DogRepository;
 import api.walking.dto.WalkingDto;
 import api.user.dto.UserAccountDto;
 import api.user.enums.Role;
