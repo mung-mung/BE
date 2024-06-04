@@ -10,7 +10,7 @@ import api.user.owner.OwnerRepository;
 import api.user.owner.OwnerService;
 import api.user.userAccount.repository.UserAccountRepository;
 import api.user.userAccount.UserAccountService;
-import api.user.walker.WalkerRepository;
+import api.user.walker.repository.WalkerRepository;
 import api.user.walker.WalkerService;
 import api.walking.WalkingRepository;
 import api.walking.WalkingService;

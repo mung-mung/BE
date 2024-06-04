@@ -11,7 +11,7 @@ import api.user.userAccount.repository.UserAccountRepository;
 import api.user.enums.Gender;
 import api.user.enums.Role;
 import api.user.walker.Walker;
-import api.user.walker.WalkerRepository;
+import api.user.walker.repository.WalkerRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 

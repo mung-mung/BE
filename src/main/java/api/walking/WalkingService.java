@@ -4,14 +4,12 @@ package api.walking;
 import api.common.util.auth.loggedInUser.LoggedInUser;
 import api.dog.Dog;
 import api.dog.DogRepository;
-import api.walking.Walking;
 import api.walking.dto.WalkingDto;
 import api.user.dto.UserAccountDto;
 import api.user.enums.Role;
 import api.user.walker.Walker;
-import api.user.walker.WalkerRepository;
+import api.user.walker.repository.WalkerRepository;
 import api.walking.dto.CreateWalkingDto;
-import api.walking.dto.WalkingDto;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
