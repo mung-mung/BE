@@ -1,6 +1,6 @@
 package api.user.userAccount.repository;
 
-import api.user.dto.UserAccountDto;
+import api.user.userAccount.dto.UserAccountDto;
 import api.user.enums.Gender;
 import api.user.enums.Role;
 import api.user.userAccount.QUserAccount;

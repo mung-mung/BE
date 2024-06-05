@@ -1,6 +1,6 @@
 package api.user.walker.repository;
 
-import api.user.dto.WalkerDto;
+import api.user.walker.dto.WalkerDto;
 import api.user.enums.Gender;
 
 import java.time.LocalDate;

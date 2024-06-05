@@ -7,7 +7,7 @@ import api.article.jobPostingArticle.repository.JobPostingArticleRepository;
 import api.common.util.auth.loggedInUser.LoggedInUser;
 import api.owning.Owning;
 import api.owning.repository.OwningRepository;
-import api.user.dto.UserAccountDto;
+import api.user.userAccount.dto.UserAccountDto;
 import api.user.enums.Role;
 import api.user.owner.Owner;
 import api.user.owner.repository.OwnerRepository;

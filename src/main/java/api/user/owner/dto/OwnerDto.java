@@ -1,5 +1,6 @@
-package api.user.dto;
+package api.user.owner.dto;
 
+import api.user.dto.UserDtoAbstractClass;
 import api.user.owner.Owner;
 import lombok.Getter;
 import lombok.Setter;

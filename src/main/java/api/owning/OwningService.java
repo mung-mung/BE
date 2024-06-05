@@ -4,7 +4,7 @@ package api.owning;
 import api.common.util.auth.loggedInUser.LoggedInUser;
 import api.owning.dto.OwningDto;
 import api.owning.repository.OwningRepository;
-import api.user.dto.UserAccountDto;
+import api.user.userAccount.dto.UserAccountDto;
 import api.user.enums.Role;
 import api.user.owner.Owner;
 import api.user.owner.repository.OwnerRepository;
@@ -12,10 +12,8 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.file.AccessDeniedException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class OwningService {
     private final OwningRepository owningRepository;
