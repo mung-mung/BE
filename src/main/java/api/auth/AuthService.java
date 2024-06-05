@@ -3,7 +3,7 @@ package api.auth;
 import api.auth.dto.SignUpDto;
 import api.user.admin.Admin;
 import api.user.admin.AdminRepository;
-import api.user.dto.UserAccountDto;
+import api.user.userAccount.dto.UserAccountDto;
 import api.user.owner.Owner;
 import api.user.owner.repository.OwnerRepository;
 import api.user.userAccount.UserAccount;

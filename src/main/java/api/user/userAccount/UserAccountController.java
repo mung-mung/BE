@@ -1,10 +1,8 @@
 package api.user.userAccount;
 
 import api.common.util.http.HttpResponse;
-import api.user.dto.UserAccountDto;
 import api.user.enums.Gender;
 import api.user.enums.Role;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

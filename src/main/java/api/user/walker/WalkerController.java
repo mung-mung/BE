@@ -1,9 +1,8 @@
 package api.user.walker;
 
 import api.common.util.http.HttpResponse;
-import api.user.dto.WalkerDto;
+import api.user.walker.dto.WalkerDto;
 import api.user.enums.Gender;
-import api.user.enums.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
