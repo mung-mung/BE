@@ -1,5 +1,6 @@
-package api.user.dto;
+package api.user.walker.dto;
 
+import api.user.dto.UserDtoAbstractClass;
 import api.user.walker.Walker;
 import lombok.Getter;
 import lombok.Setter;

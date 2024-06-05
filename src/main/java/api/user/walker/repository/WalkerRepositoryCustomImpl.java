@@ -1,10 +1,7 @@
 package api.user.walker.repository;
 
-import api.user.dto.UserAccountDto;
-import api.user.dto.WalkerDto;
+import api.user.walker.dto.WalkerDto;
 import api.user.enums.Gender;
-import api.user.enums.Role;
-import api.user.userAccount.QUserAccount;
 import api.user.walker.QWalker;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;

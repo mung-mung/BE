@@ -4,9 +4,8 @@ package api.walking;
 import api.common.util.auth.loggedInUser.LoggedInUser;
 import api.dog.Dog;
 import api.dog.repository.DogRepository;
-import api.owning.dto.OwningDto;
 import api.walking.dto.WalkingDto;
-import api.user.dto.UserAccountDto;
+import api.user.userAccount.dto.UserAccountDto;
 import api.user.enums.Role;
 import api.user.walker.Walker;
 import api.user.walker.repository.WalkerRepository;
@@ -16,10 +15,8 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.file.AccessDeniedException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class WalkingService {
     private final WalkingRepository walkingRepository;

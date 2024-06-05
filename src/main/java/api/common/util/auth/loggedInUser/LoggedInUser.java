@@ -1,6 +1,6 @@
 package api.common.util.auth.loggedInUser;
 
-import api.user.dto.UserAccountDto;
+import api.user.userAccount.dto.UserAccountDto;
 import api.user.userAccount.UserAccount;
 import api.user.userAccount.repository.UserAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
