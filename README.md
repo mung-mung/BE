@@ -1,14 +1,13 @@
-# 개요
-**mung mung Backend Server 개발을 위한 레포지토리입니다.**
+# Mung Mung Backend Server
 
-## 버전 정보
+## Libraries and Version Information
 - Java: 17
 - Spring Boot: 3.2.3
 - Gradle: 8.5
   
-## 커밋 규칙
+## Commit Message Guidelines
 
-커밋 메세지는 다음과 같은 형식으로 작성합니다.
+Commit messages should follow the format below:
 
 ```
 Activity: Commit Message
