@@ -21,10 +21,6 @@ public class RepositoryConfig {
     }
 
     @Bean
-    public JPAQueryFactory jpaQueryFactory() {
-        return new JPAQueryFactory(em);
-    }
-    @Bean
     public UserAccountRepositoryCustomImpl userAccountRepositoryCustom(JPAQueryFactory queryFactory) {
         return new UserAccountRepositoryCustomImpl(queryFactory);
     }

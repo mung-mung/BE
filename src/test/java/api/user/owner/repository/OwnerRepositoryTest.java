@@ -54,7 +54,7 @@ public class OwnerRepositoryTest {
     }
 
     @Test
-    @DisplayName("param으로 들어온 모든 조건으로 owner 검색")
+    @DisplayName("모든 조건으로 owner 검색")
     public void testFindOwnersByAllCriteria() {
         // given
         Owner owner = new Owner("test@example.com", "testowner", Role.OWNER, "password", "123-456-7890", Gender.MALE, LocalDate.of(1990, 1, 1));

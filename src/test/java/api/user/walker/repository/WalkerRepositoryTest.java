@@ -42,7 +42,7 @@ public class WalkerRepositoryTest {
     }
 
     @Test
-    @DisplayName("param으로 들어온 모든 조건으로 walker 검색")
+    @DisplayName("모든 조건으로 walker 검색")
     public void testFindWalkersByAllCriteria() {
         // given
         Walker walker = new Walker("test@example.com", "testwalker", Role.WALKER, "password", "123-456-7890", Gender.MALE, LocalDate.of(1990, 1, 1));
