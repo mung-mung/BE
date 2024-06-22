@@ -33,7 +33,7 @@ public class OwnerController {
             @RequestParam(value = "gender", required = false) Gender gender,
             @RequestParam(value = "birthday", required = false) LocalDate birthday
     ) {
-        List<OwnerDto> owners = ownerService.findWalkersByAllCriteria(id, email, userName, contact, gender, birthday);
+        List<OwnerDto> owners = ownerService.findOwnersByAllCriteria(id, email, userName, contact, gender, birthday);
         return HttpResponse.successOk("All owners found successfully", owners);
     }
 
