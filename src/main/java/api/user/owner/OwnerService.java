@@ -28,7 +28,7 @@ public class OwnerService {
     }
 
     @Transactional(readOnly = true)
-    public List<OwnerDto> findWalkersByAllCriteria(Integer id, String email, String userName, String contact, Gender gender, LocalDate birthday) {
+    public List<OwnerDto> findOwnersByAllCriteria(Integer id, String email, String userName, String contact, Gender gender, LocalDate birthday) {
         return ownerRepository.findOwnersByAllCriteria(id, email, userName, contact, gender, birthday);
     }
 
