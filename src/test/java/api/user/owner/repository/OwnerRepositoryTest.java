@@ -1,5 +1,6 @@
 package api.user.owner.repository;
 
+import api.common.config.repository.QueryDslConfig;
 import api.dog.Dog;
 import api.dog.enums.Sex;
 import api.dog.repository.DogRepository;
@@ -10,17 +11,13 @@ import api.user.enums.Role;
 import api.user.owner.Owner;
 import api.user.owner.dto.OwnerDto;
 import api.user.owner.dto.OwningDogsDto;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
-import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @ActiveProfiles("test")
-@Import(OwnerRepositoryTest.TestConfig.class)
+@Import({QueryDslConfig.class, OwnerRepositoryCustomImpl.class})
 public class OwnerRepositoryTest {
 
     @Autowired
@@ -40,20 +37,6 @@ public class OwnerRepositoryTest {
 
     @Autowired
     private OwningRepository owningRepository;
-
-    @TestConfiguration
-    static class TestConfig {
-
-        @Bean
-        public JPAQueryFactory jpaQueryFactory(EntityManager entityManager) {
-            return new JPAQueryFactory(entityManager);
-        }
-
-        @Bean
-        public OwnerRepositoryCustomImpl ownerRepositoryCustom(JPAQueryFactory jpaQueryFactory) {
-            return new OwnerRepositoryCustomImpl(jpaQueryFactory);
-        }
-    }
 
     @Test
     @DisplayName("이메일로 owner 검색")
