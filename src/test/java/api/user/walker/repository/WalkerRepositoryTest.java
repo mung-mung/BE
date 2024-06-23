@@ -1,17 +1,20 @@
 package api.user.walker.repository;
 
-import api.common.config.repository.QueryDslConfig;
+import api.common.config.repository.RepositoryConfig;
 import api.user.walker.Walker;
 import api.user.enums.Gender;
 import api.user.enums.Role;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
+import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -19,13 +22,20 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")
-@SpringJUnitConfig(QueryDslConfig.class)
+@Import({WalkerRepositoryTest.TestConfig.class, RepositoryConfig.class})
 public class WalkerRepositoryTest {
 
     @Autowired
     private WalkerRepository walkerRepository;
+
+    @TestConfiguration
+    static class TestConfig {
+        @Bean
+        public JPAQueryFactory jpaQueryFactory(EntityManager entityManager) {
+            return new JPAQueryFactory(entityManager);
+        }
+    }
 
     @Test
     @DisplayName("이메일로 walker 검색")
