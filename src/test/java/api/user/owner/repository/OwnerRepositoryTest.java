@@ -1,6 +1,6 @@
 package api.user.owner.repository;
 
-import api.common.config.repository.RepositoryConfig;
+import api.common.config.repository.QueryDslConfig;
 import api.dog.Dog;
 import api.dog.enums.Sex;
 import api.dog.repository.DogRepository;
@@ -16,7 +16,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -26,7 +30,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Import(RepositoryConfig.class)
+@ActiveProfiles("test")
+@SpringJUnitConfig(QueryDslConfig.class)
 public class OwnerRepositoryTest {
 
     @Autowired
@@ -37,6 +42,12 @@ public class OwnerRepositoryTest {
 
     @Autowired
     private OwningRepository owningRepository;
+
+    @Configuration
+    @ComponentScan(basePackages = "api.user.owner",
+            includeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {OwnerRepository.class, DogRepository.class, OwningRepository.class}))
+    static class TestConfig {
+    }
 
     @Test
     @DisplayName("이메일로 owner 검색")
