@@ -1,22 +1,19 @@
 package api.user.userAccount.repository;
 
+import api.common.config.repository.QueryDslConfig;
 import api.common.config.repository.RepositoryConfig;
 import api.user.enums.Gender;
 import api.user.enums.Role;
 import api.user.owner.Owner;
 import api.user.userAccount.dto.UserAccountDto;
 import api.user.walker.Walker;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
-import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -25,19 +22,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @ActiveProfiles("test")
-@Import({UserAccountRepositoryTest.TestConfig.class, RepositoryConfig.class})
+@Import({QueryDslConfig.class, RepositoryConfig.class})
 public class UserAccountRepositoryTest {
 
     @Autowired
     private UserAccountRepository userAccountRepository;
-
-    @TestConfiguration
-    static class TestConfig {
-        @Bean
-        public JPAQueryFactory jpaQueryFactory(EntityManager entityManager) {
-            return new JPAQueryFactory(entityManager);
-        }
-    }
 
     @Test
     @DisplayName("이메일로 user account 검색")
