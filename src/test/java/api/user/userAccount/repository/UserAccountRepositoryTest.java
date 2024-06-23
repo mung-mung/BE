@@ -1,6 +1,6 @@
 package api.user.userAccount.repository;
 
-import api.common.config.repository.RepositoryConfig;
+import api.common.config.repository.QueryDslConfig;
 import api.user.enums.Gender;
 import api.user.enums.Role;
 import api.user.owner.Owner;
@@ -11,7 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,7 +22,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Import(RepositoryConfig.class)
+@ActiveProfiles("test")
+@SpringJUnitConfig(QueryDslConfig.class)
 public class UserAccountRepositoryTest {
 
     @Autowired
