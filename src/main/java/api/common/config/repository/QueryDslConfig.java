@@ -3,20 +3,19 @@ package api.common.config.repository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan(basePackages = "api")
 public class QueryDslConfig {
-    private final EntityManager em;
 
-    public QueryDslConfig(EntityManager em) {
-        this.em = em;
+    private final EntityManager entityManager;
+
+    public QueryDslConfig(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
     @Bean
     public JPAQueryFactory jpaQueryFactory() {
-        return new JPAQueryFactory(em);
+        return new JPAQueryFactory(entityManager);
     }
 }
