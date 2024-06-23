@@ -1,40 +1,33 @@
 package api.common.config.service;
 
 import api.auth.AuthService;
-import api.dog.repository.DogRepository;
 import api.dog.DogService;
-import api.owning.repository.OwningRepository;
+import api.dog.repository.DogRepository;
 import api.owning.OwningService;
+import api.owning.repository.OwningRepository;
 import api.user.admin.AdminRepository;
-import api.user.owner.repository.OwnerRepository;
 import api.user.owner.OwnerService;
-import api.user.userAccount.repository.UserAccountRepository;
+import api.user.owner.repository.OwnerRepository;
 import api.user.userAccount.UserAccountService;
-import api.user.walker.repository.WalkerRepository;
+import api.user.userAccount.repository.UserAccountRepository;
 import api.user.walker.WalkerService;
-import api.walking.repository.WalkingRepository;
+import api.user.walker.repository.WalkerRepository;
 import api.walking.WalkingService;
+import api.walking.repository.WalkingRepository;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class ServiceConfig {
 
-    private final PasswordEncoder passwordEncoder;
-
-    public ServiceConfig(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
-
     @Bean
-    public UserAccountService userService(UserAccountRepository userAccountRepository) {
+    public UserAccountService userAccountService(UserAccountRepository userAccountRepository) {
         return new UserAccountService(userAccountRepository);
     }
 
     @Bean
-    public AuthService authService(UserAccountRepository userAccountRepository, OwnerRepository ownerRepository, WalkerRepository walkerRepository, AdminRepository adminRepository) {
+    public AuthService authService(UserAccountRepository userAccountRepository, OwnerRepository ownerRepository, WalkerRepository walkerRepository, AdminRepository adminRepository, PasswordEncoder passwordEncoder) {
         return new AuthService(userAccountRepository, ownerRepository, walkerRepository, adminRepository, passwordEncoder);
     }
 
