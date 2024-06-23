@@ -1,9 +1,5 @@
 package api.common.config;
 
-
-
-
-
 import jakarta.persistence.EntityManager;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
